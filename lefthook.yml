@@ -1,0 +1,15 @@
+commit-msg:
+  commands:
+    commitlint:
+      run: npx commitlint --edit $1
+pre-commit:
+  parallel: false # must be false if commands modify files
+  commands:
+    format:
+      run: |
+        dotnet tool run csharpier format ./__NAMESPACE__
+        git add ./__NAMESPACE__
+    validate-meta:
+      run: bash Tools/validate-meta-files.sh
+    validate-scenes:
+      run: bash Tools/validate-scene-files.sh
