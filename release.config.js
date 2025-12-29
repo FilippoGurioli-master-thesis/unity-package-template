@@ -8,7 +8,7 @@ if (isTemplate) {
   // --- TEMPLATE MODE ---
   config.plugins.push(
     ["@semantic-release/npm", { npmPublish: false }],
-    // TODO: uncomment - "@semantic-release/github",
+    "@semantic-release/github",
     [
       "@semantic-release/git",
       {
@@ -26,7 +26,7 @@ if (isTemplate) {
     ["@semantic-release/changelog", {
       changelogFile: "__NAMESPACE__/CHANGELOG.md"
     }],
-    // TODO: uncomment - "@semantic-release/github",
+    "@semantic-release/github",
     [
       "@semantic-release/git",
       {
