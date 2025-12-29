@@ -237,9 +237,6 @@ info "Removing init files since their not needed anymore"
 rm init.sh
 rm init.ps1
 
-info "Waiting unity to update lock file"
-sleep 2
-
 info "Committing changes"
 git add .
 git commit -m "chore(init): initialize project from template"
@@ -247,6 +244,6 @@ git commit -m "chore(init): initialize project from template"
 info "Setting this commit as version 0.0.0"
 git tag 0.0.0
 
-info "Init done, remember to configure precisely the package.json before starting your development."
+info "Init done, remember to configure precisely the $NAMESPACE/package.json file before starting your development."
 info "Set LICENSE before publishing"
 info "Remember to push tags too (git push --tags)"
