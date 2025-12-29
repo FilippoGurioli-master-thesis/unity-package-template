@@ -1,0 +1,25 @@
+{
+  "name": "unity-package-template",
+  "version": "0.1.0",
+  "description": "A template for Unity projects. It contains the cutting edge features regarding development automation providing a easy way to customize and start up quickly.",
+  "keywords": [
+    "template",
+    "unity",
+    "devops"
+  ],
+  "homepage": "https://github.com/FilippoGurioli-master-thesis/unity-package-template#readme",
+  "bugs": {
+    "url": "https://github.com/FilippoGurioli-master-thesis/unity-package-template/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/FilippoGurioli-master-thesis/unity-package-template.git"
+  },
+  "license": "MIT",
+  "author": "Filippo Gurioli",
+  "scripts": {},
+  "devDependencies": {
+    "semantic-release": "^25.0.2",
+    "semantic-release-preconfigured-conventional-commits": "^1.1.157"
+  }
+}
