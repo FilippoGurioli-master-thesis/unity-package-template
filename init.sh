@@ -244,4 +244,9 @@ info "Committing changes"
 git add .
 git commit -m "chore(init): initialize project from template"
 
-info "Init done, remember to configure precisely the package.json before starting your development. Also set a LICENSE before publishing"
+info "Setting this commit as version 0.0.0"
+git tag 0.0.0
+
+info "Init done, remember to configure precisely the package.json before starting your development."
+info "Set LICENSE before publishing"
+info "Remember to push tags too (git push --tags)"
