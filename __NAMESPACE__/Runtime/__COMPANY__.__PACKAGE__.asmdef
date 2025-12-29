@@ -1,0 +1,14 @@
+{
+    "name": "__COMPANY__.__PACKAGE__",
+    "rootNamespace": "__NAMESPACE__",
+    "references": [],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

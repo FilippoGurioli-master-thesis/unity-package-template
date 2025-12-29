@@ -1,0 +1,22 @@
+{
+  "name": "__DOMAIN__.__COMPANY__.__PACKAGE__",
+  "version": "0.0.0",
+  "description": "__DESCRIPTION__",
+  "displayName": "__NAME__",
+  "unity": "6000.2",
+  "author": {
+    "name": "__GIT_USER__",
+    "email": "__GIT_MAIL__",
+    "url": "https://github.com/__GIT_USER__"
+  },
+  "changelogUrl": "https://github.com/__GIT_USER__/__PACKAGE__/CHANGELOG.md",
+  "dependencies": {},
+  "documentationUrl": "https://__GIT_USER__.github.io/__PACKAGE__/",
+  "hideInEditor": false,
+  "keywords": [
+    "keyword1",
+    "keyword2",
+    "keyword3"
+  ],
+  "licenseUrl": "https://github.com/__GIT_USER__/__PACKAGE__/LICENSE"
+}
