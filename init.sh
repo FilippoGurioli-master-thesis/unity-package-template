@@ -83,10 +83,10 @@ replaceInFiles() {
   local self
   self="./$(basename "${BASH_SOURCE[0]}")"
   find . \
-    -path "./TemplateProject/Library" -prune -o \
-    -path "./TemplateProject/Logs" -prune -o \
-    -path "./TemplateProject/Temp" -prune -o \
-    -path "./TemplateProject/obj" -prune -o \
+    -path "./Sandbox.$NAMESPACE/Library" -prune -o \
+    -path "./Sandbox.$NAMESPACE/Logs" -prune -o \
+    -path "./Sandbox.$NAMESPACE/Temp" -prune -o \
+    -path "./Sandbox.$NAMESPACE/obj" -prune -o \
     -path "./init.*" -prune -o \
     -type d -name .git -prune -o \
     -type f ! -path "$self" -print0 |
@@ -98,10 +98,10 @@ renameDirs() {
   local search="$1"
   local replace="$2"
   find . -depth \
-    -path "./TemplateProject/Library" -prune -o \
-    -path "./TemplateProject/Logs" -prune -o \
-    -path "./TemplateProject/Temp" -prune -o \
-    -path "./TemplateProject/obj" -prune -o \
+    -path "./Sandbox.$NAMESPACE/Library" -prune -o \
+    -path "./Sandbox.$NAMESPACE/Logs" -prune -o \
+    -path "./Sandbox.$NAMESPACE/Temp" -prune -o \
+    -path "./Sandbox.$NAMESPACE/obj" -prune -o \
     -type d -name "*$search*" -print0 |
     while IFS= read -r -d '' dir; do
       local newdir="${dir//$search/$replace}"
@@ -113,10 +113,10 @@ renameFiles() {
   local search="$1"
   local replace="$2"
   find . \
-    -path "./TemplateProject/Library" -prune -o \
-    -path "./TemplateProject/Logs" -prune -o \
-    -path "./TemplateProject/Temp" -prune -o \
-    -path "./TemplateProject/obj" -prune -o \
+    -path "./Sandbox.$NAMESPACE/Library" -prune -o \
+    -path "./Sandbox.$NAMESPACE/Logs" -prune -o \
+    -path "./Sandbox.$NAMESPACE/Temp" -prune -o \
+    -path "./Sandbox.$NAMESPACE/obj" -prune -o \
     -type f -name "*$search*" -print0 |
     while IFS= read -r -d '' file; do
       local newfile="${file//$search/$replace}"
@@ -213,7 +213,7 @@ info "Replacing words with __GIT_MAIL__=$GIT_MAIL"
 replaceInFiles "__GIT_MAIL__" "$GIT_MAIL"
 
 UNITY_PATH=$(find "$HOME/Unity/Hub/Editor" -maxdepth 1 -type d -name "6000*" | sort -V | head -n1)/Editor/Unity
-PROJECT_PATH="./TemplateProject"
+PROJECT_PATH="./Sandbox.$NAMESPACE"
 
 # Open the unity project
 info "Opening Unity project"
