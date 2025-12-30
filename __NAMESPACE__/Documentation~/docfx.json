@@ -13,6 +13,11 @@
         }
     ],
     "build": {
+        "template": [
+            "default",
+            "modern",
+            "templates/unity"
+        ],
         "globalMetadata": {
             "_appTitle": "__NAME__",
             "_appFooter": "__NAME__",
