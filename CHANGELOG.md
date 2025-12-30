@@ -1,3 +1,20 @@
+## [0.1.2](https://github.com/FilippoGurioli-master-thesis/unity-package-template/compare/0.1.1...0.1.2) (2025-12-30)
+
+### Documentation
+
+* configure path to API correctly ([7c17a9f](https://github.com/FilippoGurioli-master-thesis/unity-package-template/commit/7c17a9f0badbc2ffb3d0ded94a7525308be00295))
+* create documentation for template ([adb09e7](https://github.com/FilippoGurioli-master-thesis/unity-package-template/commit/adb09e78353e195f532c42f8634a2de7418e8ea4))
+* remove docfx once again ([78ad1fc](https://github.com/FilippoGurioli-master-thesis/unity-package-template/commit/78ad1fc231a4c3432b5d438cd2b650b571a2b06b))
+
+### Build and continuous integration
+
+* create documentation deploy to GHP ([0c6d5ef](https://github.com/FilippoGurioli-master-thesis/unity-package-template/commit/0c6d5efd7837641a3c1397d11870ef0789f4e0b9))
+* momentaneuosly delete documentation pipeline ([07edb43](https://github.com/FilippoGurioli-master-thesis/unity-package-template/commit/07edb437523858a4a39c6cf6b99b70abf183b207))
+
+### General maintenance
+
+* format ([7e22e70](https://github.com/FilippoGurioli-master-thesis/unity-package-template/commit/7e22e708c0bf565d4d1e7937d0af56e73cde0a3d))
+
 ## [0.1.1](https://github.com/FilippoGurioli-master-thesis/unity-package-template/compare/0.1.0...0.1.1) (2025-12-30)
 
 ### Documentation
