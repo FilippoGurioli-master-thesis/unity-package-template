@@ -1,0 +1,18 @@
+{
+  "metadata": [
+    {
+      "src": [
+        { "src": "../__NAMESPACE__", "files": ["**.csproj"] }
+      ],
+      "dest": "api"
+    }
+  ],
+  "build": {
+    "contents": [
+      { "files": ["api/**.yml"] },
+      { "files": ["**.md", "toc.yml"] }
+    ],
+    "template": ["material"],
+    "dest": "_site"
+  }
+}
