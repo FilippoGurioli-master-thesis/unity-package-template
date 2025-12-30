@@ -1,3 +1,16 @@
+## [0.1.1](https://github.com/FilippoGurioli-master-thesis/unity-package-template/compare/0.1.0...0.1.1) (2025-12-30)
+
+### Documentation
+
+* create the docfx structure ([02505ce](https://github.com/FilippoGurioli-master-thesis/unity-package-template/commit/02505ce1d2d51a2777a521ffebe22bd9f3c6f2a4))
+* restart on docfx ([7a3f597](https://github.com/FilippoGurioli-master-thesis/unity-package-template/commit/7a3f5977afc1308e112910c32046a74efcdbc2ce))
+* setup docfx to parse md files ([7192b5d](https://github.com/FilippoGurioli-master-thesis/unity-package-template/commit/7192b5d6740583a88260e6fd487f623fbf516f36))
+
+### Build and continuous integration
+
+* create documentation deploy pipeline ([8f3e6c3](https://github.com/FilippoGurioli-master-thesis/unity-package-template/commit/8f3e6c3e6a8f688093483e08795f7f427b18f0cb))
+* remove NPM TOKEN usage (unused) ([7cd6ffa](https://github.com/FilippoGurioli-master-thesis/unity-package-template/commit/7cd6ffabbb7d305c90cd06cc7ad453bd4a8bc612))
+
 ## [0.1.0](https://github.com/FilippoGurioli-master-thesis/unity-package-template/compare/0.0.0...0.1.0) (2025-12-29)
 
 ### Features
