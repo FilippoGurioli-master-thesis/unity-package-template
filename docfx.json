@@ -4,7 +4,7 @@
     {
       "src": [
         {
-          "src": "__NAMESPACE__",
+          "src": "Sandbox.__NAMESPACE__",
           "files": [
             "**/*.csproj"
           ]
@@ -18,10 +18,6 @@
       {
         "files": [
           "docs/**/*.{md,yml}"
-        ],
-        "exclude": [
-          "_site/**",
-          "node_modules/**"
         ]
       }
     ],
