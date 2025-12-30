@@ -1,0 +1,25 @@
+  {
+  "build": {
+    "content": [
+      {
+          "files": ["**/*.md"]
+      }
+    ],
+    "resource": [ { "files": "images/**" } ],
+    "dest": "_site",
+    "globalMetadata": {
+      "_appTitle": "Unity Package Template",
+      "_appName": "Unity Package Template",
+      "_appLogoPath": "images/logo.png",
+      "_appFaviconPath": "images/favicon.ico",
+      "_enableSearch": true,
+      "_disableContribution": true,
+      "_gitContribute": {
+          "repo": "https://github.com/FilippoGurioli-master-thesis/unity-package-template",
+          "branch": "main"
+      },
+      "_lang": "en"
+    },
+    "template": [ "default", "modern", "custom-docfx-template" ]
+  }
+}
