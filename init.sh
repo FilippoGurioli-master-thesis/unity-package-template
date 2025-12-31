@@ -238,10 +238,10 @@ if [[ "$project_major" -gt "$installed_major" ]]; then
   warn "Skipping unity opening, install unity editor $PROJECT_VERSION before starting to develop"
 else
   UNITY_PATH="$HOME/Unity/Hub/Editor/$INSTALLED_UNITY_VERSION/Editor/Unity"
-  PROJECT_PATH="./Sandbox.$NAMESPACE"
+  PROJECT_PATH=$(realpath "./Sandbox.$NAMESPACE")
   # Open the unity project
-  info "Initializing Unity project (Importing assets and resolving packages)..."
-  # This command runs Unity, performs the startup routine, and exits
+
+  info "Initializing Unity project at: $PROJECT_PATH"
   "$UNITY_PATH" \
     -batchmode \
     -nographics \
@@ -250,11 +250,13 @@ else
     -quit
 
   if [ $? -eq 0 ]; then
-    info "Unity initialization complete. Library and package-lock.json updated."
+    info "Unity initialization complete."
   else
     error "Unity initialization failed. Check unity_init.log for details."
+    tail -n 20 unity_init.log
     exit 1
   fi
+  info "Opening Unity Editor GUI"
   "$UNITY_PATH" -projectPath "$PROJECT_PATH" &
 fi
 # Install deps
