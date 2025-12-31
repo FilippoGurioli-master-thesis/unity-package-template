@@ -154,6 +154,23 @@ getGithubUser() {
   git config user.name
 }
 
+unityStartup() {
+  "$UNITY_PATH" \
+    -batchmode \
+    -nographics \
+    -projectPath "$PROJECT_PATH" \
+    -logFile "unity_init.log" \
+    -quit
+
+  if [ $? -eq 0 ]; then
+    info "Unity initialization complete."
+  else
+    error "Unity initialization failed. Check unity_init.log for details."
+    tail -n 20 unity_init.log
+    exit 1
+  fi
+}
+
 #---------------------------------------------------------------------------------------------------
 
 # Read customer values
@@ -241,21 +258,8 @@ else
   PROJECT_PATH=$(realpath "./Sandbox.$NAMESPACE")
   # Open the unity project
 
-  info "Initializing Unity project at: $PROJECT_PATH - this operation may take a few minutes..."
-  "$UNITY_PATH" \
-    -batchmode \
-    -nographics \
-    -projectPath "$PROJECT_PATH" \
-    -logFile "unity_init.log" \
-    -quit
-
-  if [ $? -eq 0 ]; then
-    info "Unity initialization complete."
-  else
-    error "Unity initialization failed. Check unity_init.log for details."
-    tail -n 20 unity_init.log
-    exit 1
-  fi
+  info "Initializing Unity project $NAMESPACE - this operation may take a few minutes..."
+  unityStartup
   info "Opening Unity Editor GUI"
   "$UNITY_PATH" -projectPath "$PROJECT_PATH" &
 fi
@@ -279,6 +283,9 @@ rm init.ps1
 
 info "Generating $NAMESPACE.csproj in order to let docfx work"
 node Tools/generate-csproj-for-docfx.js
+
+info "Re-launching unity startup just to generate meta file related to new csproj"
+unityStartup
 
 info "Committing changes"
 git add .
