@@ -160,7 +160,7 @@ unityStartup() {
     -nographics \
     -projectPath "$PROJECT_PATH" \
     -logFile "unity_init.log" \
-    -quit
+    -quit >/dev/null 2>&1
 
   if [ $? -eq 0 ]; then
     info "Unity initialization complete."
@@ -260,8 +260,6 @@ else
 
   info "Initializing Unity project $NAMESPACE - this operation may take a few minutes..."
   unityStartup
-  info "Opening Unity Editor GUI"
-  "$UNITY_PATH" -projectPath "$PROJECT_PATH" &
 fi
 # Install deps
 info "Installing dotnet and npm dependencies"
@@ -286,6 +284,9 @@ node Tools/generate-csproj-for-docfx.js
 
 info "Re-launching unity startup just to generate meta file related to new csproj"
 unityStartup
+
+info "Opening Unity Editor GUI"
+"$UNITY_PATH" -projectPath "$PROJECT_PATH" &
 
 info "Committing changes"
 git add .
