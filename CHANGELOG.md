@@ -1,3 +1,25 @@
+## [0.1.4](https://github.com/FilippoGurioli-master-thesis/unity-package-template/compare/0.1.3...0.1.4) (2025-12-31)
+
+### Documentation
+
+* configure docfx for package ([707fbfe](https://github.com/FilippoGurioli-master-thesis/unity-package-template/commit/707fbfe89474b3776a5f5ba5c46a49255f03307c))
+
+### Build and continuous integration
+
+* create generate-csproj-for-docfx script ([470e469](https://github.com/FilippoGurioli-master-thesis/unity-package-template/commit/470e469633e2a737cf6a78a89830e9b942c5e229))
+* **init:** await unity dll file generation ([7928699](https://github.com/FilippoGurioli-master-thesis/unity-package-template/commit/79286996b104df49ea2ab3237f3ea6ff957caddb))
+* **init:** fix typo ([9b45b7e](https://github.com/FilippoGurioli-master-thesis/unity-package-template/commit/9b45b7ea99b5ff7911f7cc2d7d2ddc1a990f8dd1))
+* **init:** fix unity startup error ([fe0825b](https://github.com/FilippoGurioli-master-thesis/unity-package-template/commit/fe0825b29dd35ea9a4b46ccf1b3e3ece8f1fec2e))
+* **init:** put csproj generation before commit ([9392912](https://github.com/FilippoGurioli-master-thesis/unity-package-template/commit/93929120c5892859beaea7b98ce3421166b48dca))
+* **init:** unity editor opens after all unity startups ([125c8d1](https://github.com/FilippoGurioli-master-thesis/unity-package-template/commit/125c8d1923353531a356d01fce57fd3c48c5c5ca))
+* **init:** update init to check for unity version ([726e9e9](https://github.com/FilippoGurioli-master-thesis/unity-package-template/commit/726e9e944c8748cd665d80178721857e5734e36b))
+* use csproj generation script in init ([6c39262](https://github.com/FilippoGurioli-master-thesis/unity-package-template/commit/6c39262fc749e7df5a9f235e457b97ef42c6e3eb))
+
+### General maintenance
+
+* fix bash syntax issue ([299276b](https://github.com/FilippoGurioli-master-thesis/unity-package-template/commit/299276bed447251ed9173620013646d5a89fb4c4))
+* improve logging ([75dda4e](https://github.com/FilippoGurioli-master-thesis/unity-package-template/commit/75dda4ebaeddc0ff01ab6906dc3fa3a2b61b5990))
+
 ## [0.1.3](https://github.com/FilippoGurioli-master-thesis/unity-package-template/compare/0.1.2...0.1.3) (2025-12-31)
 
 ### Documentation
