@@ -214,7 +214,7 @@ replaceInFiles "__GIT_MAIL__" "$GIT_MAIL"
 
 PROJECT_VERSION=$(
   sed -n 's/^m_EditorVersion: //p' \
-    "./Sandbox.__NAMESPACE__/ProjectSettings/ProjectVersion.txt"
+    "./Sandbox.$NAMESPACE/ProjectSettings/ProjectVersion.txt"
 )
 UNITY_EDITOR_DIR="$HOME/Unity/Hub/Editor"
 if [[ -n "$PROJECT_VERSION" && -d "$UNITY_EDITOR_DIR/$PROJECT_VERSION" ]]; then
