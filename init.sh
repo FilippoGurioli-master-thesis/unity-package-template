@@ -212,13 +212,37 @@ replaceInFiles "__GIT_USER__" "$GIT_USER"
 info "Replacing words with __GIT_MAIL__=$GIT_MAIL"
 replaceInFiles "__GIT_MAIL__" "$GIT_MAIL"
 
-UNITY_PATH=$(find "$HOME/Unity/Hub/Editor" -maxdepth 1 -type d -name "6000*" | sort -V | head -n1)/Editor/Unity
-PROJECT_PATH="./Sandbox.$NAMESPACE"
+PROJECT_VERSION=$(
+  sed -n 's/^m_EditorVersion: //p' \
+    "./Sandbox.__NAMESPACE__/ProjectSettings/ProjectVersion.txt"
+)
+UNITY_EDITOR_DIR="$HOME/Unity/Hub/Editor"
+if [[ -n "$PROJECT_VERSION" && -d "$UNITY_EDITOR_DIR/$PROJECT_VERSION" ]]; then
+  INSTALLED_UNITY_VERSION="$PROJECT_VERSION"
+else
+  INSTALLED_UNITY_VERSION=$(
+    find "$UNITY_EDITOR_DIR" \
+      -mindepth 1 \
+      -maxdepth 1 \
+      -type d \
+      -printf "%f\n" |
+      sort -V |
+      tail -n1
+  )
+fi
 
-# Open the unity project
-info "Opening Unity project"
-"$UNITY_PATH" -projectPath "$PROJECT_PATH" &
-
+project_major=${PROJECT_VERSION%%.*}
+installed_major=${INSTALLED_UNITY_VERSION%%.*}
+if [[ "$project_major" -gt "$installed_major" ]]; then
+  warn "Project requires Unity $PROJECT_VERSION, but installed Unity is $INSTALLED_UNITY_VERSION"
+  warn "Skipping unity opening, install unity editor $PROJECT_VERSION before starting to develop"
+else
+  UNITY_PATH="$HOME/Unity/Hub/Editor/$INSTALLED_UNITY_VERSION/Editor/Unity"
+  PROJECT_PATH="./Sandbox.$NAMESPACE"
+  # Open the unity project
+  info "Opening Unity project"
+  "$UNITY_PATH" -projectPath "$PROJECT_PATH" &
+fi
 # Install deps
 info "Installing dotnet and npm dependencies"
 npm i
