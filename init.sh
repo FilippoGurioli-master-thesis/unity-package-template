@@ -241,7 +241,7 @@ else
   PROJECT_PATH=$(realpath "./Sandbox.$NAMESPACE")
   # Open the unity project
 
-  info "Initializing Unity project at: $PROJECT_PATH"
+  info "Initializing Unity project at: $PROJECT_PATH - this operation may take a few minutes..."
   "$UNITY_PATH" \
     -batchmode \
     -nographics \
