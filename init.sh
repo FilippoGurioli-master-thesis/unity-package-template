@@ -240,7 +240,21 @@ else
   UNITY_PATH="$HOME/Unity/Hub/Editor/$INSTALLED_UNITY_VERSION/Editor/Unity"
   PROJECT_PATH="./Sandbox.$NAMESPACE"
   # Open the unity project
-  info "Opening Unity project"
+  info "Initializing Unity project (Importing assets and resolving packages)..."
+  # This command runs Unity, performs the startup routine, and exits
+  "$UNITY_PATH" \
+    -batchmode \
+    -nographics \
+    -projectPath "$PROJECT_PATH" \
+    -logFile "unity_init.log" \
+    -quit
+
+  if [ $? -eq 0 ]; then
+    info "Unity initialization complete. Library and package-lock.json updated."
+  else
+    error "Unity initialization failed. Check unity_init.log for details."
+    exit 1
+  fi
   "$UNITY_PATH" -projectPath "$PROJECT_PATH" &
 fi
 # Install deps
