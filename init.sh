@@ -277,15 +277,15 @@ info "Removing init files since their not needed anymore"
 rm init.sh
 rm init.ps1
 
+info "Generating $NAMESPACE.csproj in order to let docfx work"
+node Tools/generate-csproj-for-docfx.js
+
 info "Committing changes"
 git add .
 git commit -m "chore(init): initialize project from template"
 
 info "Setting this commit as version 0.0.0"
 git tag 0.0.0
-
-info "Generating $NAMESPACE.csproj in order to let docfx work"
-node Tools/generate-csproj-for-docfx.js
 
 info "Init done, remember to configure precisely the $NAMESPACE/package.json file before starting your development."
 info "Set LICENSE before publishing"
