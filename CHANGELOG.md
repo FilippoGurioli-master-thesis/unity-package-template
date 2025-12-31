@@ -1,3 +1,22 @@
+## [0.1.3](https://github.com/FilippoGurioli-master-thesis/unity-package-template/compare/0.1.2...0.1.3) (2025-12-31)
+
+### Documentation
+
+* **template:** add style ([4a70bd1](https://github.com/FilippoGurioli-master-thesis/unity-package-template/commit/4a70bd10022185ffd2a8f33548037ca181c454c9))
+* **template:** create docfx file for template package ([cb25e98](https://github.com/FilippoGurioli-master-thesis/unity-package-template/commit/cb25e9866571122e65b820a958c01922277212d9))
+* **template:** create test manual and test image ([5063dfd](https://github.com/FilippoGurioli-master-thesis/unity-package-template/commit/5063dfdf607bf31139a36b4850bd0baf0323e554))
+
+### Build and continuous integration
+
+* give correct permissions ([abf7a99](https://github.com/FilippoGurioli-master-thesis/unity-package-template/commit/abf7a99281be630cf09f37284703f2c85f6bc652))
+* give correct permissions ([8629df7](https://github.com/FilippoGurioli-master-thesis/unity-package-template/commit/8629df7482d6352ec1beca993cecb3deac66a0d3))
+* give correct permissions ([057604d](https://github.com/FilippoGurioli-master-thesis/unity-package-template/commit/057604ddc3ed0c36491b4b0f777e3044a3c310e4))
+* merge workflows ([1ea329a](https://github.com/FilippoGurioli-master-thesis/unity-package-template/commit/1ea329a9fcf0384d5737f2424fd572220ca26051))
+
+### General maintenance
+
+* remove useless configuration ([451f0b3](https://github.com/FilippoGurioli-master-thesis/unity-package-template/commit/451f0b31a2825464d566a62a5a839df0be879931))
+
 ## [0.1.2](https://github.com/FilippoGurioli-master-thesis/unity-package-template/compare/0.1.1...0.1.2) (2025-12-30)
 
 ### Documentation
