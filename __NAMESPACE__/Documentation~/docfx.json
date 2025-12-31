@@ -1,58 +1,46 @@
 {
-    "metadata": [
-        {
-            "src": [
-                {
-                    "src": "..",
-                    "files": [
-                        "**/*.cs"
-                    ],
-                }
-            ],
-            "dest": "api"
-        }
+  "metadata": [{
+    "src": [
+      {
+        "src": "..",
+        "files": [
+          "*.csproj"
+        ],
+      }
     ],
-    "build": {
-        "template": [
-            "modern",
-            "templates/unity"
-        ],
-        "globalMetadata": {
-            "_appTitle": "__NAME__",
-            "_appFooter": "__NAME__",
-            "_enableSearch": true,
-            "_disableContribution": true
-        },
-        "content": [
-            {
-                "files": [
-                    "toc.yml",
-                    "index.md"
-                ]
-            },
-            {
-                "src": "api",
-                "files": [
-                    "*.yml"
-                ],
-                "dest": "api"
-            },
-            {
-                "src": "manual",
-                "files": [
-                    "toc.yml",
-                    "*.md"
-                ],
-                "dest": "manual"
-            }
-        ],
-        "resource": [
-            {
-                "files": [
-                    "resources/**/*"
-                ]
-            }
-        ],
-        "dest": "_site"
-    }
+    "dest": "api"
+  }],
+  "build": {
+    "content": [
+      {
+          "files": [ "toc.yml", "index.md"]
+      },
+      {
+        "src": "api",
+        "files": ["*.yml"],
+        "dest": "api"
+      },
+      {
+        "src": "manual",
+        "files": [ "toc.yml", "*.md" ],
+        "dest": "manual"
+      }
+    ],
+    "resource": [ { "files": "images/**" } ],
+    "dest": "_site",
+    "globalMetadata": {
+      "_appTitle": "__NAME__",
+      "_appName": "__NAME__",
+      "_appLogoPath": "images/logo.png",
+      "_appFaviconPath": "images/favicon.ico",
+      "_enableSearch": true,
+      "_disableContribution": true,
+      "_gitContribute": {
+          "repo": "https://github.com/FilippoGurioli-master-thesis/unity-package-template",
+          "branch": "main"
+      },
+      "_lang": "en"
+    },
+    "template": [ "default", "modern", "custom-docfx-template" ]
+  }
 }
