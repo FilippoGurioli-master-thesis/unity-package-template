@@ -1,3 +1,24 @@
+## [0.1.5](https://github.com/FilippoGurioli-master-thesis/unity-package-template/compare/0.1.4...0.1.5) (2026-01-01)
+
+### Documentation
+
+* add template infos in package documentation ([0fff0a2](https://github.com/FilippoGurioli-master-thesis/unity-package-template/commit/0fff0a2577c3ed2037de90f13796c092a8ddd25c))
+
+### Tests
+
+* add a test cs script to test API doc generation ([a37fe8a](https://github.com/FilippoGurioli-master-thesis/unity-package-template/commit/a37fe8a39e7ee90852ac8b60d354388b9547974c))
+
+### Build and continuous integration
+
+* correctly install docfx in remote ci machine ([7ae1a07](https://github.com/FilippoGurioli-master-thesis/unity-package-template/commit/7ae1a07a2f321a5ecb3a284ac5f717a27e3b82f9))
+* update csproj generation so that it adds also unity dlls ([3ef4089](https://github.com/FilippoGurioli-master-thesis/unity-package-template/commit/3ef40895eb27c41cc4f456fde68e87293137866d))
+* upload package docs if .template is absent ([ecf0d51](https://github.com/FilippoGurioli-master-thesis/unity-package-template/commit/ecf0d512ee5e4a2784dd308d422c743a790adf4f))
+
+### General maintenance
+
+* ignore api folder generate from docfx ([92c5027](https://github.com/FilippoGurioli-master-thesis/unity-package-template/commit/92c502758c9d64dc6730d9a30523fd9d287d38f0))
+* ignore bin and obj of __NAMESPACE__ ([36f67b9](https://github.com/FilippoGurioli-master-thesis/unity-package-template/commit/36f67b980f3ff057949a1435fa78ed19bb75fc40))
+
 ## [0.1.4](https://github.com/FilippoGurioli-master-thesis/unity-package-template/compare/0.1.3...0.1.4) (2025-12-31)
 
 ### Documentation
