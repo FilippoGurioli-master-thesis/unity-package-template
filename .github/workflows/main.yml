@@ -126,10 +126,13 @@ jobs:
   release:
     name: Release
     runs-on: ubuntu-24.04
-    needs: [check-template, test]
+    needs: [check-template, build, test, sonar-analysis]
     if: |
       always() &&
-      (needs.test.result == 'success' || needs.check-template.outputs.is_template == 'true') &&
+      (
+        (needs.test.result == 'success' && needs.sonar-analysis.result == 'success' && needs.build.result == 'success') || 
+        (needs.check-template.outputs.is_template == 'true')
+      ) &&
       github.event_name == 'push' &&
       github.ref == 'refs/heads/main'
     steps:
