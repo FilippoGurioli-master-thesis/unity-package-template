@@ -103,7 +103,11 @@ jobs:
 
   documentation:
     name: Documentation
-    needs: release
+    needs: [check-template, release]
+    if: |
+      always() &&
+      (needs.release.result == 'success' || needs.check-template.outputs.is_template == 'true')
+    runs-on: ubuntu-24.04
     runs-on: ubuntu-24.04
     steps:
       - name: Checkout code
