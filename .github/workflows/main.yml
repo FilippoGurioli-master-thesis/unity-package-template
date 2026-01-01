@@ -3,6 +3,15 @@ on:
   push:
     branches:
       - main
+      - dev
+  pull_requests:
+    branches:
+      - main
+
+env:
+  UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
+  UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
+  UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
 
 permissions:
   contents: write
@@ -12,9 +21,62 @@ permissions:
   pages: write
 
 jobs:
+  check-template:
+    name: Check for .template file
+    runs-on: ubuntu-24.04
+    outputs:
+      is_template: ${{ steps.check.outputs.is_template }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Check existence of .template
+        id: check
+        run: |
+          if [ -f ".template" ]; then
+            echo "Template file found. Skipping builds."
+            echo "is_template=true" >> $GITHUB_OUTPUT
+          else
+            echo "is_template=false" >> $GITHUB_OUTPUT
+          fi
+  build:
+    name: Build for ${{ matrix.targetPlatform }} on ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    needs: check-template
+    if: needs.check-template.outputs.is_template == 'false'
+    strategy:
+      fail-fast: false
+      matrix:
+        - os: ubuntu-24.04
+          targetPlatform: StandaloneLinux64
+        - os: windows-2025
+          targetPlatform: StandaloneWindows64
+        - os: macOS-15
+          targetPlatform: StandaloneOSX
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          lfs: true
+
+      - name: Cache Library
+        uses: actions/cache@v4
+        with:
+          path: Library
+          key: Library-${{ matrix.targetPlatform }}-${{ hashFiles('Assets/**', 'Packages/**', 'ProjectSettings/**') }}
+          restore-keys: |
+            Library-${{ matrix.targetPlatform }}-
+
+      - name: Build Unity Project
+        uses: game-ci/unity-builder@v4
+        with:
+          targetPlatform: ${{ matrix.targetPlatform }}
+          projectPath: ./__NAMESPACE__
+          allowDirtyBuild: true
   release:
     name: Release
     runs-on: ubuntu-24.04
+    needs: build
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     steps:
       - name: Checkout
         uses: actions/checkout@v4
