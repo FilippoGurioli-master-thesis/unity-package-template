@@ -3,20 +3,16 @@
 /**
  * Generates a single SDK-style .csproj for a Unity package.
  * Works both locally and in CI.
- *
- * Assumptions:
- * - Script is located in root/Tools/
- * - Package is located in root/__NAMESPACE__/
- * - Unity project is located in root/Sandbox.__NAMESPACE__/
- * - Library/ScriptAssemblies is populated
  */
 
 const fs = require("fs");
 const path = require("path");
+const os = require("os");
 
 const ROOT = path.resolve(__dirname, "..");
 const PACKAGE_ROOT = path.join(ROOT, "__NAMESPACE__");
 const UNITY_PROJECT_ROOT = path.join(ROOT, "Sandbox.__NAMESPACE__");
+const UNITY_VERSION = getUnityVersion(UNITY_PROJECT_ROOT);
 const SCRIPT_ASSEMBLIES = path.join(UNITY_PROJECT_ROOT, "Library/ScriptAssemblies");
 const PACKAGE_NAME = path.basename(PACKAGE_ROOT);
 const OUTPUT_CSPROJ = path.join(PACKAGE_ROOT, `${PACKAGE_NAME}.csproj`);
@@ -25,26 +21,25 @@ const OUTPUT_CSPROJ = path.join(PACKAGE_ROOT, `${PACKAGE_NAME}.csproj`);
 // Helpers
 // ------------------------------------------------------------
 
-function exists(p) {
-  return fs.existsSync(p);
+function getUnityVersion(projectPath) {
+  const versionFile = path.join(
+    projectPath,
+    "ProjectSettings",
+    "ProjectVersion.txt"
+  );
+  if (!fs.existsSync(versionFile)) {
+    throw new Error(`ProjectVersion.txt not found at ${versionFile}`);
+  }
+  const content = fs.readFileSync(versionFile, "utf8");
+  const match = content.match(/^m_EditorVersion:\s*(.+)$/m);
+  if (!match) {
+    throw new Error("Unable to parse m_EditorVersion from ProjectVersion.txt");
+  }
+  return match[1].trim();
 }
 
-function findAllCsFiles(root) {
-  const results = [];
-
-  function walk(dir) {
-    for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
-      const full = path.join(dir, entry.name);
-      if (entry.isDirectory()) {
-        walk(full);
-      } else if (entry.isFile() && entry.name.endsWith(".cs")) {
-        results.push(full);
-      }
-    }
-  }
-
-  walk(root);
-  return results;
+function exists(p) {
+  return fs.existsSync(p);
 }
 
 function findAllDlls(root) {
@@ -55,8 +50,65 @@ function findAllDlls(root) {
     .map(f => path.join(root, f));
 }
 
+function detectUnityInstall() {
+  if (process.env.UNITY_EDITOR_PATH && exists(process.env.UNITY_EDITOR_PATH)) {
+    return process.env.UNITY_EDITOR_PATH;
+  }
+
+  const editorLog = path.join(UNITY_PROJECT_ROOT, "Editor.log");
+  if (exists(editorLog)) {
+    const log = fs.readFileSync(editorLog, "utf8");
+    const match = log.match(/Launching Unity from: (.*)/);
+    if (match && exists(match[1])) {
+      return match[1];
+    }
+  }
+
+  const platform = os.platform();
+
+  if (platform === "darwin") {
+    const hub = `/Application/Unity/Hub/Editor/${UNITY_VERSION}`;
+    if (exists(hub)) {
+      const versions = fs.readdirSync(hub);
+      if (versions.length > 0) {
+        return path.join(hub, versions[0], "Unity.app", "Contents");
+      }
+    }
+  }
+
+  if (platform === "win32") {
+    const base = `C:\\Program Files\\Unity\\Hub\\Editor\\${UNITY_VERSION}\\Editor`;
+    if (exists(base)) {
+      const versions = fs.readdirSync(base);
+      if (versions.length > 0) {
+        return path.join(base, versions[0], "Editor");
+      }
+    }
+  }
+
+  if (platform === "linux") {
+    const linuxPath = `${os.homedir()}/Unity/Hub/Editor/${UNITY_VERSION}/Editor`;
+    if (exists(linuxPath)) {
+      return linuxPath;
+    }
+  }
+
+  console.error("ERROR: Could not detect Unity installation path.");
+  process.exit(1);
+}
+
+function findUnityEngineDlls(unityRoot) {
+  const managed = path.join(unityRoot, "Data", "Managed");
+  const engine = path.join(managed, "UnityEngine");
+
+  return [
+    ...findAllDlls(managed),
+    ...findAllDlls(engine)
+  ];
+}
+
 // ------------------------------------------------------------
-// Step 1 — Validate environment
+// Validate environment
 // ------------------------------------------------------------
 
 if (!exists(PACKAGE_ROOT)) {
@@ -76,40 +128,28 @@ if (!exists(SCRIPT_ASSEMBLIES)) {
 }
 
 // ------------------------------------------------------------
-// Step 2 — Collect source files
+// Collect DLLs
 // ------------------------------------------------------------
 
-const csFiles = findAllCsFiles(PACKAGE_ROOT);
-if (csFiles.length === 0) {
-  console.error("WARNING: No .cs files found in package:", PACKAGE_ROOT);
-}
+const unityInstall = detectUnityInstall();
+const unityDlls = findUnityEngineDlls(unityInstall);
+const scriptDlls = findAllDlls(SCRIPT_ASSEMBLIES);
 
-// Convert absolute paths → relative paths for csproj
-const relativeCsFiles = csFiles.map(f => path.relative(PACKAGE_ROOT, f).replace(/\\/g, "/"));
-
-// ------------------------------------------------------------
-// Step 3 — Collect DLL references
-// ------------------------------------------------------------
-
-const dlls = findAllDlls(SCRIPT_ASSEMBLIES);
-
-if (dlls.length === 0) {
-  console.error("ERROR: No DLLs found in ScriptAssemblies:", SCRIPT_ASSEMBLIES);
+if (unityDlls.length === 0) {
+  console.error("ERROR: No UnityEngine DLLs found. Cannot resolve MonoBehaviour.");
   process.exit(1);
 }
 
-// Convert absolute → relative paths for csproj
-const relativeDlls = dlls.map(f => path.relative(PACKAGE_ROOT, f).replace(/\\/g, "/"));
+const allDlls = [...unityDlls, ...scriptDlls];
+
+// Convert absolute → relative paths
+const relativeDlls = allDlls.map(f => path.relative(PACKAGE_ROOT, f).replace(/\\/g, "/"));
 
 // ------------------------------------------------------------
-// Step 4 — Generate .csproj XML
+// Generate .csproj
 // ------------------------------------------------------------
 
 function generateCsproj() {
-  const compileItems = relativeCsFiles
-    .map(f => `    <Compile Include="${f}" />`)
-    .join("\n");
-
   const referenceItems = relativeDlls
     .map(f => {
       const name = path.basename(f, ".dll");
@@ -127,10 +167,6 @@ function generateCsproj() {
   </PropertyGroup>
 
   <ItemGroup>
-${compileItems}
-  </ItemGroup>
-
-  <ItemGroup>
 ${referenceItems}
   </ItemGroup>
 
@@ -139,10 +175,8 @@ ${referenceItems}
 }
 
 // ------------------------------------------------------------
-// Step 5 — Write output
+// Write output
 // ------------------------------------------------------------
 
-const xml = generateCsproj();
-fs.writeFileSync(OUTPUT_CSPROJ, xml, "utf8");
-
+fs.writeFileSync(OUTPUT_CSPROJ, generateCsproj(), "utf8");
 console.log(`✔ Generated ${OUTPUT_CSPROJ}`);
