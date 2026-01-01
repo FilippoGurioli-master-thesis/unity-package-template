@@ -49,6 +49,57 @@ askNonNull() {
   done
 }
 
+askInList() {
+  local prompt="$1"
+  local default_index="$2"
+  shift 2
+  local options=("$@")
+  local input
+
+  # Display the options with numbers
+  printf '%s\n' "$prompt" >&2
+  for i in "${!options[@]}"; do
+    printf '  %d) %s\n' "$((i + 1))" "${options[$i]}" >&2
+  done
+
+  # Determine default string for the prompt display
+  local default_val="${options[$((default_index - 1))]}"
+
+  while true; do
+    read -r -p "Select an option [1-${#options[@]}, default: $default_index ($default_val)]: " input
+    if [[ -z "$input" ]]; then
+      input="$default_index"
+    fi
+
+    # Validate that input is a number and within range
+    if [[ "$input" =~ ^[0-9]+$ ]] && ((input >= 1 && input <= ${#options[@]})); then
+      printf '%s\n' "${options[$((input - 1))]}"
+      return 0
+    else
+      warn "Please enter a valid number between 1 and ${#options[@]}"
+    fi
+  done
+}
+
+generateLicense() {
+  local name="$GIT_USER"
+  local year=$(date +%Y)
+  local type="$1"
+  local out_dir="./$NAMESPACE"
+
+  info "Downloading $type license template..."
+  local url="https://raw.githubusercontent.com/github/choosealicense.com/gh-pages/_licenses/${type}.txt"
+  curl -s "$url" |
+    sed '1,/^---$/d' |
+    sed -e "s/\[year\]/$year/g" \
+      -e "s/\[fullname\]/$name/g" \
+      -e "s/\[yyyy\]/$year/g" \
+      -e "s/\[name of copyright owner\]/$name/g" \
+      >"${out_dir}/LICENSE"
+
+  info "Success: LICENSE created in $out_dir"
+}
+
 kebabToPascal() {
   local input="$1"
   local output=""
@@ -182,10 +233,12 @@ PACKAGE=$(toLower "$(askNonNull "Enter your package name (e.g. 'awesome-tool')")
 NAMESPACE=$(askWithDefault "Enter the default namespace" $(kebabToPascal "$PACKAGE"))
 DESCRIPTION=$(askWithDefault "Enter a description" "")
 NAME=$(toWords "$NAMESPACE")
+LICENSE=$(askInList "Select a license type:" 1 "mit" "apache-2.0" "gpl-3.0" "isc")
 
 info "The resulting package unique ID is $DOMAIN.$COMPANY.$PACKAGE"
 info "The namespace is $NAMESPACE"
 info "The package display name is $NAME"
+info "The license is $LICENSE"
 
 # Replace all directories with matching pattern
 info "Renaming dirs with __DOMAIN__=$DOMAIN"
@@ -229,6 +282,15 @@ replaceInFiles "__GIT_USER__" "$GIT_USER"
 info "Replacing words with __GIT_MAIL__=$GIT_MAIL"
 replaceInFiles "__GIT_MAIL__" "$GIT_MAIL"
 
+# Install deps
+info "Installing dotnet and npm dependencies"
+npm i
+dotnet tool restore
+
+# Create LICENSE file
+info "Creating LICENSE file"
+generateLicense $LICENSE
+
 PROJECT_VERSION=$(
   sed -n 's/^m_EditorVersion: //p' \
     "./Sandbox.$NAMESPACE/ProjectSettings/ProjectVersion.txt"
@@ -256,15 +318,10 @@ if [[ "$project_major" -gt "$installed_major" ]]; then
 else
   UNITY_PATH="$HOME/Unity/Hub/Editor/$INSTALLED_UNITY_VERSION/Editor/Unity"
   PROJECT_PATH=$(realpath "./Sandbox.$NAMESPACE")
-  # Open the unity project
 
   info "Initializing Unity project $NAMESPACE - this operation may take a few minutes..."
   unityStartup
 fi
-# Install deps
-info "Installing dotnet and npm dependencies"
-npm i
-dotnet tool restore
 
 # Install hooks
 info "Installing git hooks"
