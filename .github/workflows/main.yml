@@ -73,13 +73,60 @@ jobs:
           targetPlatform: ${{ matrix.targetPlatform }}
           projectPath: ./Sandbox.__NAMESPACE__
           allowDirtyBuild: true
+  test:
+    needs: check-template
+    if: needs.check-template.outputs.is_template == 'false'
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          lfs: true
+
+      - name: Cache Library
+        uses: actions/cache@v4
+        with:
+          path: ./Sandbox.__NAMESPACE__/Library
+          key: Library-test-${{ hashFiles('**/ProjectSettings/**') }}
+
+      - name: Run Unity Tests
+        uses: game-ci/unity-test-runner@v4
+        id: tests
+        with:
+          projectPath: ./Sandbox.__NAMESPACE__
+          githubToken: ${{ secrets.GITHUB_TOKEN }}
+          customParameters: -debugCodeOptimization -enableCodeCoverage -coverageResultsPath ./coverage-results
+
+      - name: Upload Test Results
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: Test-Results
+          path: artifacts
+  sonar-analysis:
+    name: SonarQube Analysis
+    needs: test
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Download Test Results
+        uses: actions/download-artifact@v4
+        with:
+          name: Test-Results
+          path: artifacts
+      - name: SonarQube Scan
+        uses: SonarSource/sonarqube-scan-action@v4
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
   release:
     name: Release
     runs-on: ubuntu-24.04
-    needs: [check-template, build]
+    needs: [check-template, test]
     if: |
       always() &&
-      (needs.build.result == 'success' || needs.check-template.outputs.is_template == 'true') &&
+      (needs.test.result == 'success' || needs.check-template.outputs.is_template == 'true') &&
       github.event_name == 'push' && 
       github.ref == 'refs/heads/main'
     steps:
