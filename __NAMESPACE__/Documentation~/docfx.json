@@ -27,7 +27,7 @@
       }
     ],
     "resource": [ { "files": "images/**" } ],
-    "dest": "_site",
+    "dest": "../../_site",
     "globalMetadata": {
       "_appTitle": "__NAME__",
       "_appName": "__NAME__",

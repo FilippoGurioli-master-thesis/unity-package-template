@@ -51,12 +51,12 @@ jobs:
         run: dotnet tool update -g docfx
 
       - name: Build Documentation
-        run: docfx docs/docfx.json
+        run: bash ./Tools/build-doc.sh
 
       - name: Upload Pages Artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: docs/_site
+          path: _site
 
       - name: Deploy to GitHub Pages
         uses: actions/deploy-pages@v4

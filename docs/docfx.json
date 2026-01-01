@@ -6,7 +6,7 @@
       }
     ],
     "resource": [ { "files": "images/**" } ],
-    "dest": "_site",
+    "dest": "../_site",
     "globalMetadata": {
       "_appTitle": "Unity Package Template",
       "_appName": "Unity Package Template",
