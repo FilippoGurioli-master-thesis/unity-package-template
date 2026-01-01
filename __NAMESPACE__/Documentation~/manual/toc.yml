@@ -1,2 +1,4 @@
 - name: Starting
   href: starting.md
+- name: Template
+  href: template.md
