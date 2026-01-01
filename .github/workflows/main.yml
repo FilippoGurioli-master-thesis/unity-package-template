@@ -76,8 +76,12 @@ jobs:
   release:
     name: Release
     runs-on: ubuntu-24.04
-    needs: build
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    needs: [check-template, build]
+    if: |
+      always() &&
+      (needs.build.result == 'success' || needs.check-template.outputs.is_template == 'true') &&
+      github.event_name == 'push' && 
+      github.ref == 'refs/heads/main'
     steps:
       - name: Checkout
         uses: actions/checkout@v4
