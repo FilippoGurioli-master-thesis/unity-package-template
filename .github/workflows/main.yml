@@ -76,6 +76,7 @@ jobs:
           projectPath: ./Sandbox.__NAMESPACE__
           allowDirtyBuild: true
   test:
+    name: Tests
     needs: check-template
     if: needs.check-template.outputs.is_template == 'false'
     runs-on: ubuntu-24.04
