@@ -222,6 +222,49 @@ unityStartup() {
   fi
 }
 
+uploadSecrets() {
+  # --- 1. Check for GitHub CLI ---
+  if ! command -v gh &>/dev/null; then
+    warn "⚠️  GitHub CLI (gh) not found. Please install it to automate secret setup."
+    exit 1
+  fi
+  # --- 2. Check Auth Status ---
+  if ! gh auth status &>/dev/null; then
+    info "🔐 You are not logged into GitHub CLI. Running 'gh auth login'..."
+    gh auth login
+  fi
+
+  info "🚀 Starting DevOps Secret Setup..."
+  # --- 3. Unity License Setup ---
+  # Check if they have a license file locally to upload
+  DEFAULT_LICENSE="$HOME/.local/share/unity3d/Unity/Unity_lic.ulf"
+  licenseFile=$(askWithDefault "Insert the path to the Unity license" "$DEFAULT_LICENSE")
+  licenseFile="${licenseFile/#\~/$HOME}"
+  if [[ -f "$licenseFile" ]]; then
+    if gh secret set UNITY_LICENSE <"$licenseFile"; then
+      info "Unity License uploaded successfully."
+    else
+      error "Failed to upload license via gh cli."
+    fi
+  else
+    warn "License file not found at: $licenseFile. Skipping UNITY_LICENSE setup."
+  fi
+
+  unityEmail=$(askWithDefault "Insert your unity email" $GIT_MAIL)
+  unityPassword=$(askNonNull "Insert your unity password")
+  if gh secret set UNITY_EMAIL --body "$unityEmail"; then
+    info "Unity email uploaded successfully."
+  else
+    error "Failed to upload email via gh cli."
+  fi
+  if gh secret set UNITY_PASSWORD --body "$unityPassword"; then
+    info "Unity password uploaded successfully."
+  else
+    error "Failed to upload password via gh cli."
+  fi
+  echo "✅ Secrets configured successfully!"
+}
+
 #---------------------------------------------------------------------------------------------------
 
 # Read customer values
@@ -239,6 +282,8 @@ info "The resulting package unique ID is $DOMAIN.$COMPANY.$PACKAGE"
 info "The namespace is $NAMESPACE"
 info "The package display name is $NAME"
 info "The license is $LICENSE"
+
+uploadSecrets
 
 # Replace all directories with matching pattern
 info "Renaming dirs with __DOMAIN__=$DOMAIN"

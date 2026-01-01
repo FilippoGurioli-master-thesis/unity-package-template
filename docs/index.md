@@ -286,5 +286,4 @@ In the second case it releases a new version updating inner package.json.
 
 - Have Node installed
 - Have a Unity version installed compatible with the Sandbox project (currently 6000)
-- Set UNITY_LICENSE as a secret in github
-- Have gh command installed (there is a fallback)
+- Have gh command installed
