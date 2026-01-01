@@ -71,7 +71,7 @@ jobs:
         uses: game-ci/unity-builder@v4
         with:
           targetPlatform: ${{ matrix.targetPlatform }}
-          projectPath: ./__NAMESPACE__
+          projectPath: ./Sandbox.__NAMESPACE__
           allowDirtyBuild: true
   release:
     name: Release
