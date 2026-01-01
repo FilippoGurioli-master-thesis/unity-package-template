@@ -141,3 +141,4 @@ vite.config.ts.timestamp-*
 _site/
 __NAMESPACE__/bin/
 __NAMESPACE__/obj/
+__NAMESPACE__/Documentation~/api/
