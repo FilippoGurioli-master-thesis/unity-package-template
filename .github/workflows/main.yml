@@ -48,7 +48,7 @@ jobs:
           dotnet-version: '8.x'
 
       - name: Install DocFX
-        run: dotnet tool update -g docfx
+        run: dotnet tool restore
 
       - name: Build Documentation
         run: bash ./Tools/build-doc.sh
