@@ -46,12 +46,13 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        - os: ubuntu-24.04
-          targetPlatform: StandaloneLinux64
-        - os: windows-2025
-          targetPlatform: StandaloneWindows64
-        - os: macOS-15
-          targetPlatform: StandaloneOSX
+        include:
+          - os: ubuntu-24.04
+            targetPlatform: StandaloneLinux64
+          - os: windows-2025
+            targetPlatform: StandaloneWindows64
+          - os: macOS-15
+            targetPlatform: StandaloneOSX
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
