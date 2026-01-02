@@ -404,6 +404,9 @@ info "Opening Unity Editor GUI"
 info "Replacing renovate PR assignee to you"
 sed -i "s/FilippoGurioli/$GIT_USER/g" "./renovate.json"
 
+info "Checking out to develop branch"
+git checkout -b develop
+
 info "Committing changes"
 git add .
 git commit -m "chore(init): initialize project from template"
