@@ -15,6 +15,17 @@
   },
   "includeForks": true,
   "labels": ["dependencies"],
+  "customManagers": [
+    {
+      "customType": "regex",
+      "fileMatch": ["(^|/)Packages/manifest\\.json$"],
+      "matchStrings": [
+        "\"(?<depName>[^\"]+)\":\\s*\"(?<currentValue>[^\"#]+)\""
+      ],
+      "datasourceTemplate": "unity3d-packages",
+      "versioningTemplate": "semver"
+    }
+  ],
   "packageRules": [
     {
       "description": "Wait one day before proposing updates to github refs",
@@ -50,12 +61,6 @@
       "matchPaths": [".github/workflows/*.yml", ".github/workflows/*.yaml"],
       "semanticCommitType": "ci"
     },
-    {
-      "description": "Enable Unity package manifest updates",
-      "matchPaths": "**/Packages/manifest.json",
-      "matchDatasources": ["unity3d-packages"],
-      "enabled": true
-    }
   ],
   "prConcurrentLimit": 25,
   "prCreation": "immediate",
