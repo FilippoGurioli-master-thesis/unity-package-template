@@ -53,7 +53,7 @@
     {
       "description": "Enable Unity package manifest updates",
       "matchPaths": "**/Packages/manifest.json",
-      "matchManagers": ["unity"],
+      "matchDatasources": ["unity3d-packages"],
       "enabled": true
     }
   ],
