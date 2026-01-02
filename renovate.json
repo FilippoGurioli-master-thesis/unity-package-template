@@ -1,16 +1,61 @@
 {
-  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": [
-    "config:recommended",
-    "abandonments:recommended",
-    "default:automergePatch"
+    "config:base", ":rebaseStalePrs", ":semanticCommits", ":semanticCommitTypeAll(chore)"
   ],
+  "ignorePresets": [
+     "workarounds:javaLTSVersions"
+  ],
+  "assignees": ["FilippoGurioli"],
+  "automerge": true,
   "dependencyDashboard": true,
+  "git-submodules": {
+    "enabled": true
+  },
+  "includeForks": true,
+  "labels": ["dependencies"],
   "packageRules": [
     {
-      "matchUpdateTypes": ["major", "minor"],
-      "matchCurrentVersion": "!/^0/",
-      "automerge": true
+      "description": "Wait one day before proposing updates to github refs",
+      "matchDatasources": ["git-refs"],
+      "internalChecksFilter": "strict",
+      "stabilityDays": 1
+    },
+    {
+      "description": "Wait three days for npm updates (npm retraction time)",
+      "matchDatasources": ["npm"],
+      "internalChecksFilter": "strict",
+      "stabilityDays": 3
+    },
+    {
+      "description": "Do not wait for updates from relatively stable sources",
+      "matchDatasources": [
+        "github-releases",
+        "github-tags"
+      ],
+      "internalChecksFilter": "strict",
+      "stabilityDays": 0
+    },
+    {
+      "description": "Do not wait for updates from github actions",
+      "matchManagers": [
+        "github-actions"
+      ],
+      "internalChecksFilter": "strict",
+      "stabilityDays": 0
+    },
+    {
+      "description": "Updates to GitHub Actions should be tagged as 'ci'",
+      "matchPaths": [".github/workflows/*.yml", ".github/workflows/*.yaml"],
+      "semanticCommitType": "ci"
     }
-  ]
+  ],
+  "prConcurrentLimit": 25,
+  "prCreation": "immediate",
+  "prHourlyLimit": 0,
+  "rebaseWhen": "behind-base-branch",
+  "separateMajorMinor": true,
+  "separateMinorPatch": true,
+  "separateMultipleMajor": true,
+  "separateMultipleMinor": true,
+  "stabilityDays": 0
 }
