@@ -63,9 +63,8 @@
     },
     {
       "description": "Ignore Unity built-in modules",
-      "matchPackagePatterns": ["^com\\.unity\\.modules\\."],
-      "allowedVersions": "/^$/",
-      "suppressNotifications": ["lookupFailures"]
+      "matchDepNames": ["^com\\.unity\\.modules\\."],
+      "suppressNotifications": ["lookupFailures"],
       "enabled": false
     },
     {
