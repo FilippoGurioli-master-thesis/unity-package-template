@@ -15,9 +15,6 @@
   },
   "includeForks": true,
   "labels": ["dependencies"],
-  "unity": {
-    "fileMatch": ["(^|/)Packages/manifest.json$"]
-  },
   "packageRules": [
     {
       "description": "Wait one day before proposing updates to github refs",
@@ -55,6 +52,7 @@
     },
     {
       "description": "Enable Unity package manifest updates",
+      "matchPaths": "**/Packages/manifest.json",
       "matchManagers": ["unity"],
       "enabled": true
     }
