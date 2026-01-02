@@ -20,7 +20,7 @@
       "customType": "regex",
       "fileMatch": ["(^|/)Packages/manifest\\.json$"],
       "matchStrings": [
-        "\"(?<depName>[^\"]+)\":\\s*\"(?<currentValue>[^\"#]+)\""
+        "\"(?<depName>[^\"]+)\"\\s*:\\s*\"(?<currentValue>[^\"#]+)\""
       ],
       "datasourceTemplate": "unity3d-packages",
       "versioningTemplate": "semver"
