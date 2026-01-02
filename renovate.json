@@ -20,7 +20,7 @@
       "customType": "regex",
       "fileMatch": ["(^|/)Packages/manifest\\.json$"],
       "matchStrings": [
-        "\"(?<depName>(?!com\\.unity\\.modules\\.)[^\"]+)\"\\s*:\\s*\"(?<currentValue>[^\"#]+)\""
+        "\"(?<depName>[^\"]+)\"\\s*:\\s*\"(?<currentValue>[^\"#]+)\""
       ],
       "datasourceTemplate": "unity3d-packages",
       "versioningTemplate": "semver"
@@ -60,6 +60,11 @@
       "description": "Updates to GitHub Actions should be tagged as 'ci'",
       "matchPaths": [".github/workflows/*.yml", ".github/workflows/*.yaml"],
       "semanticCommitType": "ci"
+    },
+    {
+      "description": "Ignore Unity built-in modules",
+      "matchPackagePatterns": ["^com\\.unity\\.modules\\."],
+      "enabled": false
     }
   ],
   "prConcurrentLimit": 25,
