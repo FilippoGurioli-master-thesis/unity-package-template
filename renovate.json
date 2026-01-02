@@ -65,6 +65,12 @@
       "description": "Ignore Unity built-in modules",
       "matchPackagePatterns": ["^com\\.unity\\.modules\\."],
       "enabled": false
+    },
+    {
+      "description": "Apply core-deps scope to Unity Editor and package updates",
+      "matchManagers": ["custom.regex", "unity3d"],
+      "matchDatasources": ["unity3d-packages", "unity3d"],
+      "semanticCommitScope": "core-deps"
     }
   ],
   "prConcurrentLimit": 25,
