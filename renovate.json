@@ -5,6 +5,11 @@
   "assignees": ["FilippoGurioli"],
   "automerge": true,
   "dependencyDashboard": true,
+  "ignorePaths": [
+    "**/node_modules/**",
+    "**/bower_components/**",
+    "__NAMESPACE__/package.json"
+  ],
   "git-submodules": {
     "enabled": true
   },
@@ -49,11 +54,6 @@
       "description": "Enable Unity package manifest updates",
       "matchManagers": ["unity"],
       "enabled": true
-    },
-    {
-      "description": "Ignore Unity package.json files for npm",
-      "matchPaths": ["__NAMESPACE__/package.json"],
-      "enabled": false
     }
   ],
   "prConcurrentLimit": 25,
