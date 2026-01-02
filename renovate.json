@@ -2,14 +2,17 @@
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": [
     "config:recommended",
-    "abandonments:recommended"
+    "abandonments:recommended",
+    "default:automergePatch",
+    "default:automergeMinor",
+    "default:automergeMajor"
   ],
   "dependencyDashboard": true,
-  "packageRules": [
-    {
-      "matchUpdateTypes": ["major", "minor", "patch"],
-      "matchCurrentVersion": "!/^0/",
-      "automerge": true
-    }
-  ]
+  // "packageRules": [
+  //   {
+  //     "matchUpdateTypes": ["major", "minor", "patch"],
+  //     "matchCurrentVersion": "!/^0/",
+  //     "automerge": true
+  //   }
+  // ]
 }
