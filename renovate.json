@@ -57,5 +57,6 @@
   "separateMinorPatch": true,
   "separateMultipleMajor": true,
   "separateMultipleMinor": true,
-  "stabilityDays": 0
+  "stabilityDays": 0,
+  "baseBranches": [ "develop" ]
 }
