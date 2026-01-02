@@ -1,6 +1,6 @@
 {
   "extends": [
-    "config:base", ":rebaseStalePrs", ":semanticCommits", ":semanticCommitTypeAll(chore)"
+    "config:base", ":rebaseStalePrs", ":semanticCommits", ":semanticCommitTypeAll(chore)", "abandonments:recommended"
   ],
   "ignorePresets": [
      "workarounds:javaLTSVersions"
