@@ -401,6 +401,9 @@ unityStartup
 info "Opening Unity Editor GUI"
 "$UNITY_PATH" -projectPath "$PROJECT_PATH" &
 
+info "Replacing renovate PR assignee to you"
+sed -i "s/FilippoGurioli/$GIT_USER/g" "./renovate.json"
+
 info "Committing changes"
 git add .
 git commit -m "chore(init): initialize project from template"
