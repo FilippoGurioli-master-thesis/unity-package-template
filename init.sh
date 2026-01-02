@@ -210,14 +210,14 @@ unityStartup() {
     -batchmode \
     -nographics \
     -projectPath "$PROJECT_PATH" \
-    -logFile "unity_init.log" \
+    -logFile "Sandbox.$NAMESPACE/unity_init.log" \
     -quit >/dev/null 2>&1
 
   if [ $? -eq 0 ]; then
     info "Unity initialization complete."
   else
-    error "Unity initialization failed. Check unity_init.log for details."
-    tail -n 20 unity_init.log
+    error "Unity initialization failed. Check Sandbox.$NAMESPACE/unity_init.log for details."
+    tail -n 20 "Sandbox.$NAMESPACE/unity_init.log"
     exit 1
   fi
 }
