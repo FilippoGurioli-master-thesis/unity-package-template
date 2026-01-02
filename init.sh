@@ -411,6 +411,7 @@ git commit -m "chore(init): initialize project from template"
 info "Setting this commit as version 0.0.0"
 git tag 0.0.0
 
-info "Init done, remember to configure precisely the $NAMESPACE/package.json file before starting your development."
-info "Set LICENSE before publishing"
-info "Remember to push tags too (git push --tags)"
+info "Init done. Remember to:"
+info "  - configure precisely the $NAMESPACE/package.json file before starting your development."
+info "  - download Renovate GitHub App in your account/organization to enable renovate bot"
+info "  - push tags too (git push --tags)"
