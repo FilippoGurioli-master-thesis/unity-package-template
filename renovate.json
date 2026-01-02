@@ -5,14 +5,13 @@
     "abandonments:recommended",
     "default:automergePatch",
     "default:automergeMinor",
-    "default:automergeMajor"
   ],
   "dependencyDashboard": true,
-  // "packageRules": [
-  //   {
-  //     "matchUpdateTypes": ["major", "minor", "patch"],
-  //     "matchCurrentVersion": "!/^0/",
-  //     "automerge": true
-  //   }
-  // ]
+  "packageRules": [
+    {
+      "matchUpdateTypes": ["major"],
+      "matchCurrentVersion": "!/^0/",
+      "automerge": true
+    }
+  ]
 }
