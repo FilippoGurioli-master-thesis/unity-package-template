@@ -44,6 +44,16 @@
       "description": "Updates to GitHub Actions should be tagged as 'ci'",
       "matchPaths": [".github/workflows/*.yml", ".github/workflows/*.yaml"],
       "semanticCommitType": "ci"
+    },
+    {
+      "description": "Enable Unity package manifest updates",
+      "matchManagers": ["unity"],
+      "enabled": true
+    },
+    {
+      "description": "Ignore Unity package.json files for npm",
+      "matchPaths": ["__NAMESPACE__/package.json"],
+      "enabled": false
     }
   ],
   "prConcurrentLimit": 25,
