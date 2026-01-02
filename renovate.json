@@ -20,7 +20,7 @@
       "customType": "regex",
       "fileMatch": ["(^|/)Packages/manifest\\.json$"],
       "matchStrings": [
-        "\"(?<depName>(?!com\\.unity\\.modules\\.)[^\"]+)\"\\s*:\\s*\"(?<currentValue>[^\"#]+)\""
+        "\"(?<depName>[^\"]+)\"\\s*:\\s*\"(?<currentValue>[^\"#]+)\""
       ],
       "datasourceTemplate": "unity3d-packages",
       "versioningTemplate": "semver"
@@ -64,6 +64,8 @@
     {
       "description": "Ignore Unity built-in modules",
       "matchPackagePatterns": ["^com\\.unity\\.modules\\."],
+      "allowedVersions": "/^$/",
+      "suppressNotifications": ["lookupFailures"]
       "enabled": false
     },
     {
