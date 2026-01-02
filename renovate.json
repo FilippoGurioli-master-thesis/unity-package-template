@@ -15,6 +15,7 @@
   },
   "includeForks": true,
   "labels": ["dependencies"],
+  "suppressNotifications": ["dependencyLookupWarnings"],
   "customManagers": [
     {
       "customType": "regex",
@@ -64,7 +65,6 @@
     {
       "description": "Ignore Unity built-in modules",
       "matchDepNames": ["^com\\.unity\\.modules\\."],
-      "suppressNotifications": ["lookupFailures"],
       "enabled": false
     },
     {
