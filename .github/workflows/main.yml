@@ -186,7 +186,7 @@ jobs:
       - name: Download signed package
         uses: actions/download-artifact@v4
         with:
-          name: signed-*
+          pattern: signed-*
           path: .
       - name: Release
         env:
