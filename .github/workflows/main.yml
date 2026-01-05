@@ -194,7 +194,7 @@ jobs:
             package.zip
             package.zip.sha256
             package.zip.sha256.sig
-    package-gate:
+  package-gate:
     name: Package Gate
     runs-on: ubuntu-24.04
     needs: [check-template, build, test, sonar-analysis, sign]
