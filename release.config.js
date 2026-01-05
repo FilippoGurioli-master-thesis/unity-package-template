@@ -8,7 +8,13 @@ if (isTemplate) {
   // --- TEMPLATE MODE ---
   config.plugins.push(
     ["@semantic-release/npm", { npmPublish: false }],
-    "@semantic-release/github",
+    ["@semantic-release/github", {
+      assets: [
+        { path: "package.zip", label: "Unity Package Template" },
+        { path: "package.zip.sha256", label: "SHA256 Digest" },
+        { path: "package.zip.sig", label: "Signature" }
+      ]
+    }],
     [
       "@semantic-release/git",
       {
@@ -26,7 +32,13 @@ if (isTemplate) {
     ["@semantic-release/changelog", {
       changelogFile: "__NAMESPACE__/CHANGELOG.md"
     }],
-    "@semantic-release/github",
+    ["@semantic-release/github", {
+      assets: [
+        { path: "package.zip", label: "__NAME__" },
+        { path: "package.zip.sha256", label: "SHA256 Digest" },
+        { path: "package.zip.sig", label: "Signature" }
+      ]
+    }],
     [
       "@semantic-release/git",
       {
