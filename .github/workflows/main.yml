@@ -162,15 +162,45 @@ jobs:
             package.zip
             package.zip.sha256
             package.zip.sha256.sig
+  sign-template:
+    needs: check-template
+    if: needs.check-template.outputs.is_template == 'true'
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Import GPG key
+        uses: crazy-max/ghaction-import-gpg@v6
+        with:
+          gpg_private_key: ${{ secrets.GPG_PRIVATE_KEY }}
+          passphrase: ${{ secrets.GPG_PASSPHRASE }}
+      - name: Create package archive
+        run: |
+          zip -r package.zip .
+      - name: Generate SHA256 digest
+        run: sha256sum package.zip > package.zip.sha256
+      - name: Sign digest
+        run: |
+          gpg --batch --yes --pinentry-mode loopback \
+              --local-user "${{ secrets.GPG_KEY_ID }}" \
+              --detach-sign package.zip.sha256
+      - name: Upload signed artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: signed-template
+          path: |
+            package.zip
+            package.zip.sha256
+            package.zip.sha256.sig
   release:
     name: Release
     runs-on: ubuntu-24.04
-    needs: [check-template, build, test, sonar-analysis, sign]
+    needs: [check-template, build, test, sonar-analysis, sign, sign-template]
     if: |
       always() &&
       (
         (needs.test.result == 'success' && needs.sonar-analysis.result == 'success' && needs.build.result == 'success') || 
-        (needs.check-template.outputs.is_template == 'true')
+        (needs.check-template.outputs.is_template == 'true' && needs.sign-template.result == 'success')
       ) &&
       github.event_name == 'push' &&
       github.ref == 'refs/heads/main'
