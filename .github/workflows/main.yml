@@ -194,16 +194,35 @@ jobs:
             package.zip
             package.zip.sha256
             package.zip.sha256.sig
-  release:
-    name: Release
+    package-gate:
+    name: Package Gate
     runs-on: ubuntu-24.04
-    needs: [check-template, build, sonar-analysis, sign, sign-template]
+    needs: [check-template, build, test, sonar-analysis, sign]
     if: |
       always() &&
-      github.event_name == 'push' &&
-      github.ref == 'refs/heads/main' &&
+      needs.check-template.outputs.is_template == 'false' &&
       !contains(needs.*.result, 'failure') &&
       !contains(needs.*.result, 'cancelled')
+    steps:
+      - run: echo "All Unity package checks passed."
+
+  template-gate:
+    name: Template Gate
+    runs-on: ubuntu-latest
+    needs: [check-template, sign-template]
+    if: |
+      always() &&
+      needs.check-template.outputs.is_template == 'true' &&
+      needs.sign-template.result == 'success'
+    steps:
+      - run: echo "Template signing passed."
+
+  release:
+    needs: [package-gate, template-gate]
+    if: |
+      always() &&
+      github.ref == 'refs/heads/main' &&
+      (needs.unity-gate.result == 'success' || needs.template-gate.result == 'success')
     steps:
       - name: Checkout
         uses: actions/checkout@v4
