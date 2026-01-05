@@ -6,5 +6,4 @@
 - ISSUE + REQUEST_FEATURE
 - document everything
 - improve init script (move to js?)
-- sign artifact
 
