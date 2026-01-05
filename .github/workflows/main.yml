@@ -218,6 +218,8 @@ jobs:
       - run: echo "Template signing passed."
 
   release:
+    name: Release
+    runs-on: ubuntu-24.04
     needs: [package-gate, template-gate]
     if: |
       always() &&
