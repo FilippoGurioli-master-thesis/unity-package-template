@@ -1,6 +1,6 @@
 # 📦 Unity Package Template
 
-![Build Status](https://github.com/FilippoGurioli-master-thesis/unity-package-template/actions/workflows/ci.yml/badge.svg)
+![Build Status](https://github.com/FilippoGurioli-master-thesis/unity-package-template/actions/workflows/main.yml/badge.svg)
 ![Release](https://img.shields.io/github/v/release/FilippoGurioli-master-thesis/unity-package-template)
 ![License](https://img.shields.io/github/license/FilippoGurioli-master-thesis/unity-package-template)
 
