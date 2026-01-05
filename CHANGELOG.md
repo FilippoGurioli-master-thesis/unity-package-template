@@ -1,3 +1,21 @@
+## [0.1.7](https://github.com/FilippoGurioli-master-thesis/unity-package-template/compare/0.1.6...0.1.7) (2026-01-05)
+
+### Dependency updates
+
+* **core-deps:** update dependency com.unity.collab-proxy to v2.11.2 ([#6](https://github.com/FilippoGurioli-master-thesis/unity-package-template/issues/6)) ([04fea90](https://github.com/FilippoGurioli-master-thesis/unity-package-template/commit/04fea90b71c29becb7871c688e16a6411c5cde5e))
+* **core-deps:** update dependency com.unity.timeline to v1.8.10 ([#3](https://github.com/FilippoGurioli-master-thesis/unity-package-template/issues/3)) ([578dc64](https://github.com/FilippoGurioli-master-thesis/unity-package-template/commit/578dc64102b47310f541d75c4149598faf6b57b7))
+* **core-deps:** update dependency com.unity.visualscripting to v1.9.9 ([#4](https://github.com/FilippoGurioli-master-thesis/unity-package-template/issues/4)) ([d294469](https://github.com/FilippoGurioli-master-thesis/unity-package-template/commit/d294469859f81a79a5548160c0ecd50ab96116e8))
+* **deps:** update dependency csharpier to v1.2.5 ([#5](https://github.com/FilippoGurioli-master-thesis/unity-package-template/issues/5)) ([ae7a806](https://github.com/FilippoGurioli-master-thesis/unity-package-template/commit/ae7a806d3ea936618f7348cc8faf758219744fb8))
+
+### Documentation
+
+* **todo:** remove signing from the list ([da3e1ca](https://github.com/FilippoGurioli-master-thesis/unity-package-template/commit/da3e1ca961b8b3cb5ff72bdb99a914f2b1a4eef0))
+
+### Build and continuous integration
+
+* add issue and pr templates ([0ff9a59](https://github.com/FilippoGurioli-master-thesis/unity-package-template/commit/0ff9a599eb854e143ef28cef1fca13389aa8f99f))
+* set merge-multiple to true ([46cc345](https://github.com/FilippoGurioli-master-thesis/unity-package-template/commit/46cc345aa60ff11149de7d0dc32f0751285fbdd5))
+
 ## [0.1.6](https://github.com/FilippoGurioli-master-thesis/unity-package-template/compare/0.1.5...0.1.6) (2026-01-05)
 
 ### Dependency updates
