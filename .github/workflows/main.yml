@@ -129,6 +129,7 @@ jobs:
         uses: sonarsource/sonarqube-quality-gate-action@master
         timeout-minutes: 5
   sign:
+    name: Sign package
     needs: check-template
     runs-on: ubuntu-24.04
     steps:
@@ -163,6 +164,7 @@ jobs:
             package.zip.sha256
             package.zip.sha256.sig
   sign-template:
+    name: Sign Template
     needs: check-template
     if: needs.check-template.outputs.is_template == 'true'
     runs-on: ubuntu-24.04
