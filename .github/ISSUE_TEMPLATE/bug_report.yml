@@ -1,0 +1,46 @@
+name: 🐛 Bug Report
+description: Report a reproducible bug in the package
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to fill out this bug report!
+  - type: input
+    id: unity_version
+    attributes:
+      label: Unity Version
+      placeholder: e.g. 2022.3.15f1
+    validations:
+      required: true
+  - type: dropdown
+    id: platform
+    attributes:
+      label: Platform
+      options:
+        - Windows
+        - macOS
+        - Linux
+        - iOS
+        - Android
+        - WebGL
+    validations:
+      required: true
+  - type: textarea
+    id: description
+    attributes:
+      label: Description
+      description: A clear and concise description of what the bug is.
+    validations:
+      required: true
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Reproduction Steps
+      description: How can we reproduce this? Please provide a code snippet or a link to a sample project.
+      placeholder: |
+        1. Install package version X
+        2. Open Scene Y
+        3. Press Play...
+    validations:
+      required: true
