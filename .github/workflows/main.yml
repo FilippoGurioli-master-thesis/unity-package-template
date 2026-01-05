@@ -15,6 +15,9 @@ env:
   UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
   SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
   SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
+  GPG_PRIVATE_KEY: ${{ secrets.GPG_PRIVATE_KEY }}
+  GPG_KEY_ID: ${{ secrets.GPG_KEY_ID }}
+  GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
 
 permissions:
   contents: write
@@ -125,10 +128,44 @@ jobs:
         id: sonarqube-quality-gate-check
         uses: sonarsource/sonarqube-quality-gate-action@master
         timeout-minutes: 5
+  sign:
+    needs: sonar-analysis
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Import GPG key
+        uses: crazy-max/ghaction-import-gpg@v6
+        with:
+          gpg_private_key: ${{ secrets.GPG_PRIVATE_KEY }}
+          passphrase: ${{ secrets.GPG_PASSPHRASE }}
+
+      - name: Create package archive
+        run: |
+          zip -r package.zip ./__NAMESPACE__
+
+      - name: Generate SHA256 digest
+        run: sha256sum package.zip > package.zip.sha256
+
+      - name: Sign digest
+        run: |
+          gpg --batch --yes --pinentry-mode loopback \
+              --local-user "${{ secrets.GPG_KEY_ID }}" \
+              --detach-sign package.zip.sha256
+
+      - name: Upload signed artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: signed-upm-package
+          path: |
+            package.zip
+            package.zip.sha256
+            package.zip.sha256.sig
   release:
     name: Release
     runs-on: ubuntu-24.04
-    needs: [check-template, build, test, sonar-analysis]
+    needs: [check-template, build, test, sonar-analysis, sign]
     if: |
       always() &&
       (
