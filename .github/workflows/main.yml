@@ -186,8 +186,9 @@ jobs:
       - name: Download signed package
         uses: actions/download-artifact@v4
         with:
-          name: signed-*
+          pattern: signed-*
           path: .
+          merge-multiple: true
       - name: Release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
