@@ -39,11 +39,11 @@ jobs:
         id: check
         run: |
           if [ -f ".template" ]; then
-            echo "Template file found. Skipping builds."
             echo "is_template=true" >> $GITHUB_OUTPUT
           else
             echo "is_template=false" >> $GITHUB_OUTPUT
           fi
+
   build:
     name: Build for ${{ matrix.targetPlatform }} on ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
@@ -64,7 +64,6 @@ jobs:
         uses: actions/checkout@v4
         with:
           lfs: true
-
       - name: Cache Library
         uses: actions/cache@v4
         with:
@@ -72,13 +71,13 @@ jobs:
           key: Library-${{ matrix.targetPlatform }}-${{ hashFiles('Assets/**', 'Packages/**', 'ProjectSettings/**') }}
           restore-keys: |
             Library-${{ matrix.targetPlatform }}-
-
       - name: Build Unity Project
         uses: game-ci/unity-builder@v4
         with:
           targetPlatform: ${{ matrix.targetPlatform }}
           projectPath: ./Sandbox.__NAMESPACE__
           allowDirtyBuild: true
+
   test:
     name: Tests
     needs: check-template
@@ -88,13 +87,11 @@ jobs:
       - uses: actions/checkout@v4
         with:
           lfs: true
-
       - name: Cache Library
         uses: actions/cache@v4
         with:
           path: ./Sandbox.__NAMESPACE__/Library
           key: Library-test-${{ hashFiles('**/ProjectSettings/**') }}
-
       - name: Run Unity Tests
         uses: game-ci/unity-test-runner@v4
         id: tests
@@ -102,13 +99,13 @@ jobs:
           projectPath: ./Sandbox.__NAMESPACE__
           githubToken: ${{ secrets.GITHUB_TOKEN }}
           customParameters: -debugCodeOptimization -enableCodeCoverage -coverageResultsPath ./coverage-results
-
       - name: Upload Test Results
         uses: actions/upload-artifact@v4
         if: always()
         with:
           name: Test-Results
           path: artifacts
+
   sonar-analysis:
     name: SonarQube Analysis
     needs: test
@@ -128,45 +125,10 @@ jobs:
         id: sonarqube-quality-gate-check
         uses: sonarsource/sonarqube-quality-gate-action@master
         timeout-minutes: 5
+
   sign:
-    name: Sign package
+    name: Sign Artifact
     needs: check-template
-    runs-on: ubuntu-24.04
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Import GPG key
-        uses: crazy-max/ghaction-import-gpg@v6
-        with:
-          gpg_private_key: ${{ secrets.GPG_PRIVATE_KEY }}
-          passphrase: ${{ secrets.GPG_PASSPHRASE }}
-
-      - name: Create package archive
-        run: |
-          zip -r package.zip ./__NAMESPACE__
-
-      - name: Generate SHA256 digest
-        run: sha256sum package.zip > package.zip.sha256
-
-      - name: Sign digest
-        run: |
-          gpg --batch --yes --pinentry-mode loopback \
-              --local-user "${{ secrets.GPG_KEY_ID }}" \
-              --detach-sign package.zip.sha256
-
-      - name: Upload signed artifacts
-        uses: actions/upload-artifact@v4
-        with:
-          name: signed-upm-package
-          path: |
-            package.zip
-            package.zip.sha256
-            package.zip.sha256.sig
-  sign-template:
-    name: Sign Template
-    needs: check-template
-    if: needs.check-template.outputs.is_template == 'true'
     runs-on: ubuntu-24.04
     steps:
       - name: Checkout
@@ -176,9 +138,12 @@ jobs:
         with:
           gpg_private_key: ${{ secrets.GPG_PRIVATE_KEY }}
           passphrase: ${{ secrets.GPG_PASSPHRASE }}
-      - name: Create package archive
-        run: |
-          zip -r package.zip .
+      - name: Create package archive (Package)
+        if: needs.check-template.outputs.is_template == 'false'
+        run: zip -r package.zip ./__NAMESPACE__
+      - name: Create package archive (Template)
+        if: needs.check-template.outputs.is_template == 'true'
+        run: zip -r package.zip .
       - name: Generate SHA256 digest
         run: sha256sum package.zip > package.zip.sha256
       - name: Sign digest
@@ -189,56 +154,35 @@ jobs:
       - name: Upload signed artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: signed-template
+          name: signed-${{ needs.check-template.outputs.is_template == 'true' && 'template' || 'upm-package' }}
           path: |
             package.zip
             package.zip.sha256
             package.zip.sha256.sig
-  package-gate:
-    name: Package Gate
-    runs-on: ubuntu-24.04
-    needs: [check-template, build, test, sonar-analysis, sign]
-    if: |
-      always() &&
-      needs.check-template.outputs.is_template == 'false' &&
-      !contains(needs.*.result, 'failure') &&
-      !contains(needs.*.result, 'cancelled')
-    steps:
-      - run: echo "All Unity package checks passed."
-
-  template-gate:
-    name: Template Gate
-    runs-on: ubuntu-latest
-    needs: [check-template, sign-template]
-    if: |
-      always() &&
-      needs.check-template.outputs.is_template == 'true' &&
-      needs.sign-template.result == 'success'
-    steps:
-      - run: echo "Template signing passed."
 
   release:
     name: Release
     runs-on: ubuntu-24.04
-    needs: [package-gate, template-gate]
+    needs: [check-template, sign, sonar-analysis]
     if: |
       always() &&
-      github.ref == 'refs/heads/main' &&
-      (needs.unity-gate.result == 'success' || needs.template-gate.result == 'success')
+      (github.event_name == 'push' &&
+      github.ref == 'refs/heads/main') &&
+      (
+        (needs.check-template.outputs.is_template == 'true' && needs.sign.result == 'success' && needs.sonar-analysis.result == 'skipped') ||
+        (needs.check-template.outputs.is_template == 'false' && needs.sign.result == 'success' && needs.sonar-analysis.result == 'success')
+      )
     steps:
       - name: Checkout
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
-
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 'lts/*'
-
       - name: Install dependencies
         run: npm ci
-
       - name: Download signed package
         uses: actions/download-artifact@v4
         with:
@@ -259,22 +203,17 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-
       - name: Setup .NET
         uses: actions/setup-dotnet@v4
         with:
           dotnet-version: '8.x'
-
       - name: Install DocFX
         run: dotnet tool restore
-
       - name: Build Documentation
         run: bash ./Tools/build-doc.sh
-
       - name: Upload Pages Artifact
         uses: actions/upload-pages-artifact@v3
         with:
           path: _site
-
       - name: Deploy to GitHub Pages
         uses: actions/deploy-pages@v4
