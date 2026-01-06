@@ -204,86 +204,74 @@ This files contains all devops that have been adopted in this template.
   Minimal reliance on undocumented conventions
   Predictable behavior across time
 
-## Non-features
-
-- No executable, no platform specific
-- no ads
-- no unity version lock-in
-
-## Tools
-
-1. Project Identity: UPM, package.json, SPDX license indentifiers
-2. Repository structure: Git, .editorconfig, .gitattributes, CODEOWNERS
-3. Versioning: semantic versioning, conventional commits, automatic changelog
-4. Commit discipline: commit message linting, hooks, CI
-5. branching strategy: trunk-based development (protected main), automated merge gating
-6. CI: github actions
-7. CD: GHA
-8. dependency management: UP, lockfile
-9. automatic maintenance: deps update bots, security advisory scanners, scheduled health checks
-10. DX: one-command bootstrap, local CI emulation, preconfigured editor tooling
-11. Doc management: md based doc, auto generated API doc, doc validation in CI
-12. security: secret scanning, artifact signing, provenance tracking, least privilege credentials
-13. recovery strategy: immutable releases, hotfix branches
-14. template evolution: template sync mechanism, opt-in feature flags
-
-## Master plan
-
-- Create a full comprehensive template project
-- As soon as a module is identified, export it to a unique project, create its own package and import it in the template
-
-> This solves the problem of versioning the template: the template should not be versioned because it should not receive update, it is not meant for them. As opposite, its dependencies are meant for updates therefore the correct pattern is: structure the template -> extract reusable modules as independent packages -> import them in the template
-
-But as such the template actually will have updates and therefore it should be versioned...uffa...
-
-## Conventional commit enforcement
-
-- Lefthook: better than husky > written in go
-- commitlint: does the same thing but in CI, for double checks (probably commit lint should work only in PRs/push to main or stuff like those)
-
 ## Unity package creation
 
 I found that just creating a package in Unity is not trivial ([link to the official documentation](https://docs.unity3d.com/6000.3/Documentation/Manual/cus-pkg-lp.html)).
 
 Constraints:
 
-- In order to be opened (generate `.meta` files, launch its tests, etc.) it must be imported in a unity project. I.e. Unity Editor does not support the development of just a package
-- In order to be distributed the git project must contain just the package without the unity project
-- In order to be considered a real template, my project should contain all boilerplate files and directories
-- The official way to create a package meant for distribution is to reference it via `file:path/to/package.json` in the unity project and develop it like that
+- In order to be opened (generate `.meta` files, launch its tests, etc.) it must be imported in a unity project. I.e. Unity Editor does not support the development of just a package.
+- In order to be distributed the git project must contain just the package without the unity project.
+- In order to be considered a real template, my project should contain all boilerplate files and directories.
+- The official way to create a package meant for distribution is to reference it via `file:path/to/package.json` in the unity project and develop it like that.
 
 There are 2 main kinds of packages in Unity:
 
 - packages with **unitypackage** extension: meant for graphical and sound assets such as 3D models, UIs, materials, SFX etc.
-- packages that lives inside the Package folder in a Unity project: these are managed by the UPM and can be imported via file system (path ref), git repo (url) and tarball (a zip file) and are general purpose
+- packages that lives inside the Package folder in a Unity project: these are managed by the UPM and can be imported via file system (path ref), git repo (url) and tarball (a zip file) and are general purpose.
 
 Obviously the second case is the one that fits my case study.
 
-### The result
+## Init script
 
-The best way to create my template therefore is: just track the package with git but it is silently surrounded by a Unity Project. In a second moment I could possibly add a feature that creates the surrounding project via a bootstrap command.
+- configures the unity package unique name
+  - asks for domain, company and package names, defaulting to reasonable values
+- configures the base namespace of the project
+- configures the license under which the package should be
+- configures the description of the package
+- asks and uploads all secrets needed in CI to work properly
+  - `UNITY_LICENSE`: path to the unity license
+  - `UNITY_EMAIL`: mail used in unity
+  - `UNITY_PASSWORD`: password used for the unity email
+  - `SONAR_HOST`: url hosting the SonarQube instance
+  - `SONAR_TOKEN`: token used to interact with the sonar host
+  - `GPG_KEY_ID`: an ephemeral gpg key used to sign the artifact (Warning: this key is generated during the script, nothing will be asked to the user)
+  - `GPG_PRIVATE_KEY`: the private key used to sign the artifact (Warning: this key is generated during the script, nothing will be asked to the user)
+- replaces all occurrences of template values in the project with values inserted by the user
+  - `__DOMAIN__`
+  - `__COMPANY__`
+  - `__PACKAGE__`
+  - `__NAMESPACE__`
+  - `__NAME__`
+  - `__DESCRIPTION__`
+  - `__GIT_USER__`
+  - `__GIT_MAIL__`
+- installs npm and dotnet dependencies
+- boots the project with unity batch mode
+- installs git hooks
+- removes `.template` file
+- removes the `init.sh` script itself
+- opens the unity editor inside the sandbox
+- creates the develop branch
+- commits all changes made until now
+- set the tag of that commit to `0.0.0`
+- configures [unity smart merge](https://docs.unity3d.com/6000.3/Documentation/Manual/SmartMerge.html)
 
-### Init script
+## Template vs Package
 
-I've created an init script to bootstrap the project in the proper way. The script does the following things:
+Throughout the entire creation of this template I always met a constant issue: I must configure the tool I'm working on for 2 different targets:
 
-- Asks the user to insert package specific informations (such as package name and default namespace)
-- Replaces all template values among the entire project with user values
+- the template itself
+- the user of the template
 
-## Semantic release
-
-Semantic release works differently whether the project is in development or in production environment (namely if the `.template` file is present or not).
-
-In the first case it releases a new version updating outer package.json.
-
-In the second case it releases a new version updating inner package.json.
-
-## Documentation
-
-2 docs are created: the one related to the template and the potential documentation generated by the template user.
+Any of the tool I had worked were used to automated a part of the developer workflow. There was no reason why I should not improve also the developer workflow of the template developer instead of just improving experience of template user. This feature was not planned but I'm proud to say that it is actually valid for any tool added in this project.
 
 ## Prerequisites
 
-- Have Node installed
-- Have a Unity version installed compatible with the Sandbox project (currently 6000)
-- Have gh command installed
+As of now the project has strong assumptions on the environment from within it is executed:
+
+- Linux-based environment
+- Node.js installed and at least at version `v25.2.1`
+- Unity 6000 installed
+  - Therefore the .NET SDK at `v8`
+- GitHub CLI installed and up-to-date
