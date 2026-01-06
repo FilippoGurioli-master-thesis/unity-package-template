@@ -1,5 +1,6 @@
 #load "../Utils/Shell.csx"
 #load "../Utils/Log.csx"
+#load "../Models/ProjectConfig.csx"
 
 /// <summary>
 /// Provides services for interacting with GitHub via the GitHub CLI.
@@ -14,6 +15,41 @@ public static class GitHubService
     /// <returns> The output of the gh command. </returns>
     private static string Gh(string args, bool hide = false)
         => Shell.Run("gh", args, hide);
+
+    public static void PushSecrets(ProjectConfig config)
+    {
+        Log.Info("Pushing secrets to GitHub...");
+        SetSecretFromFile("UNITY_LICENSE", config.UnityLicensePath);
+        SetSecret("UNITY_EMAIL", config.UnityEmail);
+        SetSecret("UNITY_PASSWORD", config.UnityPassword);
+        SetSecret("SONAR_HOST_URL", config.SonarUrl);
+        SetSecret("SONAR_TOKEN", config.SonarToken);
+        SetSecret("RELEASE_STEP_PAT", config.PersonalAccessToken);
+        SetSecret("GPG_KEY_ID", config.GpgKey.KeyId);
+        SetSecret("GPG_PRIVATE_KEY", config.GpgKey.PrivateKey);
+    }
+
+    /// <summary>
+    /// Protects main and develop branches on GitHub by applying default protection rules
+    /// </summary>
+    /// <param name="config"> The project configuration containing GitHub repository details. </param>
+    public static void ProtectBranches(ProjectConfig config)
+    {
+        Log.Info("Protecting main branch...");
+        ProtectBranch($"{config.GitUser}/{config.GitRepo}", "main");
+        Log.Info("Protecting develop branch...");
+        ProtectBranch($"{config.GitUser}/{config.GitRepo}", "develop");
+    }
+
+    /// <summary>
+    /// Protects all tags on GitHub by applying default protection rules
+    /// </summary>
+    /// <param name="config"> The project configuration containing GitHub repository details. </param>
+    public static void ProtectTags(ProjectConfig config)
+    {
+        Log.Info("Applying protection to all tags...");
+        Gh($"api -X POST \"/repos/{config.GitUser}/{config.GitRepo}/tag_protection\" -f \"pattern=*\"", hide: true);
+    }
 
     /// <summary>
     /// Sets a GitHub secret for the repository
@@ -35,7 +71,7 @@ public static class GitHubService
     public static void SetSecretFromFile(string name, string filePath)
     {
         Log.Info($"Uploading secret {name} from file...");
-        Gh($"secret set {name} < \"{filePath}\"");
+        Gh($"secret set {name} < \"{filePath}\"", hide: true);
     }
 
     /// <summary>
@@ -48,9 +84,16 @@ public static class GitHubService
     {
         Log.Info($"Applying protection to {branch}...");
         var json = "{\"required_status_checks\":null,\"enforce_admins\":false,\"required_pull_request_reviews\":null,\"restrictions\":null,\"allow_force_pushes\":false,\"allow_deletions\":false}";
-
-        // C# handles the escaping of the JSON string much better than Bash
-        Gh($"api -X PUT \"/repos/{repoFullName}/branches/{branch}/protection\" --input -", hide: true);
+        string tempJsonPath = Path.GetTempFileName();
+        try
+        {
+            File.WriteAllText(tempJsonPath, json);
+            Gh($"api -X PUT \"/repos/{repoFullName}/branches/{branch}/protection\" --input \"{tempJsonPath}\"", hide: true);
+        }
+        finally
+        {
+            if (File.Exists(tempJsonPath)) File.Delete(tempJsonPath);
+        }
     }
 
     /// <summary>
