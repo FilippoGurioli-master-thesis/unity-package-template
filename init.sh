@@ -483,6 +483,9 @@ else
   info "Merge rules configured successfully."
 fi
 
+info "Setting deploy for GitHub Pages of the repository to GitHub Actions"
+gh api -X PATCH "/repos/$GIT_USER/$GIT_REPO/pages" -f "build_type=workflow"
+
 info "Init done. Remember to:"
 info "  - configure precisely the $NAMESPACE/package.json file before starting your development."
 info "  - download Renovate GitHub App in your account/organization to enable renovate bot"
