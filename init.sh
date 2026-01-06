@@ -49,6 +49,22 @@ askNonNull() {
   done
 }
 
+askPassword() {
+  local prompt="$1"
+  local input
+
+  while true; do
+    read -s -r -p "$prompt: " input
+    echo "" >&2
+    if [[ -n "$input" ]]; then
+      printf '%s\n' "$input"
+      return 0
+    else
+      printf 'Warning: value cannot be empty. Please try again.\n' >&2
+    fi
+  done
+}
+
 askInList() {
   local prompt="$1"
   local default_index="$2"
@@ -241,7 +257,7 @@ uploadSecrets() {
   licenseFile=$(askWithDefault "Insert the path to the Unity license" "$DEFAULT_LICENSE")
   licenseFile="${licenseFile/#\~/$HOME}"
   unityEmail=$(askWithDefault "Insert your unity email" $GIT_MAIL)
-  unityPassword=$(askNonNull "Insert your unity password")
+  unityPassword=$(askPassword "Insert your unity password")
   sonarUrl=$(askWithDefault "Insert your sonar qube url" "https://sonarcloud.io")
   sonarToken=$(askNonNull "Insert your sonar qube token")
   personalAccessToken=$(askNonNull "Insert your personal access token (to generate it: GitHub > Settings > Developer Settings > Personal access token > Fine-grained tokens with permissions contents (rw), metadata (r) and workflows (rw)")
