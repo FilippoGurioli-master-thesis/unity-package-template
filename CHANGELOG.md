@@ -1,3 +1,38 @@
+## [1.0.0](https://github.com/FilippoGurioli-master-thesis/unity-package-template/compare/0.1.8...1.0.0) (2026-01-06)
+
+### ⚠ BREAKING CHANGES
+
+* create a first working template with all features in place
+
+### Documentation
+
+* **todo:** remove an item ([ef15d0c](https://github.com/FilippoGurioli-master-thesis/unity-package-template/commit/ef15d0c55417101a5771f9507ba4d95ee3d926d9))
+* **todo:** update list ([e61897e](https://github.com/FilippoGurioli-master-thesis/unity-package-template/commit/e61897ec2ea99ad3b58ab66c6ca97f2456b0683a))
+* **todo:** update list ([b9c8b2d](https://github.com/FilippoGurioli-master-thesis/unity-package-template/commit/b9c8b2d51fa4e2c5878ad826fcb85749f71d8a80))
+* update documentation ([44d763d](https://github.com/FilippoGurioli-master-thesis/unity-package-template/commit/44d763d891eb885e47885a05158294af68c5f628))
+* update readme ([c056ba9](https://github.com/FilippoGurioli-master-thesis/unity-package-template/commit/c056ba9a2d4e99454b9766ddff024bf7ce717e17))
+* update readme ([d7417f6](https://github.com/FilippoGurioli-master-thesis/unity-package-template/commit/d7417f6160992c0933a59483915197e9342ed982))
+* update readme ([b2238b4](https://github.com/FilippoGurioli-master-thesis/unity-package-template/commit/b2238b4e175373d434c25a5e39f208537f2be658))
+
+### Build and continuous integration
+
+* configure sonarqube to download coverage data ([21b6e54](https://github.com/FilippoGurioli-master-thesis/unity-package-template/commit/21b6e540a6077514199d2cbd58ac85252eae8915))
+* correct indentation ([3feebae](https://github.com/FilippoGurioli-master-thesis/unity-package-template/commit/3feebaed8f8dbba940729f9dea5c2ea1ef6a5f4a))
+* create promote-to-main job ([d6cca48](https://github.com/FilippoGurioli-master-thesis/unity-package-template/commit/d6cca4836d6db27107836d89f0b4076cf8b0be33))
+* **deps:** update actions/cache action to v5 ([#9](https://github.com/FilippoGurioli-master-thesis/unity-package-template/issues/9)) ([e85d4bb](https://github.com/FilippoGurioli-master-thesis/unity-package-template/commit/e85d4bbc85b3e5676014a41d9f4ce5b613315be0))
+* **init:** append basic branch rules creation ([ab0da78](https://github.com/FilippoGurioli-master-thesis/unity-package-template/commit/ab0da78ae28763ada947ba53086eeed810d2dba6))
+* **init:** configure unityYAML smart merge ([7e2d3ff](https://github.com/FilippoGurioli-master-thesis/unity-package-template/commit/7e2d3ff39103c2d3c8419de919bee758c7167a39))
+* **init:** forget to ask package as with default ([b4549df](https://github.com/FilippoGurioli-master-thesis/unity-package-template/commit/b4549df7dcae98964ce2abb933e9bff85ab6f998))
+* **init:** gh cli set automatically ghp to gha ([1586ad3](https://github.com/FilippoGurioli-master-thesis/unity-package-template/commit/1586ad3fbbf4d5fa9944c899a43481038cb0218a))
+* **init:** push PAT secret ([eb17e3b](https://github.com/FilippoGurioli-master-thesis/unity-package-template/commit/eb17e3b31ba90f5a9581dc41debd9012e6229d83))
+* **init:** use read -s for password ([a674788](https://github.com/FilippoGurioli-master-thesis/unity-package-template/commit/a674788852ff9bded7dfd50aa9e626a3d067d99b))
+* update sonarqube to generate csproj and sln before running ([41fb000](https://github.com/FilippoGurioli-master-thesis/unity-package-template/commit/41fb000ae87323a3ace29016016276d09d3f6f4c))
+* update sonarqube to use dotnet-sonarscanner ([51184a1](https://github.com/FilippoGurioli-master-thesis/unity-package-template/commit/51184a143bbf0fd500a08b08d1b3c84a61c2d10b))
+
+### General maintenance
+
+* create a first working template with all features in place ([de8b661](https://github.com/FilippoGurioli-master-thesis/unity-package-template/commit/de8b661f5d2cc6d964984ba6b707d03fd6de0cb6))
+
 ## [0.1.8](https://github.com/FilippoGurioli-master-thesis/unity-package-template/compare/0.1.7...0.1.8) (2026-01-06)
 
 ### Dependency updates
