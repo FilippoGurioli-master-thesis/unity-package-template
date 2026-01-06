@@ -59,6 +59,7 @@ To correctly use this project as a template it must be launched the `init.sh` sc
 - creates the develop branch
 - commits all changes made until now
 - set the tag of that commit to `0.0.0`
+- configures [unity smart merge](https://docs.unity3d.com/6000.3/Documentation/Manual/SmartMerge.html)
 
 ## Prerequisites
 
