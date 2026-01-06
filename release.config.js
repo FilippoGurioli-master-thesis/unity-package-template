@@ -12,7 +12,7 @@ if (isTemplate) {
       assets: [
         { path: "package.zip", label: "Unity Package Template" },
         { path: "package.zip.sha256", label: "SHA256 Digest" },
-        { path: "package.zip.sig", label: "Signature" }
+        { path: "package.zip.sha256.sig", label: "Signature" }
       ]
     }],
     [
@@ -36,7 +36,7 @@ if (isTemplate) {
       assets: [
         { path: "package.zip", label: "__NAME__" },
         { path: "package.zip.sha256", label: "SHA256 Digest" },
-        { path: "package.zip.sig", label: "Signature" }
+        { path: "package.zip.sha256.sig", label: "Signature" }
       ]
     }],
     [

@@ -17,7 +17,6 @@ env:
   SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
   GPG_PRIVATE_KEY: ${{ secrets.GPG_PRIVATE_KEY }}
   GPG_KEY_ID: ${{ secrets.GPG_KEY_ID }}
-  GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
 
 permissions:
   contents: write
@@ -137,7 +136,6 @@ jobs:
         uses: crazy-max/ghaction-import-gpg@v6
         with:
           gpg_private_key: ${{ secrets.GPG_PRIVATE_KEY }}
-          passphrase: ${{ secrets.GPG_PASSPHRASE }}
       - name: Create package archive (Package)
         if: needs.check-template.outputs.is_template == 'false'
         run: zip -r package.zip ./__NAMESPACE__

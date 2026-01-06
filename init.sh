@@ -273,7 +273,51 @@ uploadSecrets() {
   else
     error "Failed to upload sonar url via gh cli."
   fi
-  echo "Secrets configured successfully!"
+  # --- 4. GPG Signing Key Setup ---
+  info "Setting up GPG signing key for CI..."
+  if ! command -v gpg &>/dev/null; then
+    warn "GPG not found. Skipping GPG signing key setup."
+    return
+  fi
+  (
+    GNUPGHOME="$(mktemp -d)"
+    export GNUPGHOME
+    chmod 700 "$GNUPGHOME"
+    GPG_NAME="CI Artifact Signing"
+    GPG_EMAIL="ci@local"
+    GPG_EXPIRE="0"
+    # Generate passwordless key
+    gpg --batch --generate-key <<EOF
+%no-protection
+Key-Type: eddsa
+Key-Curve: ed25519
+Name-Real: $GPG_NAME
+Name-Email: $GPG_EMAIL
+Expire-Date: $GPG_EXPIRE
+EOF
+
+    GPG_KEY_ID="$(gpg --list-secret-keys --with-colons |
+      awk -F: '/^sec:/ { print $5; exit }')"
+    if [ -z "$GPG_KEY_ID" ]; then
+      error "Failed to generate GPG key."
+      rm -rf "$GNUPGHOME"
+      return
+    fi
+    GPG_PRIVATE_KEY="$(gpg --armor --export-secret-keys "$GPG_KEY_ID")"
+    if gh secret set GPG_PRIVATE_KEY --body "$GPG_PRIVATE_KEY"; then
+      info "GPG private key uploaded successfully."
+    else
+      error "Failed to upload GPG private key."
+    fi
+
+    if gh secret set GPG_KEY_ID --body "$GPG_KEY_ID"; then
+      info "GPG key ID uploaded successfully."
+    else
+      error "Failed to upload GPG key ID."
+    fi
+    rm -rf "$GNUPGHOME"
+  )
+  info "Secrets configured successfully!"
 }
 
 #---------------------------------------------------------------------------------------------------
