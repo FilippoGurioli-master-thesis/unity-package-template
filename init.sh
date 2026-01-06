@@ -242,8 +242,9 @@ uploadSecrets() {
   licenseFile="${licenseFile/#\~/$HOME}"
   unityEmail=$(askWithDefault "Insert your unity email" $GIT_MAIL)
   unityPassword=$(askNonNull "Insert your unity password")
-  sonarToken=$(askNonNull "Insert your sonar qube token")
   sonarUrl=$(askWithDefault "Insert your sonar qube url" "https://sonarcloud.io")
+  sonarToken=$(askNonNull "Insert your sonar qube token")
+  personalAccessToken=$(askNonNull "Insert your personal access token (to generate it: GitHub > Settings > Developer Settings > Personal access token > Fine-grained tokens with permissions contents (rw), metadata (r) and workflows (rw)")
   if [[ -f "$licenseFile" ]]; then
     if gh secret set UNITY_LICENSE <"$licenseFile"; then
       info "Unity License uploaded successfully."
@@ -267,6 +268,11 @@ uploadSecrets() {
     info "Sonar token uploaded successfully."
   else
     error "Failed to upload sonar token via gh cli."
+  fi
+  if gh secret set RELEASE_STEP_PAT --body "$personalAccessToken"; then
+    info "Personal Access token uploaded successfully."
+  else
+    error "Failed to upload personal access token via gh cli."
   fi
   if gh secret set SONAR_HOST_URL --body "$sonarUrl"; then
     info "Sonar url uploaded successfully."

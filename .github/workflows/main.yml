@@ -218,9 +218,11 @@ jobs:
         uses: actions/deploy-pages@v4
   promote-to-main:
     name: Promote Renovate Updates
-    needs: [sonar-analysis]
+    needs: [check-template, sonar-analysis]
     runs-on: ubuntu-24.04
-    if: github.ref == 'refs/heads/develop' && github.actor == 'renovate[bot]'
+    if: always() && github.ref == 'refs/heads/develop' && github.actor == 'renovate[bot]' && (
+      needs.check-template.outputs.is_template == 'true' || needs.sonar-analysis.result == 'success'
+    )
     steps:
       - name: Checkout
         uses: actions/checkout@v4
