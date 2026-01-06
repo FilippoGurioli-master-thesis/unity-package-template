@@ -332,6 +332,22 @@ getRepoName() {
   basename "$(git rev-parse --show-toplevel 2>/dev/null)"
 }
 
+protect_branch() {
+  local branch=$1
+  gh api -X PUT "/repos/$REPO_FULL_NAME/branches/$branch/protection" \
+    -H "Accept: application/vnd.github+json" \
+    --input - <<EOF
+{
+  "required_status_checks": null,
+  "enforce_admins": false,
+  "required_pull_request_reviews": null,
+  "restrictions": null,
+  "allow_force_pushes": false,
+  "allow_deletions": false
+}
+EOF
+}
+
 #---------------------------------------------------------------------------------------------------
 
 # Read customer values
@@ -485,6 +501,16 @@ fi
 
 info "Setting deploy for GitHub Pages of the repository to GitHub Actions"
 gh api -X PATCH "/repos/$GIT_USER/$GIT_REPO/pages" -f "build_type=workflow"
+
+REPO_FULL_NAME="$GIT_USER/$GIT_REPO"
+info "Applying Deletion & Force Push protection to: main"
+protect_branch "main"
+info "Applying Deletion & Force Push protection to: develop"
+protect_branch "develop"
+
+info "Applying Deletion & Force Push protection to all tags"
+gh api -X POST "/repos/$REPO_FULL_NAME/tag_protection" \
+  -f "pattern=*"
 
 info "Init done. Remember to:"
 info "  - configure precisely the $NAMESPACE/package.json file before starting your development."
