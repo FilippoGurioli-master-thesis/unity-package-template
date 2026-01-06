@@ -11,6 +11,7 @@
   ],
   "automerge": true,
   "dependencyDashboard": true,
+  "abandonmentThreshold": "3 years",
   "ignorePaths": [
     "**/node_modules/**",
     "**/bower_components/**",
