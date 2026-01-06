@@ -320,14 +320,27 @@ EOF
   info "Secrets configured successfully!"
 }
 
+getRepoName() {
+  local name
+  name=$(git remote get-url origin 2>/dev/null |
+    sed -E 's#.*/##; s#\.git$##')
+
+  if [[ -n "$name" ]]; then
+    printf '%s\n' "$name"
+    return 0
+  fi
+  basename "$(git rev-parse --show-toplevel 2>/dev/null)"
+}
+
 #---------------------------------------------------------------------------------------------------
 
 # Read customer values
 GIT_USER=$(getGithubUser)
 GIT_MAIL=$(git config user.email)
+GIT_REPO=$(getRepoName)
 DOMAIN=$(toLower "$(askWithDefault "Enter the top level domain" "com")")
 COMPANY=$(toLower "$(askWithDefault "Enter your company name" "$(toLowerPure "$GIT_USER")")")
-PACKAGE=$(toLower "$(askNonNull "Enter your package name (e.g. 'awesome-tool')")")
+PACKAGE=$(toLower "$(askNonNull "Enter your package name" "$(toLowerPure "$GIT_REPO")")")
 NAMESPACE=$(askWithDefault "Enter the default namespace" $(kebabToPascal "$PACKAGE"))
 DESCRIPTION=$(askWithDefault "Enter a description" "")
 NAME=$(toWords "$NAMESPACE")

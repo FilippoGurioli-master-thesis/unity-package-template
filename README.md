@@ -28,9 +28,37 @@ It features:
 
 To correctly use this project as a template it must be launched the `init.sh` script. This script does the following things:
 
-- TODO
-
----
+- configures the unity package unique name
+  - asks for domain, company and package names, defaulting to reasonable values
+- configures the base namespace of the project
+- configures the license under which the package should be
+- configures the description of the package
+- asks and uploads all secrets needed in CI to work properly
+  - `UNITY_LICENSE`: path to the unity license
+  - `UNITY_EMAIL`: mail used in unity
+  - `UNITY_PASSWORD`: password used for the unity email
+  - `SONAR_HOST`: url hosting the SonarQube instance
+  - `SONAR_TOKEN`: token used to interact with the sonar host
+  - `GPG_KEY_ID`: an ephemeral gpg key used to sign the artifact (Warning: this key is generated during the script, nothing will be asked to the user)
+  - `GPG_PRIVATE_KEY`: the private key used to sign the artifact (Warning: this key is generated during the script, nothing will be asked to the user)
+- replaces all occurrences of template values in the project with values inserted by the user
+  - `__DOMAIN__`
+  - `__COMPANY__`
+  - `__PACKAGE__`
+  - `__NAMESPACE__`
+  - `__NAME__`
+  - `__DESCRIPTION__`
+  - `__GIT_USER__`
+  - `__GIT_MAIL__`
+- installs npm and dotnet dependencies
+- boots the project with unity batch mode
+- installs git hooks
+- removes `.template` file
+- removes the `init.sh` script itself
+- opens the unity editor inside the sandbox
+- creates the develop branch
+- commits all changes made until now
+- set the tag of that commit to `0.0.0`
 
 ## Prerequisites
 
@@ -41,8 +69,6 @@ As of now the project has strong assumptions on the environment from within it i
 - Unity 6000 installed
   - Therefore the .NET SDK at `v8`
 - GitHub CLI installed and up-to-date
-
----
 
 ## Project Structure
 
@@ -64,8 +90,6 @@ As of now the project has strong assumptions on the environment from within it i
 - **`release.config.js`**: configuration file for semantic-release tool.
 - **`renovate.json`**: configuration file for automatic deps update tool.
 - **`snoar-project.properties`**: configuration file for QA tool.
-
----
 
 ## Usage
 
