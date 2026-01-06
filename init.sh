@@ -471,6 +471,18 @@ git commit -m "chore(init): initialize project from template"
 info "Setting this commit as version 0.0.0"
 git tag 0.0.0
 
+info "Setting unity smart merge as a merge solver"
+SMART_MERGE_BIN=$(find "$HOME/Unity/Hub/Editor/$INSTALLED_UNITY_VERSION/Editor/Data/Tools/" -name "UnityYAMLMerge" -type f -executable | head -n 1)
+if [ -z "$SMART_MERGE_BIN" ]; then
+  warn "UnityYAMLMerge not found. Scene merging will be manual."
+else
+  info "Found UnityYAMLMerge at: $SMART_MERGE_BIN"
+  git config --local merge.unityyamlmerge.name "Unity SmartMerge"
+  git config --local merge.unityyamlmerge.driver "'$SMART_MERGE_BIN' merge -p %O %B %A %R"
+  git config --local merge.unityyamlmerge.trustExitCode false
+  info "Merge rules configured successfully."
+fi
+
 info "Init done. Remember to:"
 info "  - configure precisely the $NAMESPACE/package.json file before starting your development."
 info "  - download Renovate GitHub App in your account/organization to enable renovate bot"
