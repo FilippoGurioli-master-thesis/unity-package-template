@@ -33,7 +33,7 @@ jobs:
       is_template: ${{ steps.check.outputs.is_template }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
       - name: Check existence of .template
         id: check
         run: |
@@ -60,7 +60,7 @@ jobs:
             targetPlatform: StandaloneOSX
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
         with:
           lfs: true
       - name: Cache Library
@@ -83,7 +83,7 @@ jobs:
     if: needs.check-template.outputs.is_template == 'false'
     runs-on: ubuntu-24.04
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
         with:
           lfs: true
       - name: Cache Library
@@ -116,7 +116,7 @@ jobs:
     needs: test
     runs-on: ubuntu-24.04
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
         with:
           fetch-depth: 0
       - name: Setup .NET
@@ -171,7 +171,7 @@ jobs:
     runs-on: ubuntu-24.04
     steps:
       - name: Checkout
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
       - name: Import GPG key
         uses: crazy-max/ghaction-import-gpg@v6
         with:
@@ -212,7 +212,7 @@ jobs:
       )
     steps:
       - name: Checkout
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
         with:
           fetch-depth: 0
       - name: Setup Node.js
@@ -241,7 +241,7 @@ jobs:
     runs-on: ubuntu-24.04
     steps:
       - name: Checkout code
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
       - name: Setup .NET
         uses: actions/setup-dotnet@v4
         with:
@@ -266,7 +266,7 @@ jobs:
       )
     steps:
       - name: Checkout
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
         with:
           fetch-depth: 0
           token: ${{ secrets.RELEASE_STEP_PAT }}
