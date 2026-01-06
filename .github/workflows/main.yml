@@ -66,7 +66,7 @@ jobs:
       - name: Cache Library
         uses: actions/cache@v5
         with:
-          path: Library
+          path: ./Sandbox.__NAMESPACE__/Library
           key: Library-${{ matrix.targetPlatform }}-${{ hashFiles('Assets/**', 'Packages/**', 'ProjectSettings/**') }}
           restore-keys: |
             Library-${{ matrix.targetPlatform }}-
@@ -104,6 +104,12 @@ jobs:
         with:
           name: Test-Results
           path: artifacts
+      - name: Upload Coverage Results
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: Coverage-Results
+          path: ./Sandbox.__NAMESPACE__/coverage-results
 
   sonar-analysis:
     name: SonarQube Analysis
@@ -134,6 +140,11 @@ jobs:
         with:
           name: Test-Results
           path: artifacts
+      - name: Download Coverage Results
+        uses: actions/download-artifact@v4
+        with:
+          name: Coverage-Results
+          path: coverage-results
       - name: SonarQube Begin
         run: |
           dotnet tool run dotnet-sonarscanner begin \
@@ -148,7 +159,7 @@ jobs:
           dotnet tool run dotnet-sonarscanner end \
             /d:sonar.token="${{ env.SONAR_TOKEN }}"
       - name: SonarQube Quality Gate check
-        uses: sonarsource/sonarqube-quality-gate-action@master
+        uses: sonarsource/sonarqube-quality-gate-action@v1
         timeout-minutes: 5
         env:
           SONAR_TOKEN: ${{ env.SONAR_TOKEN }}
