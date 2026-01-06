@@ -49,6 +49,22 @@ askNonNull() {
   done
 }
 
+askPassword() {
+  local prompt="$1"
+  local input
+
+  while true; do
+    read -s -r -p "$prompt: " input
+    echo "" >&2
+    if [[ -n "$input" ]]; then
+      printf '%s\n' "$input"
+      return 0
+    else
+      printf 'Warning: value cannot be empty. Please try again.\n' >&2
+    fi
+  done
+}
+
 askInList() {
   local prompt="$1"
   local default_index="$2"
@@ -241,9 +257,10 @@ uploadSecrets() {
   licenseFile=$(askWithDefault "Insert the path to the Unity license" "$DEFAULT_LICENSE")
   licenseFile="${licenseFile/#\~/$HOME}"
   unityEmail=$(askWithDefault "Insert your unity email" $GIT_MAIL)
-  unityPassword=$(askNonNull "Insert your unity password")
-  sonarToken=$(askNonNull "Insert your sonar qube token")
+  unityPassword=$(askPassword "Insert your unity password")
   sonarUrl=$(askWithDefault "Insert your sonar qube url" "https://sonarcloud.io")
+  sonarToken=$(askNonNull "Insert your sonar qube token")
+  personalAccessToken=$(askNonNull "Insert your personal access token (to generate it: GitHub > Settings > Developer Settings > Personal access token > Fine-grained tokens with permissions contents (rw), metadata (r) and workflows (rw)")
   if [[ -f "$licenseFile" ]]; then
     if gh secret set UNITY_LICENSE <"$licenseFile"; then
       info "Unity License uploaded successfully."
@@ -267,6 +284,11 @@ uploadSecrets() {
     info "Sonar token uploaded successfully."
   else
     error "Failed to upload sonar token via gh cli."
+  fi
+  if gh secret set RELEASE_STEP_PAT --body "$personalAccessToken"; then
+    info "Personal Access token uploaded successfully."
+  else
+    error "Failed to upload personal access token via gh cli."
   fi
   if gh secret set SONAR_HOST_URL --body "$sonarUrl"; then
     info "Sonar url uploaded successfully."
@@ -320,14 +342,43 @@ EOF
   info "Secrets configured successfully!"
 }
 
+getRepoName() {
+  local name
+  name=$(git remote get-url origin 2>/dev/null |
+    sed -E 's#.*/##; s#\.git$##')
+
+  if [[ -n "$name" ]]; then
+    printf '%s\n' "$name"
+    return 0
+  fi
+  basename "$(git rev-parse --show-toplevel 2>/dev/null)"
+}
+
+protect_branch() {
+  local branch=$1
+  gh api -X PUT "/repos/$REPO_FULL_NAME/branches/$branch/protection" \
+    -H "Accept: application/vnd.github+json" \
+    --input - <<EOF
+{
+  "required_status_checks": null,
+  "enforce_admins": false,
+  "required_pull_request_reviews": null,
+  "restrictions": null,
+  "allow_force_pushes": false,
+  "allow_deletions": false
+}
+EOF
+}
+
 #---------------------------------------------------------------------------------------------------
 
 # Read customer values
 GIT_USER=$(getGithubUser)
 GIT_MAIL=$(git config user.email)
+GIT_REPO=$(getRepoName)
 DOMAIN=$(toLower "$(askWithDefault "Enter the top level domain" "com")")
 COMPANY=$(toLower "$(askWithDefault "Enter your company name" "$(toLowerPure "$GIT_USER")")")
-PACKAGE=$(toLower "$(askNonNull "Enter your package name (e.g. 'awesome-tool')")")
+PACKAGE=$(toLower "$(askWithDefault "Enter your package name" "$(toLowerPure "$GIT_REPO")")")
 NAMESPACE=$(askWithDefault "Enter the default namespace" $(kebabToPascal "$PACKAGE"))
 DESCRIPTION=$(askWithDefault "Enter a description" "")
 NAME=$(toWords "$NAMESPACE")
@@ -457,6 +508,31 @@ git commit -m "chore(init): initialize project from template"
 
 info "Setting this commit as version 0.0.0"
 git tag 0.0.0
+
+info "Setting unity smart merge as a merge solver"
+SMART_MERGE_BIN=$(find "$HOME/Unity/Hub/Editor/$INSTALLED_UNITY_VERSION/Editor/Data/Tools/" -name "UnityYAMLMerge" -type f -executable | head -n 1)
+if [ -z "$SMART_MERGE_BIN" ]; then
+  warn "UnityYAMLMerge not found. Scene merging will be manual."
+else
+  info "Found UnityYAMLMerge at: $SMART_MERGE_BIN"
+  git config --local merge.unityyamlmerge.name "Unity SmartMerge"
+  git config --local merge.unityyamlmerge.driver "'$SMART_MERGE_BIN' merge -p %O %B %A %R"
+  git config --local merge.unityyamlmerge.trustExitCode false
+  info "Merge rules configured successfully."
+fi
+
+info "Setting deploy for GitHub Pages of the repository to GitHub Actions"
+gh api -X PATCH "/repos/$GIT_USER/$GIT_REPO/pages" -f "build_type=workflow"
+
+REPO_FULL_NAME="$GIT_USER/$GIT_REPO"
+info "Applying Deletion & Force Push protection to: main"
+protect_branch "main"
+info "Applying Deletion & Force Push protection to: develop"
+protect_branch "develop"
+
+info "Applying Deletion & Force Push protection to all tags"
+gh api -X POST "/repos/$REPO_FULL_NAME/tag_protection" \
+  -f "pattern=*"
 
 info "Init done. Remember to:"
 info "  - configure precisely the $NAMESPACE/package.json file before starting your development."

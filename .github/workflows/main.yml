@@ -64,9 +64,9 @@ jobs:
         with:
           lfs: true
       - name: Cache Library
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
-          path: Library
+          path: ./Sandbox.__NAMESPACE__/Library
           key: Library-${{ matrix.targetPlatform }}-${{ hashFiles('Assets/**', 'Packages/**', 'ProjectSettings/**') }}
           restore-keys: |
             Library-${{ matrix.targetPlatform }}-
@@ -87,7 +87,7 @@ jobs:
         with:
           lfs: true
       - name: Cache Library
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: ./Sandbox.__NAMESPACE__/Library
           key: Library-test-${{ hashFiles('**/ProjectSettings/**') }}
@@ -104,6 +104,12 @@ jobs:
         with:
           name: Test-Results
           path: artifacts
+      - name: Upload Coverage Results
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: Coverage-Results
+          path: ./Sandbox.__NAMESPACE__/coverage-results
 
   sonar-analysis:
     name: SonarQube Analysis
@@ -113,17 +119,51 @@ jobs:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.x'
+      - name: Restore local tools
+        run: dotnet tool restore
+      - name: Cache Library
+        uses: actions/cache@v5
+        with:
+          path: ./Sandbox.__NAMESPACE__/Library
+          key: Library-test-${{ hashFiles('**/ProjectSettings/**') }}
+      - name: Generate Solution
+        uses: game-ci/unity-builder@v4
+        with:
+          projectPath: ./Sandbox.__NAMESPACE__
+          customParameters: -executeMethod UnityEditor.SyncVS.SyncSolution -quit
       - name: Download Test Results
         uses: actions/download-artifact@v4
         with:
           name: Test-Results
           path: artifacts
-      - name: SonarQube Scan
-        uses: SonarSource/sonarqube-scan-action@v4
+      - name: Download Coverage Results
+        uses: actions/download-artifact@v4
+        with:
+          name: Coverage-Results
+          path: coverage-results
+      - name: SonarQube Begin
+        run: |
+          dotnet tool run dotnet-sonarscanner begin \
+            /k:"__COMPANY_____NAMESPACE__" \
+            /d:sonar.host.url="${{ env.SONAR_HOST_URL }}" \
+            /d:sonar.token="${{ env.SONAR_TOKEN }}" \
+            /s:"$GITHUB_WORKSPACE/sonar-project.properties"
+      - name: Build Unity Solution
+        run: dotnet build ./Sandbox.__NAMESPACE__/*.sln
+      - name: SonarQube End
+        run: |
+          dotnet tool run dotnet-sonarscanner end \
+            /d:sonar.token="${{ env.SONAR_TOKEN }}"
       - name: SonarQube Quality Gate check
-        id: sonarqube-quality-gate-check
-        uses: sonarsource/sonarqube-quality-gate-action@master
+        uses: sonarsource/sonarqube-quality-gate-action@v1
         timeout-minutes: 5
+        env:
+          SONAR_TOKEN: ${{ env.SONAR_TOKEN }}
+          SONAR_HOST_URL: ${{ env.SONAR_HOST_URL }}
 
   sign:
     name: Sign Artifact
@@ -216,3 +256,23 @@ jobs:
           path: _site
       - name: Deploy to GitHub Pages
         uses: actions/deploy-pages@v4
+  promote-to-main:
+    name: Promote Renovate Updates
+    needs: [check-template, sonar-analysis]
+    runs-on: ubuntu-24.04
+    if: |
+      always() && github.ref == 'refs/heads/develop' && github.actor == 'renovate[bot]' && (
+        needs.check-template.outputs.is_template == 'true' || needs.sonar-analysis.result == 'success'
+      )
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.RELEASE_STEP_PAT }}
+      - name: Push to main
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git push origin develop:main
+

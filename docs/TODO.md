@@ -1,9 +1,7 @@
 # TODO
 
-- Create a standard README (purpose, usage, contributes, ...)
-- improve init script (move to js?)
+- improve sonarqube with deep scanning
 - improve CI/CD pipeline readability? (split between template/package)
 - deploy to OpenUPM?
-- branch rules
-- document everything
+- move any script (sh and js) to csx and any npm deps to dotnet
 
