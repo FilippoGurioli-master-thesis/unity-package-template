@@ -119,6 +119,16 @@ jobs:
           dotnet-version: '8.x'
       - name: Restore local tools
         run: dotnet tool restore
+      - name: Cache Library
+        uses: actions/cache@v5
+        with:
+          path: ./Sandbox.__NAMESPACE__/Library
+          key: Library-test-${{ hashFiles('**/ProjectSettings/**') }}
+      - name: Generate Solution
+        uses: game-ci/unity-builder@v4
+        with:
+          projectPath: ./Sandbox.__NAMESPACE__
+          customParameters: -executeMethod UnityEditor.SyncVS.SyncSolution -quit
       - name: Download Test Results
         uses: actions/download-artifact@v4
         with:
