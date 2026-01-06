@@ -76,7 +76,7 @@ As of now the project has strong assumptions on the environment from within it i
 - **`.config/`**: .NET dependencies folder.
 - **`.github/`**: CI/CD pipelines and issues and PRs templates.
 - **`Sandbox.__NAMESPACE__/`**: A local Unity project to test your package in isolation.
-- **`Tools/`**: A bunch of scripts useful for automation.
+- **`.automation/`**: A bunch of scripts useful for automation.
 - **`__NAMESPACE__/`**: The actual package source code following the [UMP folder structure](https://docs.unity3d.com/6000.3/Documentation/Manual/cus-layout.html).
 - **`docs/`**: documentation related to template.
 - **`.cshariperrc.json`**: configuration file for C# formatting tool.

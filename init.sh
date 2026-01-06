@@ -488,7 +488,7 @@ rm init.sh
 rm init.ps1
 
 info "Generating $NAMESPACE.csproj in order to let docfx work"
-node Tools/generate-csproj-for-docfx.js
+node .automation/generate-csproj-for-docfx.js
 
 info "Re-launching unity startup just to generate meta file related to new csproj"
 unityStartup
