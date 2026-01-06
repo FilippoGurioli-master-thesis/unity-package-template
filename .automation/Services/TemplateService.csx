@@ -1,5 +1,60 @@
+#load "../Models/ProjectConfig.csx"
+
+/// <summary>
+/// Provides services for template manipulation such as replacing tokens in files and renaming files or directories.
+/// </summary>
 public static class TemplateService
 {
+    public static void Replace(ProjectConfig config)
+    {
+        var ignorePatterns = new string[] { ".git", ".automation", "README.md", "Library", "Temp", "Logs" };
+        var tokenMap = new Dictionary<string, string> {
+            { "__GIT_USER__", config.GitUser },
+            { "__GIT_MAIL__", config.GitMail },
+            { "__DOMAIN__", config.Domain },
+            { "__COMPANY__", config.Company },
+            { "__PACKAGE__", config.Package },
+            { "__NAMESPACE__", config.Namespace },
+            { "__NAME__", config.DisplayName },
+            { "__DESCRIPTION__", config.Description }
+        };
+        var allFiles = Directory.EnumerateFiles(".", "*.*", SearchOption.AllDirectories)
+            .Where(f => !ignorePatterns.Any(p => f.Contains(p)));
+        foreach (var file in allFiles)
+        {
+            string content = File.ReadAllText(file);
+            bool modified = false;
+
+            foreach (var token in tokenMap)
+            {
+                if (content.Contains(token.Key))
+                {
+                    content = content.Replace(token.Key, token.Value);
+                    modified = true;
+                }
+            }
+            if (modified) File.WriteAllText(file, content);
+        }
+        foreach (var token in tokenMap)
+            RenameFiles(".", token.Key, token.Value, ignorePatterns);
+        foreach (var token in tokenMap)
+            RenameDirectories(".", token.Key, token.Value, ignorePatterns);
+    }
+
+    /// <summary>
+    /// Replaces a specific token in all files and renames files and directories under the given root path
+    /// </summary>
+    /// <param name="rootPath"> The root directory to start the search from. </param>
+    /// <param name="search"> The token to search for. </param>
+    /// <param name="replace"> The string to replace the token with. </param>
+    /// <param name="ignorePatterns"> Patterns for files or directories to ignore. </param
+    public static void ReplaceTokens(string rootPath, string search, string replace, string[] ignorePatterns)
+    {
+        ReplaceInFiles(rootPath, search, replace, ignorePatterns);
+        RenameDirectories(rootPath, search, replace, ignorePatterns);
+        RenameFiles(rootPath, search, replace, ignorePatterns);
+    }
+
     /// <summary>
     /// Replaces a specific token in all files under the given root path
     /// </summary>

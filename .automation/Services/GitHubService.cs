@@ -1,0 +1,66 @@
+#load "../Utils/Shell.csx"
+#load "../Utils/Log.csx"
+
+/// <summary>
+/// Provides services for interacting with GitHub via the GitHub CLI.
+/// </summary>
+public static class GitHubService
+{
+    /// <summary>
+    /// Helper method to run GitHub CLI commands
+    /// </summary>
+    /// <param name="args"> The arguments to pass to the gh command. </param>
+    /// <param name="hide"> Whether to hide the command output. </param>
+    /// <returns> The output of the gh command. </returns>
+    private static string Gh(string args, bool hide = false)
+        => Shell.Run("gh", args, hide);
+
+    /// <summary>
+    /// Sets a GitHub secret for the repository
+    /// </summary>
+    /// <param name="name"> The name of the secret. </param>
+    /// <param name="value"> The value of the secret. </param>
+    public static void SetSecret(string name, string value)
+    {
+        Log.Info($"Setting GitHub secret: {name}");
+        // Using --body prevents issues with special characters in the shell
+        Gh($"secret set {name} --body \"{value}\"", hide: true);
+    }
+
+    /// <summary>
+    /// Sets a GitHub secret for the repository from a file
+    /// </summary>
+    /// <param name="name"> The name of the secret. </param>
+    /// <param name="filePath"> The path to the file containing the secret value. </param>
+    public static void SetSecretFromFile(string name, string filePath)
+    {
+        Log.Info($"Uploading secret {name} from file...");
+        Gh($"secret set {name} < \"{filePath}\"");
+    }
+
+    /// <summary>
+    /// Protects a branch on GitHub by applying default protection rules
+    /// </summary>
+    /// <param name="repoFullName"> The full name of the repository (e.g
+    /// "owner/repo"). </param>
+    /// <param name="branch"> The branch to protect (e.g., "main"). </param>
+    public static void ProtectBranch(string repoFullName, string branch)
+    {
+        Log.Info($"Applying protection to {branch}...");
+        var json = "{\"required_status_checks\":null,\"enforce_admins\":false,\"required_pull_request_reviews\":null,\"restrictions\":null,\"allow_force_pushes\":false,\"allow_deletions\":false}";
+
+        // C# handles the escaping of the JSON string much better than Bash
+        Gh($"api -X PUT \"/repos/{repoFullName}/branches/{branch}/protection\" --input -", hide: true);
+    }
+
+    /// <summary>
+    /// Sets GitHub Pages to use the Actions workflow for deployment
+    /// </summary>
+    /// <param name="repoFullName"> The full name of the repository (e.g
+    /// "owner/repo"). </param>
+    public static void SetPagesToWorkflow(string repoFullName)
+    {
+        Log.Info("Setting GitHub Pages to use Actions workflow...");
+        Gh($"api -X PATCH \"/repos/{repoFullName}/pages\" -f \"build_type=workflow\"");
+    }
+}
