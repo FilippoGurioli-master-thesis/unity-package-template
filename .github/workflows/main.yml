@@ -113,17 +113,36 @@ jobs:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.x'
+      - name: Restore local tools
+        run: dotnet tool restore
       - name: Download Test Results
         uses: actions/download-artifact@v4
         with:
           name: Test-Results
           path: artifacts
-      - name: SonarQube Scan
-        uses: SonarSource/sonarqube-scan-action@v4
+      - name: SonarQube Begin
+        run: |
+          dotnet tool run dotnet-sonarscanner begin \
+            /k:"__COMPANY_____NAMESPACE__" \
+            /d:sonar.host.url="${{ env.SONAR_HOST_URL }}" \
+            /d:sonar.token="${{ env.SONAR_TOKEN }}" \
+            /s:"$GITHUB_WORKSPACE/sonar-project.properties"
+      - name: Build Unity Solution
+        run: dotnet build ./Sandbox.__NAMESPACE__/*.sln
+      - name: SonarQube End
+        run: |
+          dotnet tool run dotnet-sonarscanner end \
+            /d:sonar.token="${{ env.SONAR_TOKEN }}"
       - name: SonarQube Quality Gate check
-        id: sonarqube-quality-gate-check
         uses: sonarsource/sonarqube-quality-gate-action@master
         timeout-minutes: 5
+        env:
+          SONAR_TOKEN: ${{ env.SONAR_TOKEN }}
+          SONAR_HOST_URL: ${{ env.SONAR_HOST_URL }}
 
   sign:
     name: Sign Artifact
