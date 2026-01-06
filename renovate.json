@@ -1,8 +1,14 @@
 {
   "extends": [
-    "config:base", ":rebaseStalePrs", ":semanticCommits", ":semanticCommitTypeAll(chore)", "abandonments:recommended"
+    "config:recommended",
+    ":rebaseStalePrs",
+    ":semanticCommits",
+    ":semanticCommitTypeAll(chore)",
+    "abandonments:recommended"
   ],
-  "assignees": ["FilippoGurioli"],
+  "assignees": [
+    "FilippoGurioli"
+  ],
   "automerge": true,
   "dependencyDashboard": true,
   "ignorePaths": [
@@ -13,13 +19,19 @@
   "git-submodules": {
     "enabled": true
   },
-  "includeForks": true,
-  "labels": ["dependencies"],
-  "suppressNotifications": ["dependencyLookupWarnings"],
+  "forkProcessing": "enabled",
+  "labels": [
+    "dependencies"
+  ],
+  "suppressNotifications": [
+    "dependencyLookupWarnings"
+  ],
   "customManagers": [
     {
       "customType": "regex",
-      "fileMatch": ["(^|/)Packages/manifest\\.json$"],
+      "managerFilePatterns": [
+        "/(^|/)Packages/manifest\\.json$/"
+      ],
       "matchStrings": [
         "\"(?<depName>[^\"]+)\"\\s*:\\s*\"(?<currentValue>[^\"#]+)\""
       ],
@@ -30,15 +42,19 @@
   "packageRules": [
     {
       "description": "Wait one day before proposing updates to github refs",
-      "matchDatasources": ["git-refs"],
+      "matchDatasources": [
+        "git-refs"
+      ],
       "internalChecksFilter": "strict",
-      "stabilityDays": 1
+      "minimumReleaseAge": "1 day"
     },
     {
       "description": "Wait three days for npm updates (npm retraction time)",
-      "matchDatasources": ["npm"],
+      "matchDatasources": [
+        "npm"
+      ],
       "internalChecksFilter": "strict",
-      "stabilityDays": 3
+      "minimumReleaseAge": "3 days"
     },
     {
       "description": "Do not wait for updates from relatively stable sources",
@@ -47,7 +63,7 @@
         "github-tags"
       ],
       "internalChecksFilter": "strict",
-      "stabilityDays": 0
+      "minimumReleaseAge": null
     },
     {
       "description": "Do not wait for updates from github actions",
@@ -55,22 +71,33 @@
         "github-actions"
       ],
       "internalChecksFilter": "strict",
-      "stabilityDays": 0
+      "minimumReleaseAge": null
     },
     {
       "description": "Updates to GitHub Actions should be tagged as 'ci'",
-      "matchPaths": [".github/workflows/*.yml", ".github/workflows/*.yaml"],
+      "matchFileNames": [
+        ".github/workflows/*.yml",
+        ".github/workflows/*.yaml"
+      ],
       "semanticCommitType": "ci"
     },
     {
       "description": "Ignore Unity built-in modules",
-      "matchDepNames": ["^com\\.unity\\.modules\\."],
+      "matchDepNames": [
+        "^com\\.unity\\.modules\\."
+      ],
       "enabled": false
     },
     {
       "description": "Apply core-deps scope to Unity Editor and package updates",
-      "matchManagers": ["custom.regex", "unity3d"],
-      "matchDatasources": ["unity3d-packages", "unity3d"],
+      "matchManagers": [
+        "custom.regex",
+        "unity3d"
+      ],
+      "matchDatasources": [
+        "unity3d-packages",
+        "unity3d"
+      ],
       "semanticCommitScope": "core-deps"
     }
   ],
@@ -82,6 +109,8 @@
   "separateMinorPatch": true,
   "separateMultipleMajor": true,
   "separateMultipleMinor": true,
-  "stabilityDays": 0,
-  "baseBranches": [ "develop" ]
+  "minimumReleaseAge": null,
+  "baseBranchPatterns": [
+    "develop"
+  ]
 }
