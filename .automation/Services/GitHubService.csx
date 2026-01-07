@@ -52,6 +52,20 @@ public static class GitHubService
     }
 
     /// <summary>
+    /// Sets GitHub Pages to use the Actions workflow for deployment
+    /// </summary>
+    /// <param name="repoFullName"> The full name of the repository (e.g
+    /// "owner/repo"). </param>
+    public static void SetPagesToWorkflow(string repoFullName)
+    {
+        Log.Info("Setting GitHub Pages to use Actions workflow...");
+        Gh($"api -X PATCH \"/repos/{repoFullName}/pages\" -f \"build_type=workflow\"");
+    }
+
+    public static void GetLicense(string licenseType) =>
+        Shell.Run("gh", $"api licenses/{licenseType} --jq .body", hideOutput: true);
+
+    /// <summary>
     /// Sets a GitHub secret for the repository
     /// </summary>
     /// <param name="name"> The name of the secret. </param>
@@ -94,16 +108,5 @@ public static class GitHubService
         {
             if (File.Exists(tempJsonPath)) File.Delete(tempJsonPath);
         }
-    }
-
-    /// <summary>
-    /// Sets GitHub Pages to use the Actions workflow for deployment
-    /// </summary>
-    /// <param name="repoFullName"> The full name of the repository (e.g
-    /// "owner/repo"). </param>
-    public static void SetPagesToWorkflow(string repoFullName)
-    {
-        Log.Info("Setting GitHub Pages to use Actions workflow...");
-        Gh($"api -X PATCH \"/repos/{repoFullName}/pages\" -f \"build_type=workflow\"");
     }
 }

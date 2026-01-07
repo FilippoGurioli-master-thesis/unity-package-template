@@ -42,20 +42,6 @@ public static class TemplateService
     }
 
     /// <summary>
-    /// Replaces a specific token in all files and renames files and directories under the given root path
-    /// </summary>
-    /// <param name="rootPath"> The root directory to start the search from. </param>
-    /// <param name="search"> The token to search for. </param>
-    /// <param name="replace"> The string to replace the token with. </param>
-    /// <param name="ignorePatterns"> Patterns for files or directories to ignore. </param
-    public static void ReplaceTokens(string rootPath, string search, string replace, string[] ignorePatterns)
-    {
-        ReplaceInFiles(rootPath, search, replace, ignorePatterns);
-        RenameDirectories(rootPath, search, replace, ignorePatterns);
-        RenameFiles(rootPath, search, replace, ignorePatterns);
-    }
-
-    /// <summary>
     /// Replaces a specific token in all files under the given root path
     /// </summary>
     /// <param name="rootPath"> The root directory to start the search from. </param>
