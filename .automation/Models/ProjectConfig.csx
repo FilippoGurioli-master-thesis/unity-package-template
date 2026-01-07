@@ -48,6 +48,8 @@ public class ProjectConfig
     public string PackageId => $"{Domain}.{Company}.{Package}".ToLower();
     /// <summary>Computed sandbox path</summary>
     public string SandboxPath => $"Sandbox.{Namespace}";
+    /// <summary>Computed full repository name</summary>
+    public string RepoFullName => $"{GitUser}/{GitRepo}";
 
     /// <summary>GPG Key for signing artifacts</summary>
     public GpgKeyResult GpgKey { get; set; }

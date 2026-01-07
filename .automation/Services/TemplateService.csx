@@ -68,6 +68,28 @@ public static class TemplateService
             RenameDirectories(".", token.Key, token.Value, ignorePatterns);
     }
 
+    public static void ReplaceRenovateConfigAssignee(string assignee)
+    {
+        string file = "renovate.json";
+        if (File.Exists(file))
+        {
+            string content = File.ReadAllText(file);
+            if (content.Contains("\"assignees\":"))
+            {
+                var newContent = System.Text.RegularExpressions.Regex.Replace(
+                    content,
+                    "\"assignees\":\\s*\\[.*?\\]",
+                    $"\"assignees\": [ \"{assignee}\" ]",
+                    System.Text.RegularExpressions.RegexOptions.Singleline);
+                File.WriteAllText(file, newContent);
+            }
+        }
+        else
+        {
+            Log.Warning($"File not found, skipping: {file}");
+        }
+    }
+
     /// <summary>
     /// Replaces a specific token in all files under the given root path
     /// </summary>

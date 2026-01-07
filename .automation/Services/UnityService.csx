@@ -26,7 +26,10 @@ public static class UnityService
         }
         try
         {
-            Shell.Run(unityEditorPath, args, hideOutput: true);
+            if (!batch)
+                new Thread(() => Shell.Run(unityEditorPath, args, hideOutput: true)).Start();
+            else
+                Shell.Run(unityEditorPath, args, hideOutput: true);
         }
         catch
         {
@@ -43,6 +46,11 @@ public static class UnityService
         return match.Groups[1].Value.Trim();
     }
 
+    /// <summary>
+    /// Detects the installed Unity version that best matches the project's required version
+    /// </summary>
+    /// <param name="config"> The project configuration containing the sandbox path. </param>
+    /// <returns> The path to the detected Unity installation. </returns>
     public static string DetectUnityInstall(ProjectConfig config)
     {
         if (_unityBasePath != null) return _unityBasePath;

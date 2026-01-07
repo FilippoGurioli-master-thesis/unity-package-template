@@ -40,9 +40,9 @@ public static class GitHubService
     public static void ProtectBranches(ProjectConfig config)
     {
         Log.Info("Protecting main branch...");
-        ProtectBranch($"{config.GitUser}/{config.GitRepo}", "main");
+        ProtectBranch($"{config.RepoFullName}", "main");
         Log.Info("Protecting develop branch...");
-        ProtectBranch($"{config.GitUser}/{config.GitRepo}", "develop");
+        ProtectBranch($"{config.RepoFullName}", "develop");
     }
 
     /// <summary>
@@ -52,7 +52,7 @@ public static class GitHubService
     public static void ProtectTags(ProjectConfig config)
     {
         Log.Info("Applying protection to all tags...");
-        Gh($"api -X POST \"/repos/{config.GitUser}/{config.GitRepo}/tag_protection\" -f \"pattern=*\"", hide: true);
+        Gh($"api -X POST \"/repos/{config.RepoFullName}/tag_protection\" -f \"pattern=*\"", hide: true);
     }
 
     /// <summary>
@@ -60,10 +60,10 @@ public static class GitHubService
     /// </summary>
     /// <param name="repoFullName"> The full name of the repository (e.g
     /// "owner/repo"). </param>
-    public static void SetPagesToWorkflow(string repoFullName)
+    public static void SetPagesToWorkflow(ProjectConfig config)
     {
         Log.Info("Setting GitHub Pages to use Actions workflow...");
-        Gh($"api -X PATCH \"/repos/{repoFullName}/pages\" -f \"build_type=workflow\"");
+        Gh($"api -X PATCH \"/repos/{config.RepoFullName}/pages\" -f \"build_type=workflow\"");
     }
 
     /// <summary>
