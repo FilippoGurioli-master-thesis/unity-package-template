@@ -16,6 +16,10 @@ public static class GitHubService
     private static string Gh(string args, bool hide = false)
         => Shell.Run("gh", args, hide);
 
+    /// <summary>
+    /// Pushes necessary secrets to the GitHub repository
+    /// </summary>
+    /// <param name="config"> The project configuration containing secret details. </param>
     public static void PushSecrets(ProjectConfig config)
     {
         Log.Info("Pushing secrets to GitHub...");
@@ -62,7 +66,12 @@ public static class GitHubService
         Gh($"api -X PATCH \"/repos/{repoFullName}/pages\" -f \"build_type=workflow\"");
     }
 
-    public static void GetLicense(string licenseType) =>
+    /// <summary>
+    /// Retrieves the license text from GitHub for the specified license type
+    /// </summary>
+    /// <param name="licenseType"> The type of license (e.g., "mit", "apache-2.0"). </param>
+    /// <returns> The license text. </returns>
+    public static string GetLicense(string licenseType) =>
         Shell.Run("gh", $"api licenses/{licenseType} --jq .body", hideOutput: true);
 
     /// <summary>

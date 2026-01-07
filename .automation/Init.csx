@@ -1,9 +1,13 @@
 #load "Services/Configurator.csx"
 #load "Services/TemplateService.csx"
 #load "Models/ProjectConfig.csx"
+#load "Services/LicenseService.csx"
 
 // Initialize configuration
 var projectConfig = Configurator.PreparePlan();
 
 // Replace template values with actual configuration
 TemplateService.Replace(projectConfig);
+
+// Generate LICENSE
+LicenseService.Generate(projectConfig);

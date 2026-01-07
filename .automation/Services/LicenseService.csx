@@ -1,5 +1,6 @@
 #load "../Utils/Log.csx"
 #load "GitHubService.csx"
+#load "../Models/ProjectConfig.csx"
 
 /// <summary>
 /// License Service for generating LICENSE files
