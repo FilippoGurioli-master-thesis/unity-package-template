@@ -1,5 +1,9 @@
 #load "../Utils/Log.csx"
 #load "../Utils/Shell.csx"
+#load "../Models/ProjectConfig.csx"
+
+using System.Text.RegularExpressions;
+using System.Runtime.InteropServices;
 
 /// <summary>
 /// Provides services for environment setup such as installing dependencies.
@@ -49,5 +53,116 @@ public static class EnvironmentService
                 Log.Warning($"File not found, skipping: {file}");
             }
         }
+    }
+
+    /// <summary>
+    /// Generates a single SDK-style .csproj for the Unity package to support DocFX/IDEs.
+    /// </summary>
+    public static void GenerateCsproj(ProjectConfig config)
+    {
+        Log.Info("Generating documentation .csproj...");
+        var packageRoot = Path.Combine(Environment.CurrentDirectory, config.Namespace);
+        var sandboxRoot = Path.Combine(Environment.CurrentDirectory, $"Sandbox.{config.Namespace}");
+        var scriptAssemblies = Path.Combine(sandboxRoot, "Library", "ScriptAssemblies");
+
+        // 1. Validation
+        if (!Directory.Exists(scriptAssemblies))
+        {
+            Log.Error("ScriptAssemblies not found. You must open Unity at least once to generate assemblies.");
+            throw new DirectoryNotFoundException("ScriptAssemblies directory not found.");
+        }
+
+        // 2. Resolve Unity Version and Path
+        var unityVersion = GetUnityVersion(sandboxRoot);
+        var unityRoot = DetectUnityInstall(unityVersion);
+
+        // 3. Collect DLLs (Unity + Project Assemblies)
+        var dllPaths = new List<string>();
+        dllPaths.AddRange(FindDlls(Path.Combine(unityRoot, "Data", "Managed")));
+        dllPaths.AddRange(FindDlls(Path.Combine(unityRoot, "Data", "Managed", "UnityEngine")));
+        dllPaths.AddRange(FindDlls(scriptAssemblies));
+
+        // 4. Build XML Content
+        var sb = new StringBuilder();
+        sb.AppendLine("<?xml version=\"1.0\" encoding=\"utf-8\"?>");
+        sb.AppendLine("<Project Sdk=\"Microsoft.NET.Sdk\">");
+        sb.AppendLine("  <PropertyGroup>");
+        sb.AppendLine("    <TargetFramework>netstandard2.1</TargetFramework>");
+        sb.AppendLine("    <GenerateDocumentationFile>true</GenerateDocumentationFile>");
+        sb.AppendLine("    <NoWarn>1591</NoWarn>");
+        sb.AppendLine("  </PropertyGroup>");
+        sb.AppendLine("  <ItemGroup>");
+
+        foreach (var dll in dllPaths)
+        {
+            var relativePath = Path.GetRelativePath(packageRoot, dll).Replace("\\", "/");
+            var name = Path.GetFileNameWithoutExtension(dll);
+            sb.AppendLine($"    <Reference Include=\"{name}\">");
+            sb.AppendLine($"      <HintPath>{relativePath}</HintPath>");
+            sb.AppendLine($"    </Reference>");
+        }
+
+        sb.AppendLine("  </ItemGroup>");
+        sb.AppendLine("</Project>");
+
+        // 5. Write File
+        string outputPath = Path.Combine(packageRoot, $"{config.Namespace}.csproj");
+        File.WriteAllText(outputPath, sb.ToString());
+        Log.Info($"Generated {outputPath}");
+    }
+
+    private static string GetUnityVersion(string sandboxPath)
+    {
+        string versionFile = Path.Combine(sandboxPath, "ProjectSettings", "ProjectVersion.txt");
+        string content = File.ReadAllText(versionFile);
+        var match = Regex.Match(content, @"m_EditorVersion:\s*(.+)");
+        return match.Groups[1].Value.Trim();
+    }
+
+    private static string DetectUnityInstall(string projectVersion)
+    {
+        // 1. Env Var still takes absolute priority (User knows best)
+        var envPath = Environment.GetEnvironmentVariable("UNITY_EDITOR_PATH");
+        if (!string.IsNullOrEmpty(envPath) && Directory.Exists(envPath)) return envPath;
+
+        // 2. Parse the Major version
+        var projectMajor = int.Parse(projectVersion.Split('.')[0]);
+
+        // 3. Define Hub paths based on OS
+        string hubEditorsPath = "";
+        if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
+            hubEditorsPath = "/Applications/Unity/Hub/Editor";
+        else if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+            hubEditorsPath = @"C:\Program Files\Unity\Hub\Editor";
+        else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
+            hubEditorsPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), "Unity/Hub/Editor");
+
+        if (Directory.Exists(hubEditorsPath))
+        {
+            // Get all installed versions (folders in the Hub directory)
+            var installedVersions = Directory.GetDirectories(hubEditorsPath)
+                .Select(Path.GetFileName)
+                .Select(v => new { Raw = v, Major = int.TryParse(v.Split('.')[0], out int m) ? m : -1 })
+                .Where(v => v.Major >= projectMajor) // Rule: Major installed must be >= Project Major
+                .OrderBy(v => v.Major)               // Pick the closest match (lowest major that satisfies the condition)
+                .FirstOrDefault();
+
+            if (installedVersions != null)
+            {
+                var bestFitPath = Path.Combine(hubEditorsPath, installedVersions.Raw);
+                if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
+                    return Path.Combine(bestFitPath, "Unity.app/Contents");
+                return Path.Combine(bestFitPath, "Editor");
+            }
+        }
+
+        throw new Exception($"No suitable Unity installation found. Need Major >= {projectMajor}. " +
+                            $"Found no matches in {hubEditorsPath}.");
+    }
+
+    private static IEnumerable<string> FindDlls(string path)
+    {
+        if (!Directory.Exists(path)) return Enumerable.Empty<string>();
+        return Directory.GetFiles(path, "*.dll", SearchOption.TopDirectoryOnly);
     }
 }

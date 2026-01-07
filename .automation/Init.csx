@@ -22,3 +22,4 @@ UnityService.OpenProject(projectConfig, batch: true);
 // Install hooks and delete template files
 EnvironmentService.InstallHooks();
 EnvironmentService.DeleteTemplateFiles();
+EnvironmentService.GenerateCsproj(projectConfig);
