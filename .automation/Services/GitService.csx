@@ -59,7 +59,7 @@ public static class GitService
     private static string FindSmartMergeExecutable(string unityBasePath)
     {
         var relativePath = RuntimeInformation.IsOSPlatform(OSPlatform.OSX)
-            ? Path.Combine("Tools", "UnityYAMLMerge")
+            ? Path.Combine("Helpers", "UnityYAMLMerge")
             : Path.Combine("Data", "Tools", RuntimeInformation.IsOSPlatform(OSPlatform.Windows) ? "UnityYAMLMerge.exe" : "UnityYAMLMerge");
         var fullPath = Path.Combine(unityBasePath, relativePath);
         return File.Exists(fullPath) ? fullPath : null;
