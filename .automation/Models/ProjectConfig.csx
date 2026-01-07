@@ -71,7 +71,7 @@ public class ProjectConfig
             Unity Email: {UnityEmail}
             Unity License Path: {UnityLicensePath}
             SonarQube URL: {SonarUrl}
-            Gpg Key ID: {GpgKey?.KeyId}
+            Gpg Key ID: {GpgKey.KeyId}
             Sonar Token: {(string.IsNullOrEmpty(SonarToken) ? "<not set>" : "<set>")}
             Personal Access Token: {(string.IsNullOrEmpty(PersonalAccessToken) ? "<not set>" : "<set>")}
             Unity Password: {(string.IsNullOrEmpty(UnityPassword) ? "<not set>" : "<set>")}

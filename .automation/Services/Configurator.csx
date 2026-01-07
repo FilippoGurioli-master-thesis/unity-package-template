@@ -1,6 +1,7 @@
 #load "../Utils/Shell.csx"
 #load "../Utils/Prompt.csx"
 #load "../Utils/Log.csx"
+#load "../Utils/Gpg.csx"
 #load "../Models/ProjectConfig.csx"
 
 using System.Text.RegularExpressions;
