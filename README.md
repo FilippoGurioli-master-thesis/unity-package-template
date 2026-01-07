@@ -12,6 +12,7 @@ It features:
 - Fast static checks at commit time
   - formatting of C# code
   - `.meta` files validation
+  - `.unity` files validation
 - Semantic release (through [semantic-release](https://semantic-release.gitbook.io/semantic-release/) package)
 - Automatic dependency updates (through [renovate](https://docs.renovatebot.com/))
 - Signing artifact
@@ -37,7 +38,7 @@ To correctly use this project as a template it must be launched the `init.sh` sc
   - `UNITY_LICENSE`: path to the unity license
   - `UNITY_EMAIL`: mail used in unity
   - `UNITY_PASSWORD`: password used for the unity email
-  - `SONAR_HOST`: url hosting the SonarQube instance
+  - `SONAR_HOST_URL`: url hosting the SonarQube instance
   - `SONAR_TOKEN`: token used to interact with the sonar host
   - `GPG_KEY_ID`: an ephemeral gpg key used to sign the artifact (Warning: this key is generated during the script, nothing will be asked to the user)
   - `GPG_PRIVATE_KEY`: the private key used to sign the artifact (Warning: this key is generated during the script, nothing will be asked to the user)
@@ -55,18 +56,18 @@ To correctly use this project as a template it must be launched the `init.sh` sc
 - installs git hooks
 - removes `.template` file
 - removes the `init.sh` script itself
+- configures [unity smart merge](https://docs.unity3d.com/6000.3/Documentation/Manual/SmartMerge.html)
 - opens the unity editor inside the sandbox
 - creates the develop branch
 - commits all changes made until now
 - set the tag of that commit to `0.0.0`
-- configures [unity smart merge](https://docs.unity3d.com/6000.3/Documentation/Manual/SmartMerge.html)
 
 ## Prerequisites
 
 As of now the project has strong assumptions on the environment from within it is executed:
 
 - Linux-based environment
-- Node.js installed and at least at version `v25.2.1`
+- Node.js installed and at least at version `v25.2.1` with a compatible npm package
 - Unity 6000 installed
   - Therefore the .NET SDK at `v8`
 - GitHub CLI installed and up-to-date
