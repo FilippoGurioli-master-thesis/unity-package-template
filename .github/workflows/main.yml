@@ -271,9 +271,10 @@ jobs:
         with:
           fetch-depth: 0
           token: ${{ secrets.RELEASE_STEP_PAT }}
+          persist-credentials: true
       - name: Push to main
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git push origin develop:main
+          git push "https://x-access-token:${{ secrets.RELEASE_STEP_PAT }}@github.com/${{ github.repository }}.git" develop:main
 
