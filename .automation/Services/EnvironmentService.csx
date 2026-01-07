@@ -103,14 +103,14 @@ public static class EnvironmentService
         sb.AppendLine("</Project>");
 
         // 5. Write File
-        string outputPath = Path.Combine(packageRoot, $"{config.Namespace}.csproj");
+        var outputPath = Path.Combine(packageRoot, $"{config.Namespace}.csproj");
         File.WriteAllText(outputPath, sb.ToString());
         Log.Info($"Generated {outputPath}");
     }
 
     private static IEnumerable<string> FindDlls(string path)
     {
-        if (!Directory.Exists(path)) return Enumerable.Empty<string>();
+        if (!Directory.Exists(path)) return [];
         return Directory.GetFiles(path, "*.dll", SearchOption.TopDirectoryOnly);
     }
 }
