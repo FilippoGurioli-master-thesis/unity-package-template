@@ -17,6 +17,7 @@ env:
   SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
   GPG_PRIVATE_KEY: ${{ secrets.GPG_PRIVATE_KEY }}
   GPG_KEY_ID: ${{ secrets.GPG_KEY_ID }}
+  RELEASE_STEP_PAT: ${{ secrets.RELEASE_STEP_PAT }}
 
 permissions:
   contents: write
