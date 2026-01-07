@@ -21,7 +21,7 @@ public static class LicenseService
             if (!Directory.Exists(outDir)) Directory.CreateDirectory(outDir);
             string licenseContent = GitHubService.GetLicense(config.LicenseType);
             string year = DateTime.Now.Year.ToString();
-            string owner = config.Company; // Or config.GitUser
+            string owner = config.Company;
             licenseContent = licenseContent
                 .Replace("[year]", year)
                 .Replace("[yyyy]", year)

@@ -48,8 +48,6 @@ public static class TemplateService
                     return false;
                 });
             });
-        Log.Info("all files contains .github: " + allFiles.Any(f => f.Contains(".github")));
-        Log.Info("filtered files contains .github: " + filteredFiles.Any(f => f.Contains(".github")));
         foreach (var file in filteredFiles)
         {
             string content = File.ReadAllText(file);
