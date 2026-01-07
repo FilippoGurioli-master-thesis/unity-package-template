@@ -30,7 +30,7 @@ public static class Configurator
         config.LicenseType = Prompt.AskInList("License", new[] { "mit", "apache-2.0", "gpl-3.0", "isc" }, 1);
 
         Log.Info("--- CI/CD & Secrets ---");
-        config.UnityLicensePath = Prompt.Ask("Path to Unity .ulf license", GetUnityLicensePath());
+        config.UnityLicensePath = ExpandPath(Prompt.Ask("Path to Unity .ulf license", GetUnityLicensePath()));
         config.UnityEmail = Prompt.Ask("Unity Email", config.GitMail);
         config.UnityPassword = Prompt.AskPassword("Unity Password");
         config.SonarUrl = Prompt.Ask("SonarQube URL", "https://sonarcloud.io");
@@ -100,5 +100,22 @@ public static class Configurator
                 Environment.GetFolderPath(Environment.SpecialFolder.Personal),
                 ".local", "share", "unity3d", "Unity", "Unity_lic.ulf"
             );
+    }
+
+    private static string ExpandPath(string path)
+    {
+        // Expand tilde
+        if (path.StartsWith("~"))
+        {
+            path = Path.Combine(
+                Environment.GetFolderPath(Environment.SpecialFolder.UserProfile),
+                path.Substring(2)
+            );
+        }
+
+        // Expand environment variables
+        path = Environment.ExpandEnvironmentVariables(path);
+
+        return path;
     }
 }
