@@ -1,3 +1,30 @@
+## [0.1.8](https://github.com/FilippoGurioli-master-thesis/unity-package-template/compare/0.1.7...0.1.8) (2026-01-06)
+
+### Dependency updates
+
+* **core-deps:** update dependency com.unity.inputsystem to v1.17.0 ([#7](https://github.com/FilippoGurioli-master-thesis/unity-package-template/issues/7)) ([b3ac0b0](https://github.com/FilippoGurioli-master-thesis/unity-package-template/commit/b3ac0b0a68d504c17f2b120a21174957d142ea89))
+* **core-deps:** update dependency unity editor ([#8](https://github.com/FilippoGurioli-master-thesis/unity-package-template/issues/8)) ([634022a](https://github.com/FilippoGurioli-master-thesis/unity-package-template/commit/634022ad1ad9e980a81f0fa74b6ca69f1c78fffa))
+* **deps:** update commitlint monorepo to v20.3.0 ([#23](https://github.com/FilippoGurioli-master-thesis/unity-package-template/issues/23)) ([1726d1e](https://github.com/FilippoGurioli-master-thesis/unity-package-template/commit/1726d1e9ba47e2c8f47e67b953d9f143161916b5))
+
+### Documentation
+
+* correct typo in readme ([ab0d916](https://github.com/FilippoGurioli-master-thesis/unity-package-template/commit/ab0d9169e03ebcfce75e29991035245162d13a94))
+* **todo:** remove issue and PR template ([db3a5ad](https://github.com/FilippoGurioli-master-thesis/unity-package-template/commit/db3a5ad6a0fd13e5267b142f88f552d08d788b3c))
+* **todo:** update list with priorities ([a65ea8b](https://github.com/FilippoGurioli-master-thesis/unity-package-template/commit/a65ea8bc955dd8b0859a1d88740cf9fde24ba57f))
+* update readme ([bb8e2d7](https://github.com/FilippoGurioli-master-thesis/unity-package-template/commit/bb8e2d7a06bd7e913b1b68cc9ab3276991943eab))
+
+### Build and continuous integration
+
+* **init:** fix duplicate gpg secret push ([72f9066](https://github.com/FilippoGurioli-master-thesis/unity-package-template/commit/72f90660c238f4feaf9c9967b155c504f8d6b4d1))
+* **init:** upload of GPG secrets ([a88941f](https://github.com/FilippoGurioli-master-thesis/unity-package-template/commit/a88941fb68ec5438481b02d0436ab328eb8540bc))
+* remove passphrase ([884b36c](https://github.com/FilippoGurioli-master-thesis/unity-package-template/commit/884b36cc7d581afd7437f4e1054f026642cc796e))
+* **semrel:** correctly set the package.zip.sha256.sig path ([1a9d98b](https://github.com/FilippoGurioli-master-thesis/unity-package-template/commit/1a9d98bcfda3abd4da684ea7ac63e15362e85e2c))
+
+### General maintenance
+
+* **config:** migrate config renovate.json ([54170d4](https://github.com/FilippoGurioli-master-thesis/unity-package-template/commit/54170d45bba94270359e598e950107c08d81fd31))
+* **config:** migrate Renovate config pull request [#24](https://github.com/FilippoGurioli-master-thesis/unity-package-template/issues/24) from FilippoGurioli-master-thesis/renovate/migrate-config ([3a1d5d7](https://github.com/FilippoGurioli-master-thesis/unity-package-template/commit/3a1d5d7ca4dda4232029dc508822122a7439b80f))
+
 ## [0.1.7](https://github.com/FilippoGurioli-master-thesis/unity-package-template/compare/0.1.6...0.1.7) (2026-01-05)
 
 ### Dependency updates
