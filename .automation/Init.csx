@@ -1,5 +1,6 @@
-# load "Services/Configurator.csx"
-# load "Services/TemplateService.csx"
+#load "Services/Configurator.csx"
+#load "Services/TemplateService.csx"
+#load "Models/ProjectConfig.csx"
 
 // Initialize configuration
 var projectConfig = Configurator.PreparePlan();

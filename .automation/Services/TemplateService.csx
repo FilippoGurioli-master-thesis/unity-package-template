@@ -1,13 +1,31 @@
 #load "../Models/ProjectConfig.csx"
+#load "../Utils/Log.csx"
 
 /// <summary>
 /// Provides services for template manipulation such as replacing tokens in files and renaming files or directories.
 /// </summary>
 public static class TemplateService
 {
+    /// <summary>
+    /// Replaces template tokens in files and renames files/directories based on the provided project configuration.
+    /// </summary>
+    /// <param name="config">The project configuration containing replacement values.</param>
     public static void Replace(ProjectConfig config)
     {
-        var ignorePatterns = new string[] { ".git", ".automation", "README.md", "Library", "Temp", "Logs" };
+        var ignorePatterns = new string[] {
+            ".git",
+            ".automation/Models",
+            ".automation/Services",
+            ".automation/Utils",
+            ".automation/Init.csx",
+            "README.md",
+            "CHANGELOG.md",
+            "docs",
+            $"Sandbox.{config.Namespace}/Library",
+            $"Sandbox.{config.Namespace}/Temp",
+            $"Sandbox.{config.Namespace}/obj",
+            $"Sandbox.{config.Namespace}/Logs"
+        };
         var tokenMap = new Dictionary<string, string> {
             { "__GIT_USER__", config.GitUser },
             { "__GIT_MAIL__", config.GitMail },
@@ -18,13 +36,24 @@ public static class TemplateService
             { "__NAME__", config.DisplayName },
             { "__DESCRIPTION__", config.Description }
         };
-        var allFiles = Directory.EnumerateFiles(".", "*.*", SearchOption.AllDirectories)
-            .Where(f => !ignorePatterns.Any(p => f.Contains(p)));
-        foreach (var file in allFiles)
+        var allFiles = Directory.EnumerateFiles(".", "*", SearchOption.AllDirectories);
+        var filteredFiles = allFiles.Where(file =>
+            {
+                var normalizedPath = file.Replace("\\", "/");
+                return !ignorePatterns.Any(pattern =>
+                {
+                    var p = pattern.Replace("\\", "/");
+                    if (normalizedPath.EndsWith("/" + p) || normalizedPath == p) return true;
+                    if (normalizedPath.Contains("/" + p + "/") || normalizedPath.StartsWith(p + "/")) return true;
+                    return false;
+                });
+            });
+        Log.Info("all files contains .github: " + allFiles.Any(f => f.Contains(".github")));
+        Log.Info("filtered files contains .github: " + filteredFiles.Any(f => f.Contains(".github")));
+        foreach (var file in filteredFiles)
         {
             string content = File.ReadAllText(file);
             bool modified = false;
-
             foreach (var token in tokenMap)
             {
                 if (content.Contains(token.Key))
