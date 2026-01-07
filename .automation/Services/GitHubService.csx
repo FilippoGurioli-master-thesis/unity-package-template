@@ -94,7 +94,8 @@ public static class GitHubService
     public static void SetSecretFromFile(string name, string filePath)
     {
         Log.Info($"Uploading secret {name} from file...");
-        Gh($"secret set {name} < \"{filePath}\"", hide: true);
+        var content = File.ReadAllText(filePath).Replace("\"", "\\\"");
+        Gh($"secret set {name} --body \"{content}\"", hide: true);
     }
 
     /// <summary>
