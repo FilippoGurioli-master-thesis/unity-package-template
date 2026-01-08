@@ -26,7 +26,10 @@ public static class GitService
         }
         Log.Info($"Found UnityYAMLMerge at: {smartMergeBin}");
         Shell.Run("git", "config --local merge.unityyamlmerge.name \"Unity SmartMerge\"");
-        Shell.Run("git", $"config --local merge.unityyamlmerge.driver \"'{smartMergeBin}' merge -p %O %B %A %R\"");
+        Shell.Run(
+            "git",
+            $"config --local merge.unityyamlmerge.driver \"'{smartMergeBin}' merge -p %O %B %A %R\""
+        );
         Shell.Run("git", "config --local merge.unityyamlmerge.trustExitCode false");
         Log.Info("Merge rules configured successfully.");
     }
@@ -60,8 +63,15 @@ public static class GitService
     {
         var relativePath = RuntimeInformation.IsOSPlatform(OSPlatform.OSX)
             ? Path.Combine("Helpers", "UnityYAMLMerge")
-            : Path.Combine("Data", "Tools", RuntimeInformation.IsOSPlatform(OSPlatform.Windows) ? "UnityYAMLMerge.exe" : "UnityYAMLMerge");
+            : Path.Combine(
+                "Data",
+                "Tools",
+                RuntimeInformation.IsOSPlatform(OSPlatform.Windows)
+                    ? "UnityYAMLMerge.exe"
+                    : "UnityYAMLMerge"
+            );
         var fullPath = Path.Combine(unityBasePath, relativePath);
         return File.Exists(fullPath) ? fullPath : null;
     }
 }
+

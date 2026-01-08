@@ -18,7 +18,8 @@ public static class LicenseService
         string outputPath = Path.Combine(outDir, "LICENSE");
         try
         {
-            if (!Directory.Exists(outDir)) Directory.CreateDirectory(outDir);
+            if (!Directory.Exists(outDir))
+                Directory.CreateDirectory(outDir);
             string licenseContent = GitHubService.GetLicense(config.LicenseType);
             string year = DateTime.Now.Year.ToString();
             string owner = config.Company;
@@ -33,7 +34,11 @@ public static class LicenseService
         catch (Exception ex)
         {
             Log.Error($"Failed to generate license: {ex.Message}");
-            File.WriteAllText(outputPath, $"Copyright (c) {DateTime.Now.Year} {config.Company}. All rights reserved.");
+            File.WriteAllText(
+                outputPath,
+                $"Copyright (c) {DateTime.Now.Year} {config.Company}. All rights reserved."
+            );
         }
     }
 }
+

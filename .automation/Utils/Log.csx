@@ -5,11 +5,13 @@ public static class Log
     /// </summary>
     /// <param name="msg">The message to log</param>
     public static void Info(string msg) => LogWithLevel(LogLevel.Info, msg);
+
     /// <summary>
     /// Logs a warning message.
     /// </summary>
     /// <param name="msg">The message to log</param>
     public static void Warning(string msg) => LogWithLevel(LogLevel.Warning, msg);
+
     /// <summary>
     /// Logs an error message.
     /// </summary>
@@ -43,6 +45,7 @@ public static class Log
     {
         Info,
         Warning,
-        Error
+        Error,
     }
 }
+

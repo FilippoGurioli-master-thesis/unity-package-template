@@ -14,17 +14,21 @@ var projectConfig = Configurator.PreparePlan();
 // PHASE 1: IDENTITY
 // Replace template values with actual configuration
 TemplateService.Replace(projectConfig);
+
 // Generate LICENSE
 LicenseService.Generate(projectConfig);
 
 // PHASE 2: ENVIRONMENT
 // Install deps
 EnvironmentService.InstallDependencies();
+
 // Setup Unity project
 UnityService.OpenProject(projectConfig, batch: true);
+
 // Install hooks and delete template files
 EnvironmentService.InstallHooks();
 EnvironmentService.DeleteTemplateFiles();
+
 // Generate .csproj for DocFX support
 EnvironmentService.GenerateCsproj(projectConfig);
 
@@ -38,9 +42,11 @@ TemplateService.ReplaceRenovateConfigAssignee(projectConfig.GitUser);
 // PHASE 5: GITHUB CONFIG
 // Setup GitHub Pages
 GitHubService.SetPagesToWorkflow(projectConfig);
+
 // Protect branches and tags
 GitHubService.ProtectBranches(projectConfig);
 GitHubService.ProtectTags(projectConfig);
+
 // Push secrets
 GitHubService.PushSecrets(projectConfig);
 
@@ -52,6 +58,9 @@ GitService.CheckoutDevelop();
 
 // FINISH
 Log.Info("Init done. Remember to:");
-Log.Info($"  - configure precisely the {projectConfig.Namespace}/package.json file before starting your development.");
+Log.Info(
+    $"  - configure precisely the {projectConfig.Namespace}/package.json file before starting your development."
+);
 Log.Info("  - download Renovate GitHub App in your account/organization to enable renovate bot");
 Log.Info("  - push tags too (git push --tags)");
+

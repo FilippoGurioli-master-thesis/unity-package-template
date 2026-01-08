@@ -13,8 +13,7 @@ public static class GitHubService
     /// <param name="args"> The arguments to pass to the gh command. </param>
     /// <param name="hide"> Whether to hide the command output. </param>
     /// <returns> The output of the gh command. </returns>
-    private static string Gh(string args, bool hide = false)
-        => Shell.Run("gh", args, hide);
+    private static string Gh(string args, bool hide = false) => Shell.Run("gh", args, hide);
 
     /// <summary>
     /// Pushes necessary secrets to the GitHub repository
@@ -52,7 +51,10 @@ public static class GitHubService
     public static void ProtectTags(ProjectConfig config)
     {
         Log.Info("Applying protection to all tags...");
-        Gh($"api -X POST \"/repos/{config.RepoFullName}/tag_protection\" -f \"pattern=*\"", hide: true);
+        Gh(
+            $"api -X POST \"/repos/{config.RepoFullName}/tag_protection\" -f \"pattern=*\"",
+            hide: true
+        );
     }
 
     /// <summary>
@@ -107,16 +109,22 @@ public static class GitHubService
     public static void ProtectBranch(string repoFullName, string branch)
     {
         Log.Info($"Applying protection to {branch}...");
-        var json = "{\"required_status_checks\":null,\"enforce_admins\":false,\"required_pull_request_reviews\":null,\"restrictions\":null,\"allow_force_pushes\":false,\"allow_deletions\":false}";
+        var json =
+            "{\"required_status_checks\":null,\"enforce_admins\":false,\"required_pull_request_reviews\":null,\"restrictions\":null,\"allow_force_pushes\":false,\"allow_deletions\":false}";
         string tempJsonPath = Path.GetTempFileName();
         try
         {
             File.WriteAllText(tempJsonPath, json);
-            Gh($"api -X PUT \"/repos/{repoFullName}/branches/{branch}/protection\" --input \"{tempJsonPath}\"", hide: true);
+            Gh(
+                $"api -X PUT \"/repos/{repoFullName}/branches/{branch}/protection\" --input \"{tempJsonPath}\"",
+                hide: true
+            );
         }
         finally
         {
-            if (File.Exists(tempJsonPath)) File.Delete(tempJsonPath);
+            if (File.Exists(tempJsonPath))
+                File.Delete(tempJsonPath);
         }
     }
 }
+

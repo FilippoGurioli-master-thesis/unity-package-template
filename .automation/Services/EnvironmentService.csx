@@ -33,12 +33,7 @@ public static class EnvironmentService
     public static void DeleteTemplateFiles()
     {
         Log.Info("Deleting template files...");
-        var templateFiles = new string[]
-        {
-            ".template",
-            "init.sh",
-            "init.ps1"
-        };
+        var templateFiles = new string[] { ".template", "init.sh", "init.ps1" };
         foreach (var file in templateFiles)
         {
             if (File.Exists(file))
@@ -66,7 +61,9 @@ public static class EnvironmentService
         // 1. Validation
         if (!Directory.Exists(scriptAssemblies))
         {
-            Log.Error("ScriptAssemblies not found. You must open Unity at least once to generate assemblies.");
+            Log.Error(
+                "ScriptAssemblies not found. You must open Unity at least once to generate assemblies."
+            );
             throw new DirectoryNotFoundException("ScriptAssemblies directory not found.");
         }
 
@@ -110,7 +107,9 @@ public static class EnvironmentService
 
     private static IEnumerable<string> FindDlls(string path)
     {
-        if (!Directory.Exists(path)) return [];
+        if (!Directory.Exists(path))
+            return [];
         return Directory.GetFiles(path, "*.dll", SearchOption.TopDirectoryOnly);
     }
 }
+

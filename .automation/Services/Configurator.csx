@@ -4,7 +4,6 @@
 #load "../Utils/Gpg.csx"
 #load "../Models/ProjectConfig.csx"
 
-using System.Text.RegularExpressions;
 using System.Globalization;
 
 public static class Configurator
@@ -27,10 +26,16 @@ public static class Configurator
         config.Namespace = Prompt.Ask("Namespace", KebabToPascal(config.Package));
         config.Description = Prompt.Ask("Description", "");
         config.DisplayName = ToWords(config.Namespace);
-        config.LicenseType = Prompt.AskInList("License", new[] { "mit", "apache-2.0", "gpl-3.0", "isc" }, 1);
+        config.LicenseType = Prompt.AskInList(
+            "License",
+            new[] { "mit", "apache-2.0", "gpl-3.0", "isc" },
+            1
+        );
 
         Log.Info("--- CI/CD & Secrets ---");
-        config.UnityLicensePath = ExpandPath(Prompt.Ask("Path to Unity .ulf license", GetUnityLicensePath()));
+        config.UnityLicensePath = ExpandPath(
+            Prompt.Ask("Path to Unity .ulf license", GetUnityLicensePath())
+        );
         config.UnityEmail = Prompt.Ask("Unity Email", config.GitMail);
         config.UnityPassword = Prompt.AskPassword("Unity Password");
         config.SonarUrl = Prompt.Ask("SonarQube URL", "https://sonarcloud.io");
@@ -50,7 +55,8 @@ public static class Configurator
         {
             var url = Shell.Run("git", "remote get-url origin", hideOutput: true);
             var match = Regex.Match(url, @"github\.com[:/](.+)/");
-            if (match.Success) return match.Groups[1].Value;
+            if (match.Success)
+                return match.Groups[1].Value;
         }
         catch { }
         return Shell.Run("git", "config user.name", hideOutput: true);
@@ -70,10 +76,9 @@ public static class Configurator
     }
 
     private static string KebabToPascal(string input) =>
-         string.Concat(input.Split('-').Select(CultureInfo.CurrentCulture.TextInfo.ToTitleCase));
+        string.Concat(input.Split('-').Select(CultureInfo.CurrentCulture.TextInfo.ToTitleCase));
 
-    private static string ToWords(string input) =>
-        Regex.Replace(input, "([a-z])([A-Z])", "$1 $2");
+    private static string ToWords(string input) => Regex.Replace(input, "([a-z])([A-Z])", "$1 $2");
 
     private static string ToLowerWithWarning(string input)
     {
@@ -93,12 +98,19 @@ public static class Configurator
         else if (OperatingSystem.IsMacOS())
             return Path.Combine(
                 Environment.GetFolderPath(Environment.SpecialFolder.Personal),
-                "Library", "Application Support", "Unity", "Unity_lic.ulf"
+                "Library",
+                "Application Support",
+                "Unity",
+                "Unity_lic.ulf"
             );
         else
             return Path.Combine(
                 Environment.GetFolderPath(Environment.SpecialFolder.Personal),
-                ".local", "share", "unity3d", "Unity", "Unity_lic.ulf"
+                ".local",
+                "share",
+                "unity3d",
+                "Unity",
+                "Unity_lic.ulf"
             );
     }
 

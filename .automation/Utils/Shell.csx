@@ -12,7 +12,7 @@ public static class Shell
             RedirectStandardError = true,
             UseShellExecute = false,
             CreateNoWindow = true,
-            StandardOutputEncoding = Encoding.UTF8
+            StandardOutputEncoding = Encoding.UTF8,
         };
 
         using var process = new Process { StartInfo = startInfo };
@@ -24,13 +24,15 @@ public static class Shell
             if (e.Data != null)
             {
                 output.AppendLine(e.Data);
-                if (!hideOutput) Log.Info(e.Data);
+                if (!hideOutput)
+                    Log.Info(e.Data);
             }
         };
 
         process.ErrorDataReceived += (s, e) =>
         {
-            if (e.Data != null) error.AppendLine(e.Data);
+            if (e.Data != null)
+                error.AppendLine(e.Data);
         };
         process.Start();
         process.BeginOutputReadLine();
@@ -48,3 +50,4 @@ public static class Shell
         return output.ToString().Trim();
     }
 }
+
