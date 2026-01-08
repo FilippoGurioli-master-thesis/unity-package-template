@@ -17,7 +17,6 @@ env:
   SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
   GPG_PRIVATE_KEY: ${{ secrets.GPG_PRIVATE_KEY }}
   GPG_KEY_ID: ${{ secrets.GPG_KEY_ID }}
-  RELEASE_STEP_PAT: ${{ secrets.RELEASE_STEP_PAT }}
 
 permissions:
   contents: write
@@ -257,23 +256,3 @@ jobs:
           path: _site
       - name: Deploy to GitHub Pages
         uses: actions/deploy-pages@v4
-  promote-to-main:
-    name: Promote Renovate Updates
-    needs: [check-template, sonar-analysis]
-    runs-on: ubuntu-24.04
-    if: |
-      always() && github.ref == 'refs/heads/develop' && github.actor == 'renovate[bot]' && (
-        needs.check-template.outputs.is_template == 'true' || needs.sonar-analysis.result == 'success'
-      )
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v6
-        with:
-          fetch-depth: 0
-          token: ${{ secrets.RELEASE_STEP_PAT }}
-
-      - name: Push to main
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-          git push origin develop:main

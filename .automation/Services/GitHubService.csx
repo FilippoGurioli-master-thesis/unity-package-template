@@ -27,7 +27,6 @@ public static class GitHubService
         SetSecret("UNITY_PASSWORD", config.UnityPassword);
         SetSecret("SONAR_HOST_URL", config.SonarUrl);
         SetSecret("SONAR_TOKEN", config.SonarToken);
-        SetSecret("RELEASE_STEP_PAT", config.PersonalAccessToken);
         SetSecret("GPG_KEY_ID", config.GpgKey.KeyId);
         SetSecret("GPG_PRIVATE_KEY", config.GpgKey.PrivateKey);
     }
@@ -127,4 +126,3 @@ public static class GitHubService
         }
     }
 }
-

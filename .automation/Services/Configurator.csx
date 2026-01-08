@@ -40,7 +40,6 @@ public static class Configurator
         config.UnityPassword = Prompt.AskPassword("Unity Password");
         config.SonarUrl = Prompt.Ask("SonarQube URL", "https://sonarcloud.io");
         config.SonarToken = Prompt.AskNonNull("Sonar Token");
-        config.PersonalAccessToken = Prompt.AskNonNull("GitHub Personal Access Token (PAT)");
         config.GpgKey = Gpg.GenerateCiKey();
 
         Log.Info("Configuration plan completed.");

@@ -54,9 +54,6 @@ public class ProjectConfig
     /// <summary>SonarQube authentication token</summary>
     public string SonarToken { get; set; }
 
-    /// <summary>GitHub Personal access token for authentication</summary>
-    public string PersonalAccessToken { get; set; }
-
     // --- 4. Computed Paths (Helpers for Services) ---
     /// <summary>Computed package identifier</summary>
     public string PackageId => $"{Domain}.{Company}.{Package}".ToLower();
@@ -91,7 +88,6 @@ public class ProjectConfig
             SonarQube URL: {SonarUrl}
             Gpg Key ID: {GpgKey.KeyId}
             Sonar Token: {(string.IsNullOrEmpty(SonarToken) ? "<not set>" : "<set>")}
-            Personal Access Token: {(string.IsNullOrEmpty(PersonalAccessToken) ? "<not set>" : "<set>")}
             Unity Password: {(string.IsNullOrEmpty(UnityPassword) ? "<not set>" : "<set>")}
         ";
     }
@@ -112,4 +108,3 @@ public struct GpgKeyResult
     /// </summary>
     public string PrivateKey;
 }
-
