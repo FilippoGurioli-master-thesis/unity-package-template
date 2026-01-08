@@ -1,3 +1,9 @@
+## [1.1.1](https://github.com/FilippoGurioli-master-thesis/unity-package-template/compare/1.1.0...1.1.1) (2026-01-08)
+
+### Revert previous changes
+
+* remove promote to main and the push of PAT ([3f21238](https://github.com/FilippoGurioli-master-thesis/unity-package-template/commit/3f212387eaa13bc7e6976a04383029d06415d037))
+
 ## [1.1.0](https://github.com/FilippoGurioli-master-thesis/unity-package-template/compare/1.0.0...1.1.0) (2026-01-08)
 
 ### Features
