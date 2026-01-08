@@ -1,3 +1,66 @@
+## [1.1.0](https://github.com/FilippoGurioli-master-thesis/unity-package-template/compare/1.0.0...1.1.0) (2026-01-08)
+
+### Features
+
+* complete init script with csx ([e768d3c](https://github.com/FilippoGurioli-master-thesis/unity-package-template/commit/e768d3c2f5f66cd669cd886353c308d23e9feb27))
+* create generate csproj function in env service ([9106f0a](https://github.com/FilippoGurioli-master-thesis/unity-package-template/commit/9106f0a48741b321ebaf1662c003107e384b851a))
+* create gpg ([afe621a](https://github.com/FilippoGurioli-master-thesis/unity-package-template/commit/afe621a229a96831d8c206f1d7135c249cd0e4ce))
+* create license service ([fda550b](https://github.com/FilippoGurioli-master-thesis/unity-package-template/commit/fda550ba2b274028a3e82d235ea244331c888d29))
+* create template service and github service ([009f30e](https://github.com/FilippoGurioli-master-thesis/unity-package-template/commit/009f30ef61f7a6db0ecece3524f90a523954c9a0))
+* create unity and environment services ([059ae73](https://github.com/FilippoGurioli-master-thesis/unity-package-template/commit/059ae7301819b103c7b34d4a449b2297f8fb72b1))
+* expand path in license path prompt ([e43e5ad](https://github.com/FilippoGurioli-master-thesis/unity-package-template/commit/e43e5adce2c82d72f3c6560cc746150527486fcc))
+* generate license ([054b7e1](https://github.com/FilippoGurioli-master-thesis/unity-package-template/commit/054b7e1304c911106a59e19b82ac812241f31947))
+* **init:** create csx script that gathers infos ([cfec9c7](https://github.com/FilippoGurioli-master-thesis/unity-package-template/commit/cfec9c7008869d9f40810c38990385228ad5ed27))
+* start configuring init csx ([c0a052d](https://github.com/FilippoGurioli-master-thesis/unity-package-template/commit/c0a052da0ff5aecc8614dfa2e1672eabdb11bb08))
+
+### Dependency updates
+
+* **core-deps:** update dependency unity editor ([#25](https://github.com/FilippoGurioli-master-thesis/unity-package-template/issues/25)) ([619d461](https://github.com/FilippoGurioli-master-thesis/unity-package-template/commit/619d4615ecd66b243e8fc9c45351fb5792619738))
+* **deps:** install dotnet-script ([c2896ff](https://github.com/FilippoGurioli-master-thesis/unity-package-template/commit/c2896ff74573f7fe89782e2b8fadb29840835590))
+
+### Bug Fixes
+
+* correct github service ([c4fa7d0](https://github.com/FilippoGurioli-master-thesis/unity-package-template/commit/c4fa7d04686a610491710abb5203f9023c3a146e))
+* follow official doc for path of unityYAMLmerge ([07d6c1b](https://github.com/FilippoGurioli-master-thesis/unity-package-template/commit/07d6c1bb6ca4d71692c81416eb85e51768ede17c))
+* import gpg in configurator ([a595e9f](https://github.com/FilippoGurioli-master-thesis/unity-package-template/commit/a595e9f1cc39665236b43cb79b79376ec5af16d0))
+* update ignore patterns in template service ([f18a244](https://github.com/FilippoGurioli-master-thesis/unity-package-template/commit/f18a2449eda227a95ce7937c2079a346d04830d8))
+* use --body in set secret from file to not be posix based ([d49d7e9](https://github.com/FilippoGurioli-master-thesis/unity-package-template/commit/d49d7e9ea4228e68caccd5207e8d593e2dd6cf9b))
+* use GetUnityLicensePath in configurator ([133dd86](https://github.com/FilippoGurioli-master-thesis/unity-package-template/commit/133dd86673e135a3cc9f18c24edc20d27ced0116))
+
+### Documentation
+
+* update README with .unity validation and SONAR_HOST_URL ([2034354](https://github.com/FilippoGurioli-master-thesis/unity-package-template/commit/20343545f328c023891047b79d9c383682c2d878))
+
+### Build and continuous integration
+
+* add RELEASE_STEP_PAT to GitHub Actions in env ([4a52dca](https://github.com/FilippoGurioli-master-thesis/unity-package-template/commit/4a52dca650291bfb71f84ece533bbad4ee99fb9f))
+* correct promotion job ([1bb76b4](https://github.com/FilippoGurioli-master-thesis/unity-package-template/commit/1bb76b4d2f45b9571ce02a77ec4653307dc5580c))
+* create init.sh and init.ps1 to execute underlying init.csx script ([4fee7e9](https://github.com/FilippoGurioli-master-thesis/unity-package-template/commit/4fee7e95b7d3e0b2f6a004b4ad3e260714ec7d57))
+* **deps:** update actions/checkout action to v5 ([#10](https://github.com/FilippoGurioli-master-thesis/unity-package-template/issues/10)) ([c6e406c](https://github.com/FilippoGurioli-master-thesis/unity-package-template/commit/c6e406cda6749187c7b3025e0e9c55411f877e9e))
+* **deps:** update actions/checkout action to v6 ([#11](https://github.com/FilippoGurioli-master-thesis/unity-package-template/issues/11)) ([c533738](https://github.com/FilippoGurioli-master-thesis/unity-package-template/commit/c533738a9369a580667dc5f46b5ca3c619442dbf))
+* **deps:** update actions/download-artifact action to v7 ([#12](https://github.com/FilippoGurioli-master-thesis/unity-package-template/issues/12)) ([93aacac](https://github.com/FilippoGurioli-master-thesis/unity-package-template/commit/93aacac08f8d02add8b7d3b3543e4a1fe399601f))
+* **deps:** update actions/setup-dotnet action to v5 ([#13](https://github.com/FilippoGurioli-master-thesis/unity-package-template/issues/13)) ([4193dff](https://github.com/FilippoGurioli-master-thesis/unity-package-template/commit/4193dff257a4f64f2f56d4ca76940cdc4f7f1e80))
+* **deps:** update actions/setup-node action to v5 ([#14](https://github.com/FilippoGurioli-master-thesis/unity-package-template/issues/14)) ([0b15e88](https://github.com/FilippoGurioli-master-thesis/unity-package-template/commit/0b15e88ec72a8aca7632047de2f94ee618947035))
+* rename Tools to .automation ([f824966](https://github.com/FilippoGurioli-master-thesis/unity-package-template/commit/f8249665cbf8f714a190d405eb82435a4e49dae8))
+* Update git push command to use token authentication ([67b50d2](https://github.com/FilippoGurioli-master-thesis/unity-package-template/commit/67b50d21ac82007a7ce57873ec42c5cb17119f79))
+
+### General maintenance
+
+* minor change ([0293cb2](https://github.com/FilippoGurioli-master-thesis/unity-package-template/commit/0293cb2157d4ce7f05aa1472efc7a7d569d5b7c8))
+* remove unused generate-csproj-for-docfx.js file ([6f56c22](https://github.com/FilippoGurioli-master-thesis/unity-package-template/commit/6f56c221bb96f1d67fcbb962205e5dd54ea1f2fd))
+* remove useless log ([8f39c3e](https://github.com/FilippoGurioli-master-thesis/unity-package-template/commit/8f39c3e05a6662a2294f1b1ee857659a38ccde47))
+* **renovate:** set abandonmentThreshold to 3 years ([9039da4](https://github.com/FilippoGurioli-master-thesis/unity-package-template/commit/9039da45f52738e882586d6db42d93400221d896))
+
+### Style improvements
+
+* format csx files ([d86c88b](https://github.com/FilippoGurioli-master-thesis/unity-package-template/commit/d86c88b111aef5a4bd65df4584d89f04bf3ea7e2))
+
+### Refactoring
+
+* move Tools -> .automation ([6de1d33](https://github.com/FilippoGurioli-master-thesis/unity-package-template/commit/6de1d338938e6a251ff63f825cbdc1a63236f0fa))
+* move unity version detection to unity service ([a5627c5](https://github.com/FilippoGurioli-master-thesis/unity-package-template/commit/a5627c560cf8064ef4352233cf16e71e48af9801))
+* rename GitHubService.cs -> .csx ([ef30779](https://github.com/FilippoGurioli-master-thesis/unity-package-template/commit/ef3077980fce7195c58a4d050e4e4ac8067bfc6f))
+
 ## [1.0.0](https://github.com/FilippoGurioli-master-thesis/unity-package-template/compare/0.1.8...1.0.0) (2026-01-06)
 
 ### ⚠ BREAKING CHANGES
