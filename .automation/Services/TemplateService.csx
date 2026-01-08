@@ -1,6 +1,8 @@
 #load "../Models/ProjectConfig.csx"
 #load "../Utils/Log.csx"
 
+using System.Text.RegularExpressions;
+
 /// <summary>
 /// Provides services for template manipulation such as replacing tokens in files and renaming files or directories.
 /// </summary>
@@ -81,11 +83,11 @@ public static class TemplateService
             string content = File.ReadAllText(file);
             if (content.Contains("\"assignees\":"))
             {
-                var newContent = System.Text.RegularExpressions.Regex.Replace(
+                var newContent = Regex.Replace(
                     content,
                     "\"assignees\":\\s*\\[.*?\\]",
                     $"\"assignees\": [ \"{assignee}\" ]",
-                    System.Text.RegularExpressions.RegexOptions.Singleline
+                    RegexOptions.Singleline
                 );
                 File.WriteAllText(file, newContent);
             }
@@ -180,4 +182,3 @@ public static class TemplateService
         }
     }
 }
-

@@ -63,4 +63,3 @@ Log.Info(
 );
 Log.Info("  - download Renovate GitHub App in your account/organization to enable renovate bot");
 Log.Info("  - push tags too (git push --tags)");
-
