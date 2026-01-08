@@ -99,13 +99,13 @@ jobs:
           githubToken: ${{ secrets.GITHUB_TOKEN }}
           customParameters: -debugCodeOptimization -enableCodeCoverage -coverageResultsPath ./coverage-results
       - name: Upload Test Results
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         if: always()
         with:
           name: Test-Results
           path: artifacts
       - name: Upload Coverage Results
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         if: always()
         with:
           name: Coverage-Results
@@ -190,7 +190,7 @@ jobs:
               --local-user "${{ secrets.GPG_KEY_ID }}" \
               --detach-sign package.zip.sha256
       - name: Upload signed artifacts
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: signed-${{ needs.check-template.outputs.is_template == 'true' && 'template' || 'upm-package' }}
           path: |
