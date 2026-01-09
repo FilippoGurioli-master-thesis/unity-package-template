@@ -10,6 +10,6 @@ pre-commit:
         dotnet tool run csharpier format ./__NAMESPACE__
         git add ./__NAMESPACE__
     validate-meta:
-      run: bash .automation/validate-meta-files.sh
+      run: dotnet tool run dotnet-script ValidateMetaFiles.csx
     validate-scenes:
       run: bash .automation/validate-scene-files.sh
