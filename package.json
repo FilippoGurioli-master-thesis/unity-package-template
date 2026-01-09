@@ -19,9 +19,6 @@
   "author": "Filippo Gurioli",
   "scripts": {},
   "devDependencies": {
-    "@commitlint/cli": "^20.2.0",
-    "@commitlint/config-conventional": "^20.2.0",
-    "lefthook": "^2.0.13",
     "semantic-release": "^25.0.2",
     "semantic-release-preconfigured-conventional-commits": "^1.1.157"
   }
