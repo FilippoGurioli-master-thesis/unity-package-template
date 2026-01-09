@@ -10,7 +10,5 @@ if (Regex.IsMatch(msg, pattern))
     return 0;
 
 Log.Error("Invalid commit message");
-Log.Error("e.g: 'feat(scope): subject' or 'fix: subject'");
-Log.Error("more info: https://www.conventionalcommits.org/en/v1.0.0/");
 
 return 1;

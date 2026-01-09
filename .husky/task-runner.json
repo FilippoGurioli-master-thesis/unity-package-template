@@ -6,5 +6,25 @@
          "command": "dotnet",
          "args": ["husky", "exec", ".automation/CommitLint.csx", "--args", "${args}"]
       },
+      {
+         "name": "format-csharp",
+         "group": "pre-commit",
+         "command": "dotnet",
+         "args": [
+            "tool", "run", "csharpier", "format", "./__NAMESPACE__"
+         ],
+      },
+      {
+         "name": "validate-meta",
+         "group": "pre-commit",
+         "command": "dotnet",
+         "args": ["tool", "run", "dotnet-script", ".automation/ValidateMetaFiles.csx"]
+      },
+      {
+         "name": "validate-scenes",
+         "group": "pre-commit",
+         "command": "dotnet",
+         "args": ["tool", "run", "dotnet-script", ".automation/ValidateSceneFiles.csx"]
+      }
    ]
 }
