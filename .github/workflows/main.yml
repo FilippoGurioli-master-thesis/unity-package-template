@@ -251,7 +251,7 @@ jobs:
       - name: Build Documentation
         run: bash ./.automation/build-doc.sh
       - name: Upload Pages Artifact
-        uses: actions/upload-pages-artifact@v3
+        uses: actions/upload-pages-artifact@v4
         with:
           path: _site
       - name: Deploy to GitHub Pages
