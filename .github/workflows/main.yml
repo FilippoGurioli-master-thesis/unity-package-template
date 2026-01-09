@@ -249,7 +249,7 @@ jobs:
       - name: Install DocFX
         run: dotnet tool restore
       - name: Build Documentation
-        run: bash ./.automation/build-doc.sh
+        run: dotnet tool run dotnet-script .automation/BuildDoc.csx
       - name: Upload Pages Artifact
         uses: actions/upload-pages-artifact@v4
         with:
