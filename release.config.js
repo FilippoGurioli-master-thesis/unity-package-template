@@ -27,7 +27,7 @@ if (isTemplate) {
   // --- PACKAGE MODE (Unity) ---
   config.plugins.push(
     ["@semantic-release/exec", {
-      prepareCmd: "node .automation/update-unity-package-version.js ${nextRelease.version}"
+      prepareCmd: "dotnet tool run dotnet-script .automation/UpdateUnityPackageVersion.js ${nextRelease.version}"
     }],
     ["@semantic-release/changelog", {
       changelogFile: "__NAMESPACE__/CHANGELOG.md"
