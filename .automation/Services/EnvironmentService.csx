@@ -24,7 +24,7 @@ public static class EnvironmentService
     public static void InstallHooks()
     {
         Log.Info("Installing Git hooks...");
-        Shell.Run("npx", "lefthook install");
+        Shell.Run("dotnet", "tool run husky install");
     }
 
     /// <summary>
