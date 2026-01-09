@@ -29,6 +29,13 @@
         "dotnet-script"
       ],
       "rollForward": false
+    },
+    "husky": {
+      "version": "0.8.0",
+      "commands": [
+        "husky"
+      ],
+      "rollForward": false
     }
   }
 }
