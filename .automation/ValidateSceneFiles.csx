@@ -1,3 +1,5 @@
+#load "Utils/Log.csx"
+
 using System;
 using System.IO;
 using System.Linq;
@@ -9,11 +11,11 @@ string packageDir = "./Package";
 
 if (!Directory.Exists(samplesDir))
 {
-    Console.WriteLine("✔ No Samples~ folder found — skipping sample validation");
+    Log.Info("✔ No Samples~ folder found — skipping sample validation");
     Environment.Exit(0);
 }
 
-Console.WriteLine($"🔍 Validating sample scenes in {samplesDir}...");
+Log.Info($"🔍 Validating sample scenes in {samplesDir}...");
 
 bool hasError = false;
 
@@ -31,27 +33,27 @@ var scenes = Directory.EnumerateFiles(samplesDir, "*.unity", SearchOption.AllDir
 
 foreach (var scene in scenes)
 {
-    Console.WriteLine($"  • Checking {Path.GetFileName(scene)}");
+    Log.Info($"  • Checking {Path.GetFileName(scene)}");
     string content = File.ReadAllText(scene);
 
     // 1. Missing scripts
     if (content.Contains("m_Script: {fileID: 0"))
     {
-        Console.WriteLine($"❌ Missing script in scene: {scene}");
+        Log.Error($"❌ Missing script in scene: {scene}");
         hasError = true;
     }
 
     // 2. Missing prefabs
     if (content.Contains("m_CorrespondingSourceObject: {fileID: 0"))
     {
-        Console.WriteLine($"❌ Missing prefab in scene: {scene}");
+        Log.Error($"❌ Missing prefab in scene: {scene}");
         hasError = true;
     }
 
     // 3. Missing materials
     if (content.Contains("m_Material: {fileID: 0"))
     {
-        Console.WriteLine($"❌ Missing material in scene: {scene}");
+        Log.Error($"❌ Missing material in scene: {scene}");
         hasError = true;
     }
 
@@ -63,8 +65,8 @@ foreach (var scene in scenes)
         string guid = match.Groups[1].Value;
         if (!GuidExists(guid))
         {
-            Console.WriteLine($"❌ Scene references missing or external GUID: {guid}");
-            Console.WriteLine($"    in scene: {scene}");
+            Log.Error($"❌ Scene references missing or external GUID: {guid}");
+            Log.Error($"    in scene: {scene}");
             hasError = true;
         }
     }
@@ -73,9 +75,9 @@ foreach (var scene in scenes)
 // Final result
 if (hasError)
 {
-    Console.WriteLine("❌ Sample scene validation failed");
+    Log.Error("❌ Sample scene validation failed");
     Environment.Exit(1);
 }
 
-Console.WriteLine("✔ Sample scene validation passed");
+Log.Info("✔ Sample scene validation passed");
 Environment.Exit(0);
