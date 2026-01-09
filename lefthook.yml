@@ -12,4 +12,4 @@ pre-commit:
     validate-meta:
       run: dotnet tool run dotnet-script ValidateMetaFiles.csx
     validate-scenes:
-      run: bash .automation/validate-scene-files.sh
+      run: dotnet tool run dotnet-script ValidateSceneFiles.csx
