@@ -8,7 +8,7 @@ A template for Unity package projects. It contains the cutting edge features reg
 
 It features:
 
-- Conventional commit enforcements (through [commitlint](https://commitlint.js.org/) and [lefthook](https://lefthook.dev/) packages)
+- Conventional commit enforcements (through [commitlint](https://commitlint.js.org/) and [husky](https://typicode.github.io/husky/) packages)
 - Fast static checks at commit time
   - formatting of C# code
   - `.meta` files validation
