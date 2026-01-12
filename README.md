@@ -101,5 +101,10 @@ As of now the project has strong assumptions on the environment from within it i
 bash ./init.sh
 ```
 
-3. Enjoy your production ready automated environment.
+or (in Windows)
 
+```pwsh
+.\init.ps1
+```
+
+3. Enjoy your production ready automated environment.
