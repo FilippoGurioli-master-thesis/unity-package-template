@@ -1,3 +1,41 @@
+## [1.2.0](https://github.com/FilippoGurioli-master-thesis/unity-package-template/compare/1.1.1...1.2.0) (2026-01-12)
+
+### Features
+
+* set right command on the init script to add hooks ([647502f](https://github.com/FilippoGurioli-master-thesis/unity-package-template/commit/647502faba08796b70165b29bbbc733315ee6809))
+
+### Dependency updates
+
+* **deps:** add husky to .net deps ([8e0e5e0](https://github.com/FilippoGurioli-master-thesis/unity-package-template/commit/8e0e5e0e269afa6b717b8070249755e226e5ebff))
+
+### Documentation
+
+* update README ([68bebd5](https://github.com/FilippoGurioli-master-thesis/unity-package-template/commit/68bebd5c41cd8d3672d81472328382ae7b5556eb))
+* update README ([88c4182](https://github.com/FilippoGurioli-master-thesis/unity-package-template/commit/88c41820c897de7cbb1275b6263d4733cc6f2864))
+* update README ([80a67dd](https://github.com/FilippoGurioli-master-thesis/unity-package-template/commit/80a67dd6b76ea8844c40d091d3cbb630cd5b7400))
+
+### Build and continuous integration
+
+* **deps:** update actions/setup-node action to v6 ([#15](https://github.com/FilippoGurioli-master-thesis/unity-package-template/issues/15)) ([a9c037d](https://github.com/FilippoGurioli-master-thesis/unity-package-template/commit/a9c037dbb4f7b7a9f861f50add8e0c3713ce8fc8))
+* **deps:** update actions/upload-artifact action to v5 ([#17](https://github.com/FilippoGurioli-master-thesis/unity-package-template/issues/17)) ([1bd6810](https://github.com/FilippoGurioli-master-thesis/unity-package-template/commit/1bd6810c3123e4d0a9f5b94ed38ccfc5a6ff857f))
+* **deps:** update actions/upload-artifact action to v6 ([#18](https://github.com/FilippoGurioli-master-thesis/unity-package-template/issues/18)) ([221dcd3](https://github.com/FilippoGurioli-master-thesis/unity-package-template/commit/221dcd3bf821c72cca9d78d628be36e8150dc76e))
+* **deps:** update actions/upload-pages-artifact action to v4 ([#16](https://github.com/FilippoGurioli-master-thesis/unity-package-template/issues/16)) ([9b3ee76](https://github.com/FilippoGurioli-master-thesis/unity-package-template/commit/9b3ee7620ff09edd1ee9ebe53a295835702917ab))
+* enforce conventional commit with husky.net ([7291405](https://github.com/FilippoGurioli-master-thesis/unity-package-template/commit/7291405c2d9591742851aef61b0626c199bffa77))
+* set pre-commit validations with husky ([fa61991](https://github.com/FilippoGurioli-master-thesis/unity-package-template/commit/fa619918c379321335667c2df08f5761e2f1a1da))
+* uninstall lefthook and commit lint ([2faab36](https://github.com/FilippoGurioli-master-thesis/unity-package-template/commit/2faab368f5e0fb8a73411a6a7d806faee7a4db7c))
+
+### General maintenance
+
+* remove sign script for local signing ([1f9cd31](https://github.com/FilippoGurioli-master-thesis/unity-package-template/commit/1f9cd3137ef5192e6d14f603164284d5b62ceddb))
+* use Log instead of console write in validate scene ([13d595d](https://github.com/FilippoGurioli-master-thesis/unity-package-template/commit/13d595daa5fb048baee99e3af17310c2b2fb8a96))
+
+### Refactoring
+
+* change  validate meta file to a csx file ([988b974](https://github.com/FilippoGurioli-master-thesis/unity-package-template/commit/988b974a0030d21203e89eb2ff67472bc4540868))
+* change build doc from sh to csx script ([3bc0e81](https://github.com/FilippoGurioli-master-thesis/unity-package-template/commit/3bc0e817d2154e8d699a6314dbb3e47a0a07f6b5))
+* change update-unity-package-version from js to csx script ([47c3653](https://github.com/FilippoGurioli-master-thesis/unity-package-template/commit/47c3653e8cebce343682822fd25b9a2b717627ee))
+* change validate scnene file to a csx script ([53744ed](https://github.com/FilippoGurioli-master-thesis/unity-package-template/commit/53744ed99b3649980c41b5eb77210b168f017512))
+
 ## [1.1.1](https://github.com/FilippoGurioli-master-thesis/unity-package-template/compare/1.1.0...1.1.1) (2026-01-08)
 
 ### Revert previous changes
