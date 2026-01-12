@@ -66,7 +66,6 @@ To correctly use this project as a template it must be launched the `init.sh` sc
 
 As of now the project has strong assumptions on the environment from within it is executed:
 
-- Linux-based environment
 - Node.js installed and at least at version `v25.2.1` with a compatible npm package
 - Unity 6000 installed
   - Therefore the .NET SDK at `v8`
