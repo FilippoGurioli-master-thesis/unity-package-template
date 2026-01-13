@@ -4,6 +4,7 @@
 
 using System.Runtime.InteropServices;
 using System.Text.RegularExpressions;
+using System.Threading;
 
 /// <summary>
 /// Provides services for Unity project setup such as installing dependencies.
@@ -120,4 +121,3 @@ public static class UnityService
         );
     }
 }
-

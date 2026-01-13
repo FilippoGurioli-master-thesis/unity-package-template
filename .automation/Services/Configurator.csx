@@ -5,6 +5,7 @@
 #load "../Models/ProjectConfig.csx"
 
 using System.Globalization;
+using System.Text.RegularExpressions;
 
 public static class Configurator
 {
