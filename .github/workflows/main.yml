@@ -43,16 +43,16 @@ jobs:
             echo "is_template=false" >> $GITHUB_OUTPUT
           fi
 
-  launch-init:
-    name: Launch init script to see if it works
-    runs-on: ubuntu-24.04
-    needs: check-template
-    if: needs.check-template.outputs.is_template == 'true'
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v6
-      - name: Launch init script
-        run: ./init.sh
+  # launch-init:
+  #   name: Launch init script to see if it works
+  #   runs-on: ubuntu-24.04
+  #   needs: check-template
+  #   if: needs.check-template.outputs.is_template == 'true'
+  #   steps:
+  #     - name: Checkout
+  #       uses: actions/checkout@v6
+  #     - name: Launch init script
+  #       run: ./init.sh
 
   build:
     name: Build for ${{ matrix.targetPlatform }} on ${{ matrix.os }}
@@ -133,7 +133,7 @@ jobs:
       - name: Setup .NET
         uses: actions/setup-dotnet@v5
         with:
-          dotnet-version: '8.x'
+          dotnet-version: "8.x"
       - name: Restore local tools
         run: dotnet tool restore
       - name: Cache Library
@@ -229,7 +229,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v6
         with:
-          node-version: 'lts/*'
+          node-version: "lts/*"
       - name: Install dependencies
         run: npm ci
       - name: Download signed package
@@ -256,7 +256,7 @@ jobs:
       - name: Setup .NET
         uses: actions/setup-dotnet@v5
         with:
-          dotnet-version: '8.x'
+          dotnet-version: "8.x"
       - name: Install DocFX
         run: dotnet tool restore
       - name: Build Documentation
