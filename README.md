@@ -8,7 +8,7 @@ A template for Unity package projects. It contains the cutting edge features reg
 
 It features:
 
-- Conventional commit enforcements (through [commitlint](https://commitlint.js.org/) and [husky](https://typicode.github.io/husky/) packages)
+- Conventional commit enforcements (through [husky](https://typicode.github.io/husky/) packages)
 - Fast static checks at commit time
   - formatting of C# code
   - `.meta` files validation
@@ -27,7 +27,7 @@ It features:
   - Release
   - Documentation generation and deploy to GitHub Pages
 
-To correctly use this project as a template it must be launched the `init.sh` script. This script does the following things:
+To correctly use this project as a template it must be launched the `init` script. This script does the following things:
 
 - configures the unity package unique name
   - asks for domain, company and package names, defaulting to reasonable values
@@ -55,10 +55,11 @@ To correctly use this project as a template it must be launched the `init.sh` sc
 - boots the project with unity batch mode
 - installs git hooks
 - removes `.template` file
-- removes the `init.sh` script itself
+- removes the `init` script itself
 - configures [unity smart merge](https://docs.unity3d.com/6000.3/Documentation/Manual/SmartMerge.html)
 - opens the unity editor inside the sandbox
 - creates the develop branch
+- set branches and tags basic protection rules
 - commits all changes made until now
 - set the tag of that commit to `0.0.0`
 
@@ -69,7 +70,7 @@ As of now the project has strong assumptions on the environment from within it i
 - Node.js installed and at least at version `v25.2.1` with a compatible npm package
 - Unity 6000 installed
   - Therefore the .NET SDK at `v8`
-- GitHub CLI installed and up-to-date
+- GitHub CLI installed and at least at version `GitHub CLI 2.83.2`
 
 ## Project Structure
 
