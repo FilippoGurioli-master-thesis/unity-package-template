@@ -1,3 +1,9 @@
+## [1.2.1](https://github.com/FilippoGurioli-master-thesis/unity-package-template/compare/1.2.0...1.2.1) (2026-01-13)
+
+### Documentation
+
+* update README ([cd84257](https://github.com/FilippoGurioli-master-thesis/unity-package-template/commit/cd842571498d22dda960600577ab9127fd237535))
+
 ## [1.2.0](https://github.com/FilippoGurioli-master-thesis/unity-package-template/compare/1.1.1...1.2.0) (2026-01-12)
 
 ### Features
