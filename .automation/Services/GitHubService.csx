@@ -32,31 +32,6 @@ public static class GitHubService
     }
 
     /// <summary>
-    /// Protects main and develop branches on GitHub by applying default protection rules
-    /// </summary>
-    /// <param name="config"> The project configuration containing GitHub repository details. </param>
-    public static void ProtectBranches(ProjectConfig config)
-    {
-        Log.Info("Protecting main branch...");
-        ProtectBranch($"{config.RepoFullName}", "main");
-        Log.Info("Protecting develop branch...");
-        ProtectBranch($"{config.RepoFullName}", "develop");
-    }
-
-    /// <summary>
-    /// Protects all tags on GitHub by applying default protection rules
-    /// </summary>
-    /// <param name="config"> The project configuration containing GitHub repository details. </param>
-    public static void ProtectTags(ProjectConfig config)
-    {
-        Log.Info("Applying protection to all tags...");
-        Gh(
-            $"api -X POST \"/repos/{config.RepoFullName}/tag_protection\" -f \"pattern=*\"",
-            hide: true
-        );
-    }
-
-    /// <summary>
     /// Sets GitHub Pages to use the Actions workflow for deployment
     /// </summary>
     /// <param name="repoFullName"> The full name of the repository (e.g
@@ -112,29 +87,63 @@ public static class GitHubService
     }
 
     /// <summary>
-    /// Protects a branch on GitHub by applying default protection rules
-    /// </summary>
-    /// <param name="repoFullName"> The full name of the repository (e.g
-    /// "owner/repo"). </param>
-    /// <param name="branch"> The branch to protect (e.g., "main"). </param>
-    public static void ProtectBranch(string repoFullName, string branch)
+    /// Protects the repository with basic rulesets for tags and branches
+    /// <summary>
+    public static void ProtectRepository(ProjectConfig config)
     {
-        Log.Info($"Applying protection to {branch}...");
-        var json =
-            "{\"required_status_checks\":null,\"enforce_admins\":false,\"required_pull_request_reviews\":null,\"restrictions\":null,\"allow_force_pushes\":false,\"allow_deletions\":false}";
-        string tempJsonPath = Path.GetTempFileName();
+        CreateRuleset(
+            config,
+            "Branch Protection",
+            "branch",
+            new[] { "refs/heads/main", "refs/heads/develop" }
+        );
+        CreateRuleset(config, "Tag Protection", "tag", new[] { "refs/tags/*" });
+    }
+
+    private static void CreateRuleset(
+        ProjectConfig config,
+        string name,
+        string target,
+        string[] includes
+    )
+    {
+        Log.Info($"Applying {name} Ruleset...");
+        var rules = new List<string>
+        {
+            "{\"type\": \"deletion\"}",
+            "{\"type\": \"non_fast_forward\"}",
+        };
+        var rulesetJson =
+            $@"
+    {{
+      ""name"": ""{name}"",
+      ""target"": ""{target}"",
+      ""enforcement"": ""active"",
+      ""conditions"": {{
+        ""ref_name"": {{
+          ""include"": [{string.Join(",", includes.Select(i => $"\"{i}\""))}],
+          ""exclude"": []
+        }}
+      }},
+      ""rules"": [{string.Join(",", rules)}]
+    }}";
+        var tempPath = Path.GetTempFileName();
         try
         {
-            File.WriteAllText(tempJsonPath, json);
+            File.WriteAllText(tempPath, rulesetJson);
             Gh(
-                $"api -X PUT \"/repos/{repoFullName}/branches/{branch}/protection\" --input \"{tempJsonPath}\"",
+                $"api -X POST \"/repos/{config.RepoFullName}/rulesets\" --input \"{tempPath}\"",
                 hide: true
             );
         }
+        catch
+        {
+            Log.Info($"{name} already exists, skipping...");
+        }
         finally
         {
-            if (File.Exists(tempJsonPath))
-                File.Delete(tempJsonPath);
+            if (File.Exists(tempPath))
+                File.Delete(tempPath);
         }
     }
 }

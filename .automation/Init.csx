@@ -44,8 +44,7 @@ TemplateService.ReplaceRenovateConfigAssignee(projectConfig.GitUser);
 GitHubService.SetPagesToWorkflow(projectConfig);
 
 // Protect branches and tags
-GitHubService.ProtectBranches(projectConfig);
-GitHubService.ProtectTags(projectConfig);
+GitHubService.ProtectRepository(projectConfig);
 
 // Push secrets
 GitHubService.PushSecrets(projectConfig);
