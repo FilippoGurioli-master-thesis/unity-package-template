@@ -72,7 +72,7 @@ public static class GitHubService
         {
             pageApi("POST");
         }
-        catch (Exception ex) when (ex.Message.Contains("409"))
+        catch
         {
             Log.Info("Pages already enabled...");
         }
