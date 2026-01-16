@@ -50,17 +50,13 @@ public static class GitService
     public static void CreateBaseTag()
     {
         Log.Info("Creating base tag 0.0.0...");
-        try
-        {
-            Shell.Run("git", "tag 0.0.0");
-        }
-        catch { }
+        Shell.Run("git", "rev-parse 0.0.0 >/dev/null 2>&1 || git tag 0.0.0");
     }
 
     public static void CheckoutDevelop()
     {
         Log.Info("Checking out develop branch...");
-        Shell.Run("git", "checkout -b develop");
+        Shell.Run("git", "checkout develop || git checkout -b develop");
     }
 
     private static string FindSmartMergeExecutable(string unityBasePath)
