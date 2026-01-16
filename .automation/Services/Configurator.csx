@@ -105,7 +105,7 @@ public static class Configurator
             );
         else
             return Path.Combine(
-                Environment.GetFolderPath(Environment.SpecialFolder.Personal),
+                Environment.GetFolderPath(Environment.SpecialFolder.UserProfile),
                 ".local",
                 "share",
                 "unity3d",
