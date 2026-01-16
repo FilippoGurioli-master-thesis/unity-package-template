@@ -1,3 +1,9 @@
+## [1.2.3](https://github.com/FilippoGurioli-master-thesis/unity-package-template/compare/1.2.2...1.2.3) (2026-01-16)
+
+### Bug Fixes
+
+* **gh:** ghp correctly create in init ([181bc8f](https://github.com/FilippoGurioli-master-thesis/unity-package-template/commit/181bc8f96ea3d759cbfee5cc31c0d8d78e800201))
+
 ## [1.2.2](https://github.com/FilippoGurioli-master-thesis/unity-package-template/compare/1.2.1...1.2.2) (2026-01-16)
 
 ### Dependency updates
