@@ -1,3 +1,24 @@
+## [1.2.2](https://github.com/FilippoGurioli-master-thesis/unity-package-template/compare/1.2.1...1.2.2) (2026-01-16)
+
+### Dependency updates
+
+* **core-deps:** update dependency com.unity.inputsystem to v1.18.0 ([#27](https://github.com/FilippoGurioli-master-thesis/unity-package-template/issues/27)) ([c3fa542](https://github.com/FilippoGurioli-master-thesis/unity-package-template/commit/c3fa542fe996e5b3339ffd04d0350bc2ef49be51))
+* **core-deps:** update dependency unity editor ([#26](https://github.com/FilippoGurioli-master-thesis/unity-package-template/issues/26)) ([a1e5dcd](https://github.com/FilippoGurioli-master-thesis/unity-package-template/commit/a1e5dcd75a9f7be49b22f032e07a2c71fb57ae43))
+
+### Bug Fixes
+
+* add missing using statements in init scripts ([3132683](https://github.com/FilippoGurioli-master-thesis/unity-package-template/commit/313268309518346cd5030cad1b13f23a433b8b96))
+
+### Documentation
+
+* update readme ([f28fabd](https://github.com/FilippoGurioli-master-thesis/unity-package-template/commit/f28fabdbecdd9d76d510b6dab9ccd506b65b8b35))
+* update readme ([7389f85](https://github.com/FilippoGurioli-master-thesis/unity-package-template/commit/7389f8527d07e3be675727440e6822c2f32a888a))
+
+### Build and continuous integration
+
+* comment launch-init since it currelty not support non-interactive mode ([0cade4e](https://github.com/FilippoGurioli-master-thesis/unity-package-template/commit/0cade4e8ba0a2d22b59c7d4cc623b398a108a288))
+* create launch-init job ([e544f29](https://github.com/FilippoGurioli-master-thesis/unity-package-template/commit/e544f29349e27d7ba3bea41768e3c079fb276b68))
+
 ## [1.2.1](https://github.com/FilippoGurioli-master-thesis/unity-package-template/compare/1.2.0...1.2.1) (2026-01-13)
 
 ### Documentation
