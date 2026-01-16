@@ -55,7 +55,7 @@ public static class EnvironmentService
     {
         Log.Info("Generating documentation .csproj...");
         var packageRoot = Path.Combine(Environment.CurrentDirectory, config.Namespace);
-        var sandboxRoot = Path.Combine(Environment.CurrentDirectory, $"Sandbox.{config.Namespace}");
+        var sandboxRoot = Path.Combine(Environment.CurrentDirectory, config.SandboxPath);
         var scriptAssemblies = Path.Combine(sandboxRoot, "Library", "ScriptAssemblies");
 
         // 1. Validation
@@ -112,4 +112,3 @@ public static class EnvironmentService
         return Directory.GetFiles(path, "*.dll", SearchOption.TopDirectoryOnly);
     }
 }
-
