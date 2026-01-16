@@ -64,7 +64,19 @@ public static class GitHubService
     public static void SetPagesToWorkflow(ProjectConfig config)
     {
         Log.Info("Setting GitHub Pages to use Actions workflow...");
-        Gh($"api -X PATCH \"/repos/{config.RepoFullName}/pages\" -f \"build_type=workflow\"");
+        void pageApi(string method) =>
+            Gh(
+                $"api -X {method} \"/repos/{config.RepoFullName}/pages\" -f \"build_type=workflow\""
+            );
+        try
+        {
+            pageApi("POST");
+        }
+        catch (Exception ex) when (ex.Message.Contains("409"))
+        {
+            Log.Info("Pages already enabled...");
+        }
+        pageApi("PUT");
     }
 
     /// <summary>
