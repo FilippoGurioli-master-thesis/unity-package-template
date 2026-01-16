@@ -40,14 +40,13 @@ public static class Shell
         process.WaitForExit();
         if (process.ExitCode != 0)
         {
-            Log.Error($"Command failed: {command} {arguments}");
+            Log.Warning($"Command failed: {command} {arguments}");
             if (!string.IsNullOrEmpty(error.ToString()))
             {
-                Log.Error(error.ToString());
+                Log.Warning(error.ToString());
             }
             throw new Exception($"Process exited with code {process.ExitCode}");
         }
         return output.ToString().Trim();
     }
 }
-
