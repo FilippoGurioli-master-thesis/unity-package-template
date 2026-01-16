@@ -50,7 +50,11 @@ public static class GitService
     public static void CreateBaseTag()
     {
         Log.Info("Creating base tag 0.0.0...");
-        Shell.Run("git", "tag 0.0.0");
+        try
+        {
+            Shell.Run("git", "tag 0.0.0");
+        }
+        catch { }
     }
 
     public static void CheckoutDevelop()
@@ -74,4 +78,3 @@ public static class GitService
         return File.Exists(fullPath) ? fullPath : null;
     }
 }
-
