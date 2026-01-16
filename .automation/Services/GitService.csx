@@ -49,24 +49,31 @@ public static class GitService
     /// </summary>
     public static void CreateBaseTag()
     {
-        Log.Info("Creating base tag 0.0.0...");
+        var tagName = "0.0.0";
         try
         {
-            Shell.Run("git", "tag 0.0.0");
+            Shell.Run("git", $"rev-parse {tagName}", hideOutput: true);
+            Log.Info($"Tag {tagName} already exists.");
         }
-        catch { } // tag already exist
+        catch (Exception)
+        {
+            Log.Info($"Creating base tag {tagName}...");
+            Shell.Run("git", $"tag {tagName}");
+        }
     }
 
     public static void CheckoutDevelop()
     {
-        Log.Info("Checking out develop branch...");
+        var branchName = "develop";
+        Log.Info($"Checking out {branchName} branch...");
         try
         {
-            Shell.Run("git", "checkout develop");
+            Shell.Run("git", $"checkout {branchName}", hideOutput: true);
         }
-        catch
+        catch (Exception)
         {
-            Shell.Run("git", "git checkout -b develop");
+            Log.Info($"Branch {branchName} not found. Creating it...");
+            Shell.Run("git", $"checkout -b {branchName}");
         }
     }
 
