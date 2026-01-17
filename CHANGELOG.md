@@ -1,3 +1,23 @@
+## [1.2.4](https://github.com/FilippoGurioli-master-thesis/unity-package-template/compare/1.2.3...1.2.4) (2026-01-16)
+
+### Bug Fixes
+
+* checkout and tag performed only if not present ([555c360](https://github.com/FilippoGurioli-master-thesis/unity-package-template/commit/555c3606de526947aab577b0a6fd84a37b3dfe1c))
+* correctly point to default path for unity license ([e3d537b](https://github.com/FilippoGurioli-master-thesis/unity-package-template/commit/e3d537b837c56b6ffb31384d950c6aedec75738a))
+* correctly set tag and branch protection through rulesets ([5d387ea](https://github.com/FilippoGurioli-master-thesis/unity-package-template/commit/5d387ea6adf44d5bbf3d7bcdca98553c5a1610c9))
+* put tag set in a try catch ([beab957](https://github.com/FilippoGurioli-master-thesis/unity-package-template/commit/beab9576d66ae8032803b9797c4269504234e580))
+* tag and checkout checked with try catch ([7fde113](https://github.com/FilippoGurioli-master-thesis/unity-package-template/commit/7fde1136c6941f23e2a4d31612441c428011d6d3))
+
+### General maintenance
+
+* improve try catch logic for checkout and tag ([ee28484](https://github.com/FilippoGurioli-master-thesis/unity-package-template/commit/ee284843aab84ef61b75fd71f1b4f297a8dc4b69))
+* remove catch filter in ghp ([beece3f](https://github.com/FilippoGurioli-master-thesis/unity-package-template/commit/beece3f4c9088dd5d5e3bafb7a5b6e10e65fb3a9))
+* set as warnings console.err strings ([aed3027](https://github.com/FilippoGurioli-master-thesis/unity-package-template/commit/aed3027fb67a326fdf5ae8d1f94d128ecde49599))
+
+### Style improvements
+
+* use config.SandboxPath ([acad76b](https://github.com/FilippoGurioli-master-thesis/unity-package-template/commit/acad76bf20b525f1d35931e713caff2f04914723))
+
 ## [1.2.3](https://github.com/FilippoGurioli-master-thesis/unity-package-template/compare/1.2.2...1.2.3) (2026-01-16)
 
 ### Bug Fixes
