@@ -15,7 +15,7 @@ public static class UnityService
 
     public static void OpenProject(ProjectConfig config, bool batch = false)
     {
-        Log.Info("Opening Unity project...");
+        Log.Info("Opening Unity project, this may take a few minutes...");
         var args =
             $"-projectPath {config.SandboxPath} -logFile {Path.Combine(config.SandboxPath, "unity_init.log")}";
         var unityEditorPath = Path.Combine(

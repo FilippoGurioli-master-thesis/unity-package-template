@@ -31,6 +31,7 @@ EnvironmentService.DeleteTemplateFiles();
 
 // Generate .csproj for DocFX support
 EnvironmentService.GenerateCsproj(projectConfig);
+UnityService.OpenProject(projectConfig, batch: true);
 
 // PHASE 3: OPEN PROJECT
 UnityService.OpenProject(projectConfig);
