@@ -1,3 +1,17 @@
+## [1.3.0](https://github.com/FilippoGurioli-master-thesis/unity-package-template/compare/1.2.4...1.3.0) (2026-01-17)
+
+### Features
+
+* create a script to open the unity editor without passing from the flaky unityhub ([8d60670](https://github.com/FilippoGurioli-master-thesis/unity-package-template/commit/8d60670a3d5bf236b7598fcbf4e0d32638a5659c))
+
+### Bug Fixes
+
+* open unity to create meta file for generated csproj ([f273f73](https://github.com/FilippoGurioli-master-thesis/unity-package-template/commit/f273f73f19328c16b5526639c5b24a40fdaea971))
+
+### General maintenance
+
+* merge main into develop ([8a45361](https://github.com/FilippoGurioli-master-thesis/unity-package-template/commit/8a453615bb1cba9ce20bb196041c71e3104b0c83))
+
 ## [1.2.4](https://github.com/FilippoGurioli-master-thesis/unity-package-template/compare/1.2.3...1.2.4) (2026-01-16)
 
 ### Bug Fixes
