@@ -1,3 +1,9 @@
+## [1.4.0](https://github.com/FilippoGurioli-master-thesis/unity-package-template/compare/1.3.0...1.4.0) (2026-01-17)
+
+### Features
+
+* create a validation step before running the init script ([7d8244c](https://github.com/FilippoGurioli-master-thesis/unity-package-template/commit/7d8244c71985d0bf3bc3722eeecfb0a68f7868fc))
+
 ## [1.3.0](https://github.com/FilippoGurioli-master-thesis/unity-package-template/compare/1.2.4...1.3.0) (2026-01-17)
 
 ### Features
