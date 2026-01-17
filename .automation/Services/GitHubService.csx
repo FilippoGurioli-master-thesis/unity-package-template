@@ -60,7 +60,7 @@ public static class GitHubService
     /// <param name="licenseType"> The type of license (e.g., "mit", "apache-2.0"). </param>
     /// <returns> The license text. </returns>
     public static string GetLicense(string licenseType) =>
-        Shell.Run("gh", $"api licenses/{licenseType} --jq .body", hideOutput: true);
+        Gh($"api licenses/{licenseType} --jq .body", hide: true);
 
     /// <summary>
     /// Sets a GitHub secret for the repository

@@ -10,6 +10,8 @@ using System.Runtime.InteropServices;
 /// </summary>
 public static class GitService
 {
+    private static string Git(string args, bool hide = false) => Shell.Run("git", args, hide);
+
     /// <summary>
     /// Configures the local git repository to use UnityYAMLMerge for scene and prefab files.
     /// </summary>
@@ -25,12 +27,11 @@ public static class GitService
             return;
         }
         Log.Info($"Found UnityYAMLMerge at: {smartMergeBin}");
-        Shell.Run("git", "config --local merge.unityyamlmerge.name \"Unity SmartMerge\"");
-        Shell.Run(
-            "git",
+        Git("config --local merge.unityyamlmerge.name \"Unity SmartMerge\"");
+        Git(
             $"config --local merge.unityyamlmerge.driver \"'{smartMergeBin}' merge -p %O %B %A %R\""
         );
-        Shell.Run("git", "config --local merge.unityyamlmerge.trustExitCode false");
+        Git("config --local merge.unityyamlmerge.trustExitCode false");
         Log.Info("Merge rules configured successfully.");
     }
 
@@ -40,8 +41,8 @@ public static class GitService
     public static void CommitAllChanges()
     {
         Log.Info("Committing all changes...");
-        Shell.Run("git", "add .");
-        Shell.Run("git", "commit -m \"chore(init): initialize project from template\"");
+        Git("add .");
+        Git("commit -m \"chore(init): initialize project from template\"");
     }
 
     /// <summary>
@@ -52,13 +53,13 @@ public static class GitService
         var tagName = "0.0.0";
         try
         {
-            Shell.Run("git", $"rev-parse {tagName}", hideOutput: true);
+            Git($"rev-parse {tagName}", hide: true);
             Log.Info($"Tag {tagName} already exists.");
         }
         catch (Exception)
         {
             Log.Info($"Creating base tag {tagName}...");
-            Shell.Run("git", $"tag {tagName}");
+            Git($"tag {tagName}");
         }
     }
 
@@ -68,12 +69,12 @@ public static class GitService
         Log.Info($"Checking out {branchName} branch...");
         try
         {
-            Shell.Run("git", $"checkout {branchName}", hideOutput: true);
+            Git($"checkout {branchName}", hide: true);
         }
         catch (Exception)
         {
             Log.Info($"Branch {branchName} not found. Creating it...");
-            Shell.Run("git", $"checkout -b {branchName}");
+            Git($"checkout -b {branchName}");
         }
     }
 

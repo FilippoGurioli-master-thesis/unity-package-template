@@ -1,4 +1,5 @@
 #load "Models/ProjectConfig.csx"
+#load "Services/ValidationService.csx"
 #load "Services/Configurator.csx"
 #load "Services/TemplateService.csx"
 #load "Services/LicenseService.csx"
@@ -7,6 +8,12 @@
 #load "Services/GitHubService.csx"
 #load "Services/GitService.csx"
 #load "Utils/Log.csx"
+
+if (!ValidationService.Validate())
+{
+    Log.Error("Validation failed.");
+    return;
+}
 
 // Initialize configuration
 var projectConfig = Configurator.PreparePlan();
