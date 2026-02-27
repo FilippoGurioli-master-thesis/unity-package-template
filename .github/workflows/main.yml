@@ -147,12 +147,12 @@ jobs:
           projectPath: ./Sandbox.__NAMESPACE__
           customParameters: -executeMethod UnityEditor.SyncVS.SyncSolution -quit
       - name: Download Test Results
-        uses: actions/download-artifact@v7
+        uses: actions/download-artifact@v8
         with:
           name: Test-Results
           path: artifacts
       - name: Download Coverage Results
-        uses: actions/download-artifact@v7
+        uses: actions/download-artifact@v8
         with:
           name: Coverage-Results
           path: coverage-results
@@ -233,7 +233,7 @@ jobs:
       - name: Install dependencies
         run: npm ci
       - name: Download signed package
-        uses: actions/download-artifact@v7
+        uses: actions/download-artifact@v8
         with:
           pattern: signed-*
           path: .
