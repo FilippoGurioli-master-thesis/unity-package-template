@@ -262,7 +262,7 @@ jobs:
       - name: Build Documentation
         run: dotnet tool run dotnet-script .automation/BuildDoc.csx
       - name: Upload Pages Artifact
-        uses: actions/upload-pages-artifact@v4
+        uses: actions/upload-pages-artifact@v5
         with:
           path: _site
       - name: Deploy to GitHub Pages
