@@ -82,7 +82,7 @@ jobs:
           restore-keys: |
             Library-${{ matrix.targetPlatform }}-
       - name: Build Unity Project
-        uses: game-ci/unity-builder@v4
+        uses: game-ci/unity-builder@v5
         with:
           targetPlatform: ${{ matrix.targetPlatform }}
           projectPath: ./Sandbox.__NAMESPACE__
@@ -142,7 +142,7 @@ jobs:
           path: ./Sandbox.__NAMESPACE__/Library
           key: Library-test-${{ hashFiles('**/ProjectSettings/**') }}
       - name: Generate Solution
-        uses: game-ci/unity-builder@v4
+        uses: game-ci/unity-builder@v5
         with:
           projectPath: ./Sandbox.__NAMESPACE__
           customParameters: -executeMethod UnityEditor.SyncVS.SyncSolution -quit
