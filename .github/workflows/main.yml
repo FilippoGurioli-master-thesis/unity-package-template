@@ -28,7 +28,7 @@ permissions:
 jobs:
   check-template:
     name: Check for .template file
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     outputs:
       is_template: ${{ steps.check.outputs.is_template }}
     steps:
@@ -92,7 +92,7 @@ jobs:
     name: Tests
     needs: check-template
     if: needs.check-template.outputs.is_template == 'false'
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     steps:
       - uses: actions/checkout@v7
         with:
@@ -125,7 +125,7 @@ jobs:
   sonar-analysis:
     name: SonarQube Analysis
     needs: test
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     steps:
       - uses: actions/checkout@v7
         with:
@@ -179,7 +179,7 @@ jobs:
   sign:
     name: Sign Artifact
     needs: check-template
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     steps:
       - name: Checkout
         uses: actions/checkout@v7
@@ -211,7 +211,7 @@ jobs:
 
   release:
     name: Release
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     needs: [check-template, sign, sonar-analysis]
     if: |
       always() &&
@@ -249,7 +249,7 @@ jobs:
     if: |
       always() &&
       (needs.release.result == 'success' || needs.check-template.outputs.is_template == 'true')
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     steps:
       - name: Checkout code
         uses: actions/checkout@v7
